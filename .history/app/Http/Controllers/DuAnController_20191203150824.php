@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use PDO;
 class DuAnController extends Controller
 {
 
@@ -30,7 +29,7 @@ class DuAnController extends Controller
         $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
         $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':n',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':n',$result);
         $stmt->execute();
         return $result;
     }
@@ -41,7 +40,7 @@ class DuAnController extends Controller
         {
             //CHECK TOKEN
 
-            $du_an = DB::SELECT("SELECT DA.*, LDA.TEN_LOAI_DA FROM TB_DU_AN DA, TB_LOAI_DU_AN LDA where DA.ID_LOAI_DA = LDA.ID_LOAI_DA");
+            $du_an = DB::SELECT("SELECT * FROM TB_DU_AN");
             return response()->json($du_an, 200);
         }
     }

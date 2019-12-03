@@ -28,12 +28,12 @@ class FunctrionUserController extends Controller
      */
     public function store(Request $request)
     {
-        $validate  = $this->validate($request,[
-            'ID_ND' => 'required',
-            'ID_CN' => 'required',
-            'FUNCTIONS' => 'required'
-        ]);
-        if($validate)
+        // $validate  = $this->validate($request,[
+        //     'ID_ND' => 'required',
+        //     'ID_CN' => 'required',
+        //     'FUNCTIONS' => 'required'
+        // ]);
+        if($request->has('ID_ND') && $request->has('ID_CN') && $request->has('FUNCTIONS')  )
         {
             $p_id_nd = $request->get("ID_ND");
             $p_id_cn = $request->get("ID_CN");

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use PDO;
 class DuAnKhachHangController extends Controller
 {
     public function CallFunction($P_ID_DU_AN_KH, $P_ID_DU_AN, $P_TEN_DU_AN_KH, $P_MO_TA_DU_AN, $P_GHI_CHU_DU_AN, $P_TRANG_THAI_DU_AN, $P_ID_KHACH_HANG, $P_ACTION)
@@ -62,7 +61,7 @@ class DuAnKhachHangController extends Controller
         $stmt->bindParam(':P_Q_XOA',$P_Q_XOA);
         $stmt->bindParam(':P_Q_XUAT',$P_Q_XUAT);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':n',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':n',$result: PDO::PARAM_INT);
         $stmt->execute();
         return $result;
     }
@@ -72,9 +71,8 @@ class DuAnKhachHangController extends Controller
         if($request->has('api_token'))
         {
             //CHECK TOKEN
-           
             $du_an = DB::SELECT("SELECT DA_KH.*, DA.TEN_DU_AN, KH.TEN_KH, KH.ID_KHACH_HANG FROM TB_DU_AN_KH DA_KH, TB_DU_AN DA, TB_KH KH
-            WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG");
+            WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG  ");
             return response()->json($du_an, 200);
         }
     }
@@ -98,7 +96,7 @@ class DuAnKhachHangController extends Controller
         //     'P_ID_DU_AN' => 'required|max:1',
         //     'P_TRANG_THAI_DU_AN' => 'required|max:1'
         // ]);
-        if($request->has('P_TEN_DU_AN_KH') && $request->has('P_ID_DU_AN') && $request->has('P_TRANG_THAI_DU_AN'))
+        if($request->has('P_TEN_DU_AN_kH') && $request->has('P_ID_DU_AN') && $request->has('P_TRANG_THAI_DU_AN'))
         {
             if($request->has('api_token'))
             {
@@ -136,10 +134,6 @@ class DuAnKhachHangController extends Controller
                 
             }
         }
-        return response()->json([
-            'success' => false,
-            'message' => 'Lỗi'
-        ], 200);
     }
 
     public function themthanhvien(Request $request)

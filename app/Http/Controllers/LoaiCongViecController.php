@@ -51,11 +51,11 @@ class LoaiCongViecController extends Controller
     {
         if($request->has('api_token'))
         {
-            $validate = $this->validate($request,[
-                'P_TEN_LOAI_CV' => 'required|max:50',
-                'P_TRANG_THAI' => 'required|max:1',
-            ]);    
-            if($validate)
+            // $validate = $this->validate($request,[
+            //     'P_TEN_LOAI_CV' => 'required|max:50',
+            //     'P_TRANG_THAI' => 'required|max:1',
+            // ]);    
+            if($request->has('P_TEN_LOAI_CV') && $request->has('P_TRANG_THAI'))
             {
                 $ID_LOAI_CV = 0;
                 $TEN_LOAI_CV = $request->get('P_TEN_LOAI_CV');

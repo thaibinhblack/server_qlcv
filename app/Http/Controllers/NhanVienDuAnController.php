@@ -49,11 +49,11 @@ class NhanVienDuAnController extends Controller
     {
         if($request->has('api_token'))
         {
-            $validate = $this->validate($request, [
-                'P_ID_DU_AN' => 'required',
-                'P_ID_ND' => 'required|max:1',
-            ]);
-            if($validate)
+            // $validate = $this->validate($request, [
+            //     'P_ID_DU_AN' => 'required',
+            //     'P_ID_ND' => 'required|max:1',
+            // ]);
+            if($request->has('P_ID_DU_AN') && $request->has('P_ID_ND'))
             {
                 $P_ID_DU_AN = $request->get('P_ID_DU_AN');
                 $P_ID_ND = $request->get('P_ID_ND');

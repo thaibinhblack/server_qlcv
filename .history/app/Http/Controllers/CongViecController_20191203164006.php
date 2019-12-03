@@ -204,11 +204,7 @@ class CongViecController extends Controller
             else {
                 if($id == -1)
                 {
-                    $cong_viec = DB::select("SELECT *
-                    FROM tb_cong_viec_da
-                    WHERE not EXISTS (SELECT *
-                                  FROM tb_cong_viec_da_kh
-                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) ");
+                    $cong_viec = DB::select("SELECT * FROM TB_CONG_VIEC_DA not exists (select * from TB_CONG_VIEC_DA_KH WHERE TB_CONG_VIEC_DA.ID_CV_DA = TB_CONG_VIEC_DA_KH.ID_CV_DA ");
                     return response()->json($cong_viec, 200);
                 }
                 else {

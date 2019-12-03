@@ -56,8 +56,8 @@ class LoaiDuANController extends Controller
                 //CHECK TOKEN
                 $P_ID_LOAI_DA = 0;
                 $P_TEN_LOAI_DA = $request->get('P_TEN_LOAI_DA') ;
-                $P_MO_TA = $request->get('P_MO_TA') != 'undefined' ? $request->get('P_MO_TA') : 'NULL' ;
-                $P_GHI_CHU =  $request->get('P_GHI_CHU') != 'undefined'  ? $request->get('P_GHI_CHU') : 'NULL' ;
+                $P_MO_TA = $request->has('P_MO_TA') != 'undefined' ? $request->get('P_MO_TA') : 'NULL' ;
+                $P_GHI_CHU =  $request->has('P_GHI_CHU') != 'undefined'  ? $request->get('P_GHI_CHU') : 'NULL' ;
                 $P_TRANG_THAI = $request->get('P_TRANG_THAI') ;
                 $P_ACTION = 1;
                 $result = $this->CallFunction($P_ID_LOAI_DA, $P_TEN_LOAI_DA, $P_MO_TA, $P_GHI_CHU, $P_TRANG_THAI, $P_ACTION);

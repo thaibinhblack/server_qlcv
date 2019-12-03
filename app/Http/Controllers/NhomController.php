@@ -52,12 +52,12 @@ class NhomController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $this->validate($request, [
-            'ID_TT' => 'required',
-            'TEN_NHOM' => 'required|max:50',
-            'TRANG_THAI_NHOM' => 'required'
-        ]);
-        if($validate)
+        // $validate = $this->validate($request, [
+        //     'ID_TT' => 'required',
+        //     'TEN_NHOM' => 'required|max:50',
+        //     'TRANG_THAI_NHOM' => 'required'
+        // ]);
+        if($request->has('ID_TT') && $request->has('TEN_NHOM') && $request->has('TRANG_THAI_NHOM'))
         {
             $p_id_tt =  $request->get("ID_TT");
             $p_ten_nhom = $request->get("TEN_NHOM");
@@ -95,12 +95,12 @@ class NhomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate = $this->validate($request, [
-            'ID_TT' => 'required',
-            'TEN_NHOM' => 'required|max:50',
-            'TRANG_THAI_NHOM' => 'required'
-        ]);
-        if($validate)
+        // $validate = $this->validate($request, [
+        //     'ID_TT' => 'required',
+        //     'TEN_NHOM' => 'required|max:50',
+        //     'TRANG_THAI_NHOM' => 'required'
+        // ]);
+        if($request->has('ID_TT') && $request->has('TEN_NHOM') && $request->has('TRANG_THAI_NHOM'))
         {
             $p_id_tt =  $request->get("ID_TT");
             $p_ten_nhom = $request->get("TEN_NHOM");

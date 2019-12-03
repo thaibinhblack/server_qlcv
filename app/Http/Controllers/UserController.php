@@ -46,7 +46,6 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        return 1;
         if($request->has('api_token'))
         {
             $users = DB::select("SELECT * from TB_NGUOI_DUNG");
@@ -92,12 +91,12 @@ class UserController extends Controller
     public function resignter(Request $request)
     {
         // return response()->json($request->all(), 200);
-        $validate  = $this->validate($request,[
-            'USERNAME' => 'required|max:25',
-            'PASSWORD' => 'required',
-            'ID_NHOM' => 'required'
-        ]);
-        if($validate)
+        // $validate  = $this->validate($request,[
+        //     'USERNAME' => 'required|max:25',
+        //     'PASSWORD' => 'required',
+        //     'ID_NHOM' => 'required'
+        // ]);
+        if($request->has('USERNAME') && $request->has('PASSWORD') && $request->has('ID_NHOM'))
         {
             // return response()->json($request->all(), 200);
             $username = $request->get('USERNAME');
@@ -137,6 +136,28 @@ class UserController extends Controller
             if($result)
             {
                 $check = Hash::check($request->get('PASSWORD'), $result[0]->password_nd);
+                if($check)
+                {
+                    $token =  $token = Str::random(100);
+                    $sql = "DECLARE  
+                        p_token varchar2(200); 
+                        token varchar2(200);                            
+                    BEGIN                 
+                        token :=UPDATE_TOKEN_ND(:p_token,:p_username);
+                    END;";
+                    $pdo = DB::getPdo();
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':p_token',$token);
+                    $stmt->bindParam(':p_username',$username);
+                    // $stmt->bindParam(':token',$result_token);
+                    $stmt->execute();
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Đăng nhập thành công!',
+                        'result' => $token,
+                        'status' => 200
+                    ], 200);
+                }
             }
             else
             {
@@ -147,28 +168,7 @@ class UserController extends Controller
                     'result' => ''
                 ], 200);
             }
-            if($check)
-            {
-                $token =  $token = Str::random(100);
-                $sql = "DECLARE  
-                    p_token varchar2(200); 
-                    token varchar2(200);                            
-                BEGIN                 
-                    token :=UPDATE_TOKEN_ND(:p_token,:p_username);
-                END;";
-                $pdo = DB::getPdo();
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':p_token',$token);
-                $stmt->bindParam(':p_username',$username);
-                // $stmt->bindParam(':token',$result_token);
-                $stmt->execute();
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đăng nhập thành công!',
-                    'result' => $token,
-                    'status' => 200
-                ], 200);
-            }
+           
             return response()->json([
                 'success' => false,
                 'message' => 'Mật khẩu không đúng!',
@@ -203,11 +203,11 @@ class UserController extends Controller
         {
             //check token
 
-            $validate  = $this->validate($request,[
-                'USERNAME' => 'required|max:25',
-                'ID_NHOM' => 'required'
-            ]);
-            if($validate)
+            // $validate  = $this->validate($request,[
+            //     'USERNAME' => 'required|max:25',
+            //     'ID_NHOM' => 'required'
+            // ]);
+            if($request->has('USERNAME') && $request->has('ID_NHOM'))
             {
                 // return response()->json($request->all(), 200);
                 $username = $request->get('USERNAME');

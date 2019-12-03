@@ -72,10 +72,14 @@ class DuAnKhachHangController extends Controller
         if($request->has('api_token'))
         {
             //CHECK TOKEN
-           
-            $du_an = DB::SELECT("SELECT DA_KH.*, DA.TEN_DU_AN, KH.TEN_KH, KH.ID_KHACH_HANG FROM TB_DU_AN_KH DA_KH, TB_DU_AN DA, TB_KH KH
-            WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG");
-            return response()->json($du_an, 200);
+            $ID_DU_AN_KH = $request->get("ID_DU_AN_KH");
+            if($ID_DU_AN_KH)
+            {
+                $du_an = DB::SELECT("SELECT DA_KH.*, DA.TEN_DU_AN, KH.TEN_KH, KH.ID_KHACH_HANG FROM TB_DU_AN_KH DA_KH, TB_DU_AN DA, TB_KH KH
+                WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG");
+                return response()->json($du_an, 200);
+            }
+          
         }
     }
     

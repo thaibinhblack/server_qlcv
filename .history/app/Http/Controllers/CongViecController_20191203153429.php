@@ -196,27 +196,8 @@ class CongViecController extends Controller
     {
         if($request->has('api_token'))
         {
-            if($id == 0)
-            {
-                $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA");
-                return response()->json($cong_viec, 200);
-            }
-            else {
-                if($id == -1)
-                {
-                    $cong_viec = DB::select("SELECT *
-                    FROM tb_cong_viec_da
-                    WHERE not EXISTS (SELECT *
-                                  FROM tb_cong_viec_da_kh
-                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) ");
-                    return response()->json($cong_viec, 200);
-                }
-                else {
-                    $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
-                    return response()->json($cong_viec, 200);
-                }
-            }
-            
+            $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
+            return response()->json($cong_viec, 200);
         }
     }
 

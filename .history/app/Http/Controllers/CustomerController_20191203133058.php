@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use PDO;
 class CustomerController extends Controller
 {
     public function CallFunction($p_id_khach_hang, $p_ten_kh, $p_dia_chi_kh, $p_sdt_kh, $p_nguoi_dai_dien, $p_trang_thai_kh, $p_action)
@@ -30,7 +29,7 @@ class CustomerController extends Controller
         $stmt->bindParam(':P_NGUOI_DAI_DIEN',$p_nguoi_dai_dien);
         $stmt->bindParam(':P_TRANG_THAI_KH',$p_trang_thai_kh);
         $stmt->bindParam(':P_ACTION',$p_action);
-        $stmt->bindParam(':result',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':result',$result);
         // return response()->json($stmt, 200);
         $stmt->execute();
         return $result;

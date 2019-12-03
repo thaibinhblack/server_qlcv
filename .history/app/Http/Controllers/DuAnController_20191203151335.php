@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use PDO;
 class DuAnController extends Controller
 {
 
@@ -30,7 +29,7 @@ class DuAnController extends Controller
         $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
         $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':n',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':n',$result);
         $stmt->execute();
         return $result;
     }

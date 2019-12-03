@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use DB;
-use PDO;
 use Illuminate\Http\Request;
 
 class FunctionController extends Controller

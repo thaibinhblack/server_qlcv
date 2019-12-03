@@ -51,12 +51,12 @@ class TrungTamController extends Controller
             //CHECK TOKEN
 
 
-            $validate  = $this->validate($request,[
-                'P_TEN_TT' => 'required|max:50',
-                'P_TRANG_THAI' => 'required|max:1'
-            ]);
+            // $validate  = $this->validate($request,[
+            //     'P_TEN_TT' => 'required|max:50',
+            //     'P_TRANG_THAI' => 'required|max:1'
+            // ]);
             
-            if($validate)
+            if($request->has('P_TEN_TT') && $request->has('P_TRANG_THAI'))
             {
 
                 $P_TEN_TT = $request->get('P_TEN_TT');
