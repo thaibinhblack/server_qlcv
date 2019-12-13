@@ -70,7 +70,7 @@ Route::post('cap-nhat-quyen-thanhvien','DuAnKhachHangController@update_quyen_tha
 Route::get('cong-viec','CongViecController@index')->middleware('cors');
 Route::post('capnhat_congviec/{id}','CongViecController@capnhat_congviec')->middleware('cors');
 Route::post('cong-viec','CongViecController@store')->middleware('cors');
-Route::get('cong-viec/{id}/{id_du_an}','CongViecController@show')->middleware('cors');
+Route::get('cong-viec/{id}/{id_du_an_kh}','CongViecController@show')->middleware('cors');
 Route::post('cong-viec/{id}','CongViecController@update')->middleware('cors');
 
 //cong việc dự án
