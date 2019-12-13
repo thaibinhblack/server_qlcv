@@ -28,7 +28,7 @@ class UserController extends Controller
             p_ngaysinh date;
             p_action number(1); 
         BEGIN
-            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
+            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
         END;";
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);

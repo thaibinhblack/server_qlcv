@@ -28,7 +28,7 @@ class UserController extends Controller
             p_ngaysinh date;
             p_action number(1); 
         BEGIN
-            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
+            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
         END;";
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
@@ -105,11 +105,11 @@ class UserController extends Controller
             $password = Hash::make($request->get("PASSWORD"));
             $p_id_nhom = $request->get("ID_NHOM");
             $p_sdt = $request->has("SDT_ND") ? $request->get("SDT_ND") : '';
-            $p_display_name = $request->get("DISPLAY_NAME");
+            $p_display_name = $request->get("DISPLAY_NAME")
             $p_email = $request->has("EMAIL_ND") ? $request->get("EMAIL_ND") : '';
             $p_gt = $request->has("GOITINH_ND") ? $request->get("GIOITINH_ND") : 1;
             $p_ngaysinh = $request->has("NGAY_SINH") ? $request->get("NGAY_SINH") : '';
-            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 1);
+            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 1);
             if($result == 1)
             {
                 return response()->json([
@@ -216,12 +216,11 @@ class UserController extends Controller
                 $username = $request->get('USERNAME');
                 $password = 'NULL';
                 $p_id_nhom = $request->get("ID_NHOM");
-                $p_display_name = $request->get("DISPLAY_NAME");
                 $p_sdt = $request->has("SDT_ND") == TRUE ? $request->get("SDT_ND") : 'NULL';
                 $p_email = $request->has("EMAIL_ND") == TRUE ? $request->get("EMAIL_ND") : 'NULL';
                 $p_gt = $request->has("GOITINH_ND") == true ? $request->get("GOITINH_ND") : 1;
                 $p_ngaysinh = $request->has("NGAY_SINH") == TRUE ? $request->get("NGAY_SINH") : 'NULL';
-                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 2);
+                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 2);
                 if($result == 2)
                 {
                     return response()->json([
