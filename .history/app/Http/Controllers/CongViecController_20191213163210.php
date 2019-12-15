@@ -196,42 +196,26 @@ class CongViecController extends Controller
     {
         if($request->has('api_token'))
         {
-            if($id == 0) // công việc của dự án
+            if($id == 0)
             {
-                if($id_du_an == 0) // công việc của tất cả cự án
+                if($id_du_an == 0)
                 {
-                    if($request->has('ID_ND'))
-                    {
-                        $id_nd = $request->get('ID_ND');
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH 
-                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH");
                     return response()->json($cong_viec, 200);
                 }
-                else { // công việc theo dự án
-                    if($request->has('ID_ND'))
-                    {
-                        $id_nd = $request->get('ID_ND');
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  
-                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND DA_KH.id_du_an = $id_du_an and CV.nguoi_nhan_viec = $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND DA_KH.id_du_an = $id_du_an");
+                else {
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND DA_KH.id_du_an = $id_du_an");
                     return response()->json($cong_viec, 200);
                 }
             }
-            else { 
-                if($id == -1) // công việc cá nhân không theo dự án
+            else {
+                if($id == -1)
                 {
-                    $id_nd = $request->get('ID_ND');
                     $cong_viec = DB::select("SELECT *
                     FROM tb_cong_viec_da
                     WHERE not EXISTS (SELECT *
                                   FROM tb_cong_viec_da_kh
-                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) and nguoi_nhap = $id_nd ");
+                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) ");
                     return response()->json($cong_viec, 200);
                 }
                 else {
@@ -389,7 +373,7 @@ class CongViecController extends Controller
 
     public function get_baocao($id)
     {
-        $baocao = DB::select("SELECT BAOCAO.*, ND.display_name  FROM TB_BAOCAO_CV BAOCAO, TB_NGUOI_DUNG ND WHERE  BAOCAO.id_nd = ND.id_nd AND BAOCAO.id_cv = $id ");
+        $baocao = DB::select("SELECT BAOCAO.*, ND.display_name  FROM TB_BAOCAO_CV BAOCAO, TB_NGUOI_DUNG ND WHERE  BAOCAO.id_nd = ND.id_nd and  BAOCAO.id_cv = $id");
         return response()->json($baocao, 200);
     }
 

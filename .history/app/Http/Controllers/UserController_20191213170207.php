@@ -15,21 +15,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_action)
+    public function CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_action)
     {
         $sql = "DECLARE
-            p_username varchar2(50);
+                 varchar2(50);
             p_password varchar2(255);
             p_id_nhom number(10);
             p_display_name varchar(255);
-            p_id_rule number(10);
             p_sdt varchar2(15);
             p_email varchar2(50);
             p_gt number(1);
             p_ngaysinh date;
             p_action number(1); 
         BEGIN
-            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_id_rule, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
+            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
         END;";
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
@@ -37,7 +36,6 @@ class UserController extends Controller
         $stmt->bindParam(':p_password',$password);
         $stmt->bindParam(':p_id_nhom',$p_id_nhom);
         $stmt->bindParam(':p_display_name',$p_display_name);
-        $stmt->bindParam(':p_id_rule',$p_id_rule);
         $stmt->bindParam(':p_sdt',$p_sdt);
         $stmt->bindParam(':p_email',$p_email);
         $stmt->bindParam(':p_gt',$p_gt);
@@ -52,7 +50,7 @@ class UserController extends Controller
     {
         if($request->has('api_token'))
         {
-            $users = DB::select("SELECT * from TB_NGUOI_DUNG ND, TB_NHOM NHOM where ND.id_nhom = NHOM.id_nhom");
+            $users = DB::select("SELECT * from TB_NGUOI_DUNG");
             return response()->json($users, 200);
         }
     }
@@ -111,8 +109,7 @@ class UserController extends Controller
             $p_email = $request->has("EMAIL_ND") ? $request->get("EMAIL_ND") : '';
             $p_gt = $request->has("GOITINH_ND") ? $request->get("GIOITINH_ND") : 1;
             $p_ngaysinh = $request->has("NGAY_SINH") ? $request->get("NGAY_SINH") : '';
-            $p_id_rule = $request->get("P_ID_RULE");
-            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name,  $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 1);
+            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 1);
             if($result == 1)
             {
                 return response()->json([
@@ -220,12 +217,11 @@ class UserController extends Controller
                 $password = 'NULL';
                 $p_id_nhom = $request->get("ID_NHOM");
                 $p_display_name = $request->get("DISPLAY_NAME");
-                $p_id_rule = $request->get("P_ID_RULE");
                 $p_sdt = $request->has("SDT_ND") == TRUE ? $request->get("SDT_ND") : 'NULL';
                 $p_email = $request->has("EMAIL_ND") == TRUE ? $request->get("EMAIL_ND") : 'NULL';
                 $p_gt = $request->has("GOITINH_ND") == true ? $request->get("GOITINH_ND") : 1;
                 $p_ngaysinh = $request->has("NGAY_SINH") == TRUE ? $request->get("NGAY_SINH") : 'NULL';
-                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 2);
+                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 2);
                 if($result == 2)
                 {
                     return response()->json([

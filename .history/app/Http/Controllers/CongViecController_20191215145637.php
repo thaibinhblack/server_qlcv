@@ -231,7 +231,7 @@ class CongViecController extends Controller
                     FROM tb_cong_viec_da
                     WHERE not EXISTS (SELECT *
                                   FROM tb_cong_viec_da_kh
-                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) and nguoi_nhap = $id_nd ");
+                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) ");
                     return response()->json($cong_viec, 200);
                 }
                 else {

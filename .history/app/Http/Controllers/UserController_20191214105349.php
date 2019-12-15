@@ -18,7 +18,7 @@ class UserController extends Controller
     public function CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_action)
     {
         $sql = "DECLARE
-            p_username varchar2(50);
+                 varchar2(50);
             p_password varchar2(255);
             p_id_nhom number(10);
             p_display_name varchar(255);
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         if($request->has('api_token'))
         {
-            $users = DB::select("SELECT * from TB_NGUOI_DUNG ND, TB_NHOM NHOM where ND.id_nhom = NHOM.id_nhom");
+            $users = DB::select("SELECT * from TB_NGUOI_DUNG");
             return response()->json($users, 200);
         }
     }

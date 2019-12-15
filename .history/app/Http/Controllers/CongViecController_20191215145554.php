@@ -226,12 +226,11 @@ class CongViecController extends Controller
             else { 
                 if($id == -1) // công việc cá nhân không theo dự án
                 {
-                    $id_nd = $request->get('ID_ND');
                     $cong_viec = DB::select("SELECT *
                     FROM tb_cong_viec_da
                     WHERE not EXISTS (SELECT *
                                   FROM tb_cong_viec_da_kh
-                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) and nguoi_nhap = $id_nd ");
+                                  WHERE tb_cong_viec_da.id_cv_da = tb_cong_viec_da_kh.id_cv_da) ");
                     return response()->json($cong_viec, 200);
                 }
                 else {

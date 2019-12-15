@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         if($request->has('api_token'))
         {
-            $users = DB::select("SELECT * from TB_NGUOI_DUNG ND, TB_NHOM NHOM where ND.id_nhom = NHOM.id_nhom");
+            $users = DB::select("SELECT * from TB_NGUOI_DUNG");
             return response()->json($users, 200);
         }
     }

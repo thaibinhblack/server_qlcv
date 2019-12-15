@@ -72,7 +72,7 @@ Route::post('capnhat_congviec/{id}','CongViecController@capnhat_congviec')->midd
 Route::post('cong-viec','CongViecController@store')->middleware('cors');
 Route::get('cong-viec/{id}/{id_du_an}','CongViecController@show')->middleware('cors');
 Route::post('cong-viec/{id}','CongViecController@update')->middleware('cors');
-Route::get('bao-cao/{id}','CongViecController@get_baocao')->middleware('cors');
+Route::get('cong-viec/{id}/baocao','CongViecController@get_baocao')->middleware('cors');
 Route::post('cong-viec/{id}/baocao','CongViecController@baocao')->middleware('cors');
 //cong việc dự án
 Route::post('cong-viec-da','CongViecController@chitiet')->middleware('cors');

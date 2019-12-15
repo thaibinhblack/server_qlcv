@@ -6,8 +6,5 @@ use Illuminate\Http\Request;
 
 class QuyenController extends Controller
 {
-    public function CallFunction()
-    {
-        
-    }
+    //
 }
