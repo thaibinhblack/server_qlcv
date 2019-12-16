@@ -60,15 +60,14 @@ class UserController extends Controller
     {
        if($request->has('api_token'))
        {
-        //    $ID_DU_AN_KH = $request->get('ID_DU_AN_KH');
-        //    if($ID_DU_AN_KH != 0)
-        //    {
-        //         $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
-        //    }
-        //    else {
-        //     $users = DB::SELECT("SELECT ND.* FROM TB_NGUOI_DUNG ND, TB_CN_ND CNND WHERE ND.ID_ND = CNND.ID_ND AND CNND.ID_CN = 3");
-        //    }
-            $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
+           $ID_DU_AN_KH = $request->get('ID_DU_AN_KH');
+           if($ID_DU_AN_KH != 0)
+           {
+                $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
+           }
+           else {
+            $users = DB::SELECT("SELECT ND.* FROM TB_NGUOI_DUNG ND, TB_CN_ND CNND WHERE ND.ID_ND = CNND.ID_ND AND CNND.ID_CN = 3");
+           }
             return response()->json($users, 200);
        }
     }
