@@ -147,16 +147,16 @@ class CongViecController extends Controller
                         return response()->json($cv, 200);
                 }
             }
-            if($request->has('id_loai_cv'))
+            if($request->hass('id_loai_cv'))
             {
                 if($user[0]->id_rule == 0)
                 {
-                        $id_loai_cv = $request->get('id_loai_cv');
+                        $loai_cv = $request->get('id_loai_cv');
                         $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.id_loai_cv = $id_loai_cv and CVDA.id_loai_cv = LCV.id_loai_cv");
                         return response()->json($cv, 200);
                 }
                 else {
-                        $id_loai_cv = $request->get('id_loai_cv');
+                        $loai_cv = $request->get('id_loai_cv');
                         $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and CVDA.id_loai_cv = $id_loai_cv and CVDA.id_loai_cv = LCV.id_loai_cv");
                         return response()->json($cv, 200);
                 } 
