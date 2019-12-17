@@ -245,8 +245,7 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             //check user
-            $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH
-            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = 0");
+            $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV CV.nguoi_nhan_viec is null");
             return response()->json($cong_viec, 200);
         }
     }

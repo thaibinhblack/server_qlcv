@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use PDO;
+
 class LoaiCongViecController extends Controller
 {
     public function CallFunction($ID_LOAI_CV, $TEN_LOAI_CV, $TRANG_THAI, $P_MO_TA, $P_ACTION, $P_PARENT)
@@ -38,13 +38,7 @@ class LoaiCongViecController extends Controller
     {
         if($request->has('api_token'))
         {
-            if($request->has('parent'))
-            {
-                $parent = $request->get('parent');
-                $loai_cv = DB::SELECT("SELECT * FROM TB_LOAI_CV where parent=$parent");
-                return response()->json($loai_cv, 200); 
-            }
-            $loai_cv = DB::SELECT("SELECT * FROM TB_LOAI_CV ORDER BY id_loai_cv DESC");
+            $loai_cv = DB::SELECT("SELECT * FROM TB_LOAI_CV");
             return response()->json($loai_cv, 200);
         }
     }

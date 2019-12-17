@@ -140,14 +140,7 @@ class CongViecController extends Controller
                 $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.trang_thai = $trang_thai and CVDA.id_loai_cv = LCV.id_loai_cv");
                 return response()->json($cv, 200);
             }
-            if($request->has('ID_ND'))
-            {
-                $id_nd = $request->get('ID_ND');
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and cv.nguoi_nhan_viec=$id_nd");
-                return response()->json($cong_viec, 200);
-            }
-            // $cv = DB::select("SELECT * from TB_CONG_VIEC_DA");
+            $cv = DB::select("SELECT CVDA.* from TB_CONG_VIEC_DA");
             return response()->json($cv, 200);
         }
         // $cong_viec = DB::select("SELECT * FROM TB_CONG_VIEC_DA");
@@ -246,7 +239,7 @@ class CongViecController extends Controller
         {
             //check user
             $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH
-            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = 0");
+            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec is null");
             return response()->json($cong_viec, 200);
         }
     }

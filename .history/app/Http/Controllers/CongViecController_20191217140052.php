@@ -106,25 +106,25 @@ class CongViecController extends Controller
                {
                 $time_start = $request->get('time_start');
                 $time_end = $request->get('time_end');
-                if($request->get('status')  == 1) // ngày tiếp nhận
+                if($request->get('status' == 1)) // ngày tiếp nhận
                 {
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end'");
                     return response()->json($cong_viec, 200);
                 }
-                if($request->get('status')  == 2) // ngày giao việc
+                if($request->get('status' == 2)) // ngày giao việc
                 {
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_giao_viec >= '$time_start' and CV.ngay_giao_viec <= '$time_end'");
                     return response()->json($cong_viec, 200);
                 }
-                if($request->get('status')  == 3) // ngày hoàn thành 
+                if($request->get('status' == 3)) // ngày hoàn thành 
                 {
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_hoan_thanh >= '$time_start' and CV.ngay_hoan_thanh <= '$time_end'");
                     return response()->json($cong_viec, 200);
                 }
-                if($request->get('status')  == 4) // ngày cam kết
+                if($request->get('status' == 2)) // ngày cam kết
                 {
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_cam_ket >= '$time_start' and CV.ngay_cam_ket <= '$time_end'");
@@ -140,14 +140,7 @@ class CongViecController extends Controller
                 $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.trang_thai = $trang_thai and CVDA.id_loai_cv = LCV.id_loai_cv");
                 return response()->json($cv, 200);
             }
-            if($request->has('ID_ND'))
-            {
-                $id_nd = $request->get('ID_ND');
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and cv.nguoi_nhan_viec=$id_nd");
-                return response()->json($cong_viec, 200);
-            }
-            // $cv = DB::select("SELECT * from TB_CONG_VIEC_DA");
+            $cv = DB::select("SELECT CVDA.*, ND.username_nd FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' ");
             return response()->json($cv, 200);
         }
         // $cong_viec = DB::select("SELECT * FROM TB_CONG_VIEC_DA");
@@ -246,7 +239,7 @@ class CongViecController extends Controller
         {
             //check user
             $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH
-            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = 0");
+            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec is null");
             return response()->json($cong_viec, 200);
         }
     }
@@ -265,7 +258,7 @@ class CongViecController extends Controller
                     {
                         $id_nd = $request->get('ID_ND');
                         $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH
-                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = $id_nd");
+                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = $id_nd AND cv.ngay_tiep_nhan >= $date");
                         return response()->json($cong_viec, 200);
                     }
                     // hiển thị tất cả công việc 

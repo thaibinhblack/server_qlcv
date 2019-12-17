@@ -18,20 +18,20 @@ class DuAnController extends Controller
             P_GHI_CHU_DU_AN VARCHAR2(255);
             P_TRANG_THAI_DU_AN NUMBER(1);
             P_ACTION NUMBER(1);
-            P_ID_QL NUMBER(10);
+            P_ID_QL number;
         BEGIN
             :n := THEM_CAPNHAT_DU_AN(:P_ID_DU_AN, :P_ID_LOAI_DA,:P_TEN_DU_AN, :P_MO_TA_DU_AN, :P_GHI_CHU_DU_AN, :P_TRANG_THAI_DU_AN,:P_ACTION, :P_ID_QL);
         END;";  
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_DU_AN',$P_ID_DU_AN, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ID_DU_AN',$P_ID_DU_AN);
         $stmt->bindParam(':P_ID_LOAI_DA',$P_ID_LOAI_DA);
         $stmt->bindParam(':P_TEN_DU_AN',$P_TEN_DU_AN);
         $stmt->bindParam(':P_MO_TA_DU_AN',$P_MO_TA_DU_AN);
         $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
         $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':P_ID_QL',$P_ID_QL, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ACTION',$P_ID_QL);
         $stmt->bindParam(':n',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;
@@ -62,9 +62,8 @@ class DuAnController extends Controller
                 $P_MO_TA_DU_AN = $request->get('P_MO_TA_DU_AN') != 'undefined' ? $request->get('P_MO_TA_DU_AN') : 'NULL' ;
                 $P_GHI_CHU_DU_AN =  $request->get('P_GHI_CHU_DU_AN') != 'undefined'  ? $request->get('P_GHI_CHU_DU_AN') : 'NULL' ;
                 $P_TRANG_THAI_DU_AN = $request->get('P_TRANG_THAI_DU_AN') ;
-                $P_ID_QL = $request->get('P_ID_QL');
                 $P_ACTION = 1;
-                $result = $this->CallFunction($P_ID_DU_AN, $P_ID_LOAI_DA, $P_TEN_DU_AN, $P_MO_TA_DU_AN, $P_GHI_CHU_DU_AN, $P_TRANG_THAI_DU_AN, $P_ACTION, $P_ID_QL);
+                $result = $this->CallFunction($P_ID_DU_AN, $P_ID_LOAI_DA, $P_TEN_DU_AN, $P_MO_TA_DU_AN, $P_GHI_CHU_DU_AN, $P_TRANG_THAI_DU_AN, $P_ACTION);
                 return response()->json([
                     'success' => true,
                     'message' => 'Thêm loại dự án',
@@ -94,9 +93,8 @@ class DuAnController extends Controller
                 $P_MO_TA_DU_AN = $request->get('P_MO_TA_DU_AN') != 'undefined' ? $request->get('P_MO_TA_DU_AN') : 'NULL' ;
                 $P_GHI_CHU_DU_AN =  $request->get('P_GHI_CHU_DU_AN') != 'undefined'  ? $request->get('P_GHI_CHU_DU_AN') : 'NULL' ;
                 $P_TRANG_THAI_DU_AN = $request->get('P_TRANG_THAI_DU_AN') ;
-                $P_ID_QL = $request->get('P_ID_QL');
                 $P_ACTION = 2;
-                $result = $this->CallFunction($P_ID_DU_AN, $P_ID_LOAI_DA, $P_TEN_DU_AN, $P_MO_TA_DU_AN, $P_GHI_CHU_DU_AN, $P_TRANG_THAI_DU_AN, $P_ACTION, $P_ID_QL);
+                $result = $this->CallFunction($P_ID_DU_AN, $P_ID_LOAI_DA, $P_TEN_DU_AN, $P_MO_TA_DU_AN, $P_GHI_CHU_DU_AN, $P_TRANG_THAI_DU_AN, $P_ACTION);
                 return response()->json([
                     'success' => true,
                     'message' => 'Cập nhật dự án thành công',

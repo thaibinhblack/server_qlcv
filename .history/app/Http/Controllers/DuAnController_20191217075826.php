@@ -31,7 +31,7 @@ class DuAnController extends Controller
         $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
         $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':P_ID_QL',$P_ID_QL, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ACTION',$P_ID_QL, PDO::PARAM_INT);
         $stmt->bindParam(':n',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;

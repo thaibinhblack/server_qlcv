@@ -18,7 +18,7 @@ class DuAnController extends Controller
             P_GHI_CHU_DU_AN VARCHAR2(255);
             P_TRANG_THAI_DU_AN NUMBER(1);
             P_ACTION NUMBER(1);
-            P_ID_QL NUMBER(10);
+            P_ID_QL number;
         BEGIN
             :n := THEM_CAPNHAT_DU_AN(:P_ID_DU_AN, :P_ID_LOAI_DA,:P_TEN_DU_AN, :P_MO_TA_DU_AN, :P_GHI_CHU_DU_AN, :P_TRANG_THAI_DU_AN,:P_ACTION, :P_ID_QL);
         END;";  
@@ -31,7 +31,7 @@ class DuAnController extends Controller
         $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
         $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':P_ID_QL',$P_ID_QL, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ACTION',$P_ID_QL, PDO::PARAM_INT);
         $stmt->bindParam(':n',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;
