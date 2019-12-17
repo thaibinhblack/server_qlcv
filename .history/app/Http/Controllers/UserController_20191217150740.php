@@ -70,18 +70,12 @@ class UserController extends Controller
         //    }
             if($request->has('id_du_an'))
             {
-                if($request->get('id_du_an') != 'undefined')
-                {
-                    $id_du_an = $request->get('id_du_an');
-                    $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND, TB_DU_AN DA where ND.id_nd = DA.id_ql and DA.id_du_an = $id_du_an");
-                    return response()->json($users, 200);
-                }
-                else {
-                    $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
-                    return response()->json($users, 200);
-                }
+                $id_du_an = $request->get('id_du_an');
+                $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND, TB_DU_AN DA where ND.id_nd = DA.id_ql where DA.id_du_an = $id_du_an");
+                return response()->json($users, 200);
             }
-           
+            $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
+            return response()->json($users, 200);
        }
     }
     public function token(Request $request)
