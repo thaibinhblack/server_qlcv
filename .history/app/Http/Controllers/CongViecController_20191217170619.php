@@ -153,7 +153,7 @@ class CongViecController extends Controller
                 {
                         $id_loai_cv = $request->get('id_loai_cv');
                         $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.id_loai_cv = $id_loai_cv and CVDA.id_loai_cv = LCV.id_loai_cv");
-                        return response()->json($cv, 200);
+                        return response()->jso  n($cv, 200);
                 }
                 else {
                         $id_loai_cv = $request->get('id_loai_cv');
@@ -286,16 +286,14 @@ class CongViecController extends Controller
     {
         if($request->has('api_token'))
         {
-            $token = $request->get('api_token');
-            $user = DB::SELECT("SELECT * from TB_NGUOI_DUNG WHERE TOKEN_ND = '$token'");
             if($id == 0) // công việc của dự án
             {
                 if($id_du_an == 0) // công việc của tất cả cự án
                 {
                     // công việc với quyền thấp 
-                    if($user[0]->id_rule == 0)
+                    if($request->has('ID_ND'))
                     {
-                        $id_nd = $user[0]->id_nd;
+                        $id_nd = $request->get('ID_ND');
                         $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH
                          WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = $id_nd");
                         return response()->json($cong_viec, 200);
@@ -306,9 +304,9 @@ class CongViecController extends Controller
                     return response()->json($cong_viec, 200);
                 }
                 else { // công việc theo dự án
-                    if($user[0]->id_rule == 0)
+                    if($request->has('ID_ND'))
                     {
-                        $id_nd = $user[0]->id_nd;
+                        $id_nd = $request->get('ID_ND');
                         $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  
                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND DA_KH.id_du_an = $id_du_an and CV.nguoi_nhan_viec = $id_nd");
                         return response()->json($cong_viec, 200);
@@ -319,10 +317,9 @@ class CongViecController extends Controller
                 }
             }
             else { 
-                $id_nd = $user[0]->id_nd;
                 if($id == -1) // công việc cá nhân không theo dự án
                 {
-                  
+                    $id_nd = $request->get('ID_ND');
                     $cong_viec = DB::select("SELECT *
                     FROM tb_cong_viec_da
                     WHERE not EXISTS (SELECT *
@@ -331,17 +328,8 @@ class CongViecController extends Controller
                     return response()->json($cong_viec, 200);
                 }
                 else {
-                    if($user[0]->id_rule > 0)
-                    {
-                        $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
-                        return response()->json($cong_viec, 200);
-                    }
-                    else {
-                        $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH
-                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id and CV.nguoi_nhan_viec = $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    
+                    $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
+                    return response()->json($cong_viec, 200);
                 }
             }
             

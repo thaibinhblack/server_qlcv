@@ -306,9 +306,9 @@ class CongViecController extends Controller
                     return response()->json($cong_viec, 200);
                 }
                 else { // công việc theo dự án
-                    if($user[0]->id_rule == 0)
+                    if($request->has('ID_ND'))
                     {
-                        $id_nd = $user[0]->id_nd;
+                        $id_nd = $request->get('ID_ND');
                         $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH  
                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND DA_KH.id_du_an = $id_du_an and CV.nguoi_nhan_viec = $id_nd");
                         return response()->json($cong_viec, 200);
@@ -319,10 +319,9 @@ class CongViecController extends Controller
                 }
             }
             else { 
-                $id_nd = $user[0]->id_nd;
                 if($id == -1) // công việc cá nhân không theo dự án
                 {
-                  
+                    $id_nd = $request->get('ID_ND');
                     $cong_viec = DB::select("SELECT *
                     FROM tb_cong_viec_da
                     WHERE not EXISTS (SELECT *
@@ -331,17 +330,8 @@ class CongViecController extends Controller
                     return response()->json($cong_viec, 200);
                 }
                 else {
-                    if($user[0]->id_rule > 0)
-                    {
-                        $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
-                        return response()->json($cong_viec, 200);
-                    }
-                    else {
-                        $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH
-                         WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id and CV.nguoi_nhan_viec = $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    
+                    $cong_viec = DB::select("SELECT CV.* FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = $id");
+                    return response()->json($cong_viec, 200);
                 }
             }
             
