@@ -214,8 +214,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = DB::select("SELECT display_name from TB_NGUOI_DUNG where id_nd = $id");
-        return response()->json($user[0]->display_name, 200);
+        //
     }
 
     public function check_password(Request $request)

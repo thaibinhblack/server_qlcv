@@ -15,7 +15,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh,$p_avatar,$p_action )
+    public function CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_action)
     {
         $sql = "DECLARE
             p_username varchar2(50);
@@ -27,10 +27,9 @@ class UserController extends Controller
             p_email varchar2(50);
             p_gt number(1);
             p_ngaysinh date;
-            p_avatar char;
             p_action number(1); 
         BEGIN
-            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_id_rule, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_avatar, :p_action);
+            :n := THEM_TK_TB_ND(:p_username,:p_password, :p_id_nhom, :p_display_name, :p_id_rule, :p_sdt, :p_email,:p_gt, :p_ngaysinh, :p_action);
         END;";
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
@@ -43,7 +42,6 @@ class UserController extends Controller
         $stmt->bindParam(':p_email',$p_email);
         $stmt->bindParam(':p_gt',$p_gt);
         $stmt->bindParam(':p_ngaysinh',$p_ngaysinh);
-        $stmt->bindParam(':p_avatar',$p_avatar);
         $stmt->bindParam(':p_action',$p_action);
         $stmt->bindParam(':n',$result);
         $stmt->execute();
@@ -58,24 +56,18 @@ class UserController extends Controller
             return response()->json($users, 200);
         }
     }
-//thong kê công việc đã làm
-    public function thongke(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT * from TB_NGUOI_DUNG WHERE token_nd = '$token'");
-            $id_nd = $user[0]->id_nd;
-            $thong_ke = DB::select("SELECT  count(lcv.id_loai_cv) as sl, lcv.ten_loai_cv from TB_CONG_VIEC_DA cv, TB_LOAI_CV lcv where cv.id_loai_cv = lcv.id_loai_cv
-            and cv.nguoi_nhan_viec = '$id_nd'  group by (lcv.ten_loai_cv)");
-            return response()->json($thong_ke, 200);
-        }
-    }
-
     public function giaoviec(Request $request)
     {
        if($request->has('api_token'))
        {
+        //    $ID_DU_AN_KH = $request->get('ID_DU_AN_KH');
+        //    if($ID_DU_AN_KH != 0)
+        //    {
+        //         $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
+        //    }
+        //    else {
+        //     $users = DB::SELECT("SELECT ND.* FROM TB_NGUOI_DUNG ND, TB_CN_ND CNND WHERE ND.ID_ND = CNND.ID_ND AND CNND.ID_CN = 3");
+        //    }
             if($request->has('id_du_an'))
             {
                 if($request->get('id_du_an') != 'undefined')
@@ -133,7 +125,7 @@ class UserController extends Controller
             $p_gt = $request->has("GOITINH_ND") ? $request->get("GIOITINH_ND") : 1;
             $p_ngaysinh = $request->has("NGAY_SINH") ? $request->get("NGAY_SINH") : '';
             $p_id_rule = $request->get("P_ID_RULE");
-            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name,  $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_avatar=null, 1);
+            $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name,  $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 1);
             if($result == 1)
             {
                 return response()->json([
@@ -214,34 +206,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = DB::select("SELECT display_name from TB_NGUOI_DUNG where id_nd = $id");
-        return response()->json($user[0]->display_name, 200);
-    }
-
-    public function check_password(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT password_nd from TB_NGUOI_DUNG where token_nd = '$token'");
-            $check = Hash::check($request->get('password_nd'), $user[0]->password_nd);
-            if($check)
-            {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Mật khảu hợp lệ',
-                    'status' => 200
-                ], 200);
-            }
-            else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Mật khẩu không hợp lệ',
-                    'status' => 404
-                ], 200);
-            }
-
-        }
+        //
     }
 
     public function info(Request $request)
@@ -252,14 +217,15 @@ class UserController extends Controller
             $user = DB::select("SELECT username_nd from TB_NGUOI_DUNG where token_nd = '$token'");
             if($user[0]->username_nd == $request->get('username_nd'))
             {
-                $avatar = null;
-                if($request->get('file') != 'null' )
+                if($request->has('avatar'))
                 {
                     $file = $request->file('avatar');
-                    $name = $file->getClientOriginalName();
-                    $file->move(public_path().'/upload/avatar/', $file->getClientOriginalName());
-                    $avatar = '/upload/avatar/'.$file->getClientOriginalName();
+                    // $name = $file->getClientOriginalName();
+                    $file->move(public_path().'/upload/avatar/', $request->get('username_nd'));
+                    $path = '/upload/logo/'.$request->get('username_nd');
+                    return response()->json($path, 200);
                 }
+                return response()->json($request->get('avatar'), 200);
                 $username = $request->get('username_nd');
                 $password = NULL;
                 $p_id_nhom = NULL;
@@ -269,8 +235,7 @@ class UserController extends Controller
                 $p_email = $request->get("email_nd");
                 $p_gt = 1;
                 $p_ngaysinh =  $request->get("ngay_sinh_nd");
-                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $avatar, 3);
-                return response()->json($result, 200);
+                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 3);
             }
         }
     }
@@ -297,7 +262,7 @@ class UserController extends Controller
                 $p_email = $request->has("EMAIL_ND") == TRUE ? $request->get("EMAIL_ND") : 'NULL';
                 $p_gt = $request->has("GOITINH_ND") == true ? $request->get("GOITINH_ND") : 1;
                 $p_ngaysinh = $request->has("NGAY_SINH") == TRUE ? $request->get("NGAY_SINH") : 'NULL';
-                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, $p_avatar =null, 2);
+                $result = $this->CallFunction($username, $password, $p_id_nhom, $p_display_name, $p_id_rule, $p_sdt, $p_email, $p_gt, $p_ngaysinh, 2);
                 if($result == 2)
                 {
                     return response()->json([

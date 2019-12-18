@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 //user
 Route::get('user','UserController@index')->middleware('cors');
 Route::get('user-giaoviec','UserController@giaoviec')->middleware('cors');
-Route::get('user/{id}','UserController@show')->middleware('cors');
 Route::post('user/{id}','UserController@update')->middleware('cors');
 Route::get('token', 'UserController@token')->middleware('cors');
 Route::post('resignter', 'UserController@resignter')->middleware('cors');
@@ -52,7 +51,6 @@ Route::post('trung-tam','TrungTamController@store')->middleware('cors');
 
 // loại dự án
 Route::get('loai-du-an','LoaiDuANController@index')->middleware('cors');
-Route::get('thong-ke-loai-du-an','LoaiDuANController@thongke')->middleware('cors');
 Route::post('loai-du-an','LoaiDuANController@store')->middleware('cors');
 Route::post('loai-du-an/{id}','LoaiDuANController@update')->middleware('cors');
 
@@ -84,6 +82,5 @@ Route::post('cong-viec/{id}/baocao','CongViecController@baocao')->middleware('co
 Route::post('cong-viec-da','CongViecController@chitiet')->middleware('cors');
 // loại công việc
 Route::get('loai-cv','LoaiCongViecController@index')->middleware('cors');
-Route::get('loai-cv/{id}','LoaiCongViecController@show')->middleware('cors');
 Route::post('loai-cv','LoaiCongViecController@store')->middleware('cors');
 Route::post('loai-cv/{id}','LoaiCongViecController@update')->middleware('cors');

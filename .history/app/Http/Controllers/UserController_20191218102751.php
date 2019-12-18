@@ -58,24 +58,18 @@ class UserController extends Controller
             return response()->json($users, 200);
         }
     }
-//thong kê công việc đã làm
-    public function thongke(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT * from TB_NGUOI_DUNG WHERE token_nd = '$token'");
-            $id_nd = $user[0]->id_nd;
-            $thong_ke = DB::select("SELECT  count(lcv.id_loai_cv) as sl, lcv.ten_loai_cv from TB_CONG_VIEC_DA cv, TB_LOAI_CV lcv where cv.id_loai_cv = lcv.id_loai_cv
-            and cv.nguoi_nhan_viec = '$id_nd'  group by (lcv.ten_loai_cv)");
-            return response()->json($thong_ke, 200);
-        }
-    }
-
     public function giaoviec(Request $request)
     {
        if($request->has('api_token'))
        {
+        //    $ID_DU_AN_KH = $request->get('ID_DU_AN_KH');
+        //    if($ID_DU_AN_KH != 0)
+        //    {
+        //         $users = DB::SELECT("SELECT * FROM TB_NGUOI_DUNG ND where ND.id_rule > 0");
+        //    }
+        //    else {
+        //     $users = DB::SELECT("SELECT ND.* FROM TB_NGUOI_DUNG ND, TB_CN_ND CNND WHERE ND.ID_ND = CNND.ID_ND AND CNND.ID_CN = 3");
+        //    }
             if($request->has('id_du_an'))
             {
                 if($request->get('id_du_an') != 'undefined')
@@ -214,8 +208,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = DB::select("SELECT display_name from TB_NGUOI_DUNG where id_nd = $id");
-        return response()->json($user[0]->display_name, 200);
+        //
     }
 
     public function check_password(Request $request)
@@ -224,22 +217,7 @@ class UserController extends Controller
         {
             $token = $request->get('api_token');
             $user = DB::select("SELECT password_nd from TB_NGUOI_DUNG where token_nd = '$token'");
-            $check = Hash::check($request->get('password_nd'), $user[0]->password_nd);
-            if($check)
-            {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Mật khảu hợp lệ',
-                    'status' => 200
-                ], 200);
-            }
-            else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Mật khẩu không hợp lệ',
-                    'status' => 404
-                ], 200);
-            }
+            $check = Hash::check($request->get('password_nd'), $user[0]->password_nd)
 
         }
     }

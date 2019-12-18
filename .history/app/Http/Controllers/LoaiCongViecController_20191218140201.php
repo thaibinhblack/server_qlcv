@@ -90,7 +90,7 @@ class LoaiCongViecController extends Controller
      */
     public function show($id)
     {
-        $lcv = DB::select("SELECT * FROM TB_LOAI_CV where id_loai_cv = $id");
+        $lcv = DB::select("SELECT * FROM TB_LOAI_CV from id_loai_cv = $id");
         return response()->json($lcv[0], 200);
     }
 

@@ -52,7 +52,6 @@ Route::post('trung-tam','TrungTamController@store')->middleware('cors');
 
 // loại dự án
 Route::get('loai-du-an','LoaiDuANController@index')->middleware('cors');
-Route::get('thong-ke-loai-du-an','LoaiDuANController@thongke')->middleware('cors');
 Route::post('loai-du-an','LoaiDuANController@store')->middleware('cors');
 Route::post('loai-du-an/{id}','LoaiDuANController@update')->middleware('cors');
 

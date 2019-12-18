@@ -67,7 +67,7 @@ class UserController extends Controller
             $user = DB::select("SELECT * from TB_NGUOI_DUNG WHERE token_nd = '$token'");
             $id_nd = $user[0]->id_nd;
             $thong_ke = DB::select("SELECT  count(lcv.id_loai_cv) as sl, lcv.ten_loai_cv from TB_CONG_VIEC_DA cv, TB_LOAI_CV lcv where cv.id_loai_cv = lcv.id_loai_cv
-            and cv.nguoi_nhan_viec = '$id_nd'  group by (lcv.ten_loai_cv)");
+            and cv.nguoi_nhan_viec = '$id_nd'  group by (lcv.ten_loai_cv) ;");
             return response()->json($thong_ke, 200);
         }
     }
@@ -214,8 +214,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = DB::select("SELECT display_name from TB_NGUOI_DUNG where id_nd = $id");
-        return response()->json($user[0]->display_name, 200);
+        //
     }
 
     public function check_password(Request $request)

@@ -103,7 +103,7 @@ class LoaiDuANController extends Controller
     public function thongke()
     {
         $thong_ke = DB::SELECT("SELECT count(lda.ten_loai_da) as sl, lda.ten_loai_da from TB_LOAI_DU_AN lda, TB_DU_AN da where lda.id_loai_da = da.id_loai_da group by (lda.ten_loai_da)");
-        return response()->json($thong_ke, 200);
+        
     }
 
 }
