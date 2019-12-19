@@ -447,7 +447,6 @@ class CongViecController extends Controller
                 $P_TEN_CV = NULL;
                 $P_NGAY_TIEP_NHAN = NULL;
                 $P_NGAY_HOAN_THANH = NULL;
-                $P_NGAY_GIAO_VIEC = null;
                 $P_NGUOI_GIAO_VIEC = NULL;
                 $P_TRANG_THAI = $request->get('trang_thai');
                 $P_DO_UU_TIEN = NULL;
@@ -464,33 +463,30 @@ class CongViecController extends Controller
                 $P_THAM_DINH_CHAT_LUONG =  NULL; 
                 $P_TRANG_THAI_LTRINH =  NULL; 
                 $P_ACTION = 3;
-                $P_ID_LOAI_CV = null;
                 $P_TYPE = $request->get('P_TYPE');
                 $P_NGUOI_NHAP = null;
-                $P_NGUOI_NHAP =null;
                 $result = $this->CallFunction($P_ID_CV_DA,
-                $P_TEN_CV ,
-                $P_NOI_DUNG_CV ,
-                $P_NGAY_TIEP_NHAN ,
-                $P_NGAY_GIAO_VIEC ,
-                $P_NGAY_HOAN_THANH ,
-                $P_NGAY_CAM_KET,
-                $P_GIO_THUC_HIEN ,
-                $P_DO_UU_TIEN,
-                $P_MA_JIRA ,
-                $P_NGUOI_GIAO_VIEC ,
-                $P_NGUOI_NHAN_VIEC ,
-                $P_TIEN_DO ,
-                $P_GHI_CHU ,
-                $P_LY_DO ,
-                $P_THAM_DINH_TGIAN ,
-                $P_THAM_DINH_KHOI_LUONG,
-                $P_THAM_DINH_CHAT_LUONG,
-                $P_ID_LOAI_CV,
-                $P_TRANG_THAI,
-                $P_ACTION,
-                $P_TYPE,
-                $P_NGUOI_NHAP);
+                    $P_TEN_CV ,
+                    $P_NOI_DUNG_CV ,
+                    $P_NGAY_TIEP_NHAN ,
+                    $P_NGAY_HOAN_THANH ,
+                    $P_NGAY_CAM_KET,
+                    $P_GIO_THUC_HIEN ,
+                    $P_DO_UU_TIEN,
+                    $P_MA_JIRA ,
+                    $P_NGUOI_GIAO_VIEC ,
+                    $P_NGUOI_NHAN_VIEC ,
+                    $P_TIEN_DO ,
+                    $P_GHI_CHU ,
+                    $P_LY_DO ,
+                    $P_THAM_DINH_TGIAN ,
+                    $P_THAM_DINH_KHOI_LUONG,
+                    $P_THAM_DINH_CHAT_LUONG,
+                    $P_TRANG_THAI_LTRINH,
+                    $P_TRANG_THAI,
+                    $P_ACTION,
+                    $P_TYPE,
+                    $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,
                     'message' => 'Cập công việc thành công',
@@ -583,7 +579,7 @@ class CongViecController extends Controller
             $user = DB::select("SELECT * FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0])
             {
-                $id_rule = $user[0]->id_rule;
+                $id_rule = $user[0];
                 if($id_rule > 0)
                 {
                     $sql = "DECLARE
@@ -591,9 +587,8 @@ class CongViecController extends Controller
                         P_THAM_DINH_TGIAN DATE,
                         P_THAM_DINH_CHAT_LUONG NUMBER,
                         P_THAM_DINH_KHOI_LUONG NUMBER,
-                        P_NGUOI_THAM_DINH NUMBER
                     BEGIN
-                        :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
+                        :result := THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
                     END;";
                     $P_ID_CV_DA = $id;
                     $P_THAM_DINH_TGIAN = $request->get('P_THAM_DINH_TGIAN');
@@ -608,14 +603,7 @@ class CongViecController extends Controller
                     $stmt->bindParam(':P_THAM_DINH_KHOI_LUONG',$P_THAM_DINH_KHOI_LUONG,PDO::PARAM_INT);
                     $stmt->bindParam(':P_NGUOI_THAM_DINH',$P_NGUOI_THAM_DINH,PDO::PARAM_INT);
                     $stmt->bindParam(':result',$result);
-                    if( $stmt->execute())
-                    {
-                        return response()->json([
-                            'success' => true,
-                            'message' => 'Thẩm định thành công',
-                            'status' => 200
-                        ], 200);
-                    }
+                    $stmt->execute();
                     return response()->json([
                         'success' => true,
                         'message' => 'Thẩm định thành công',

@@ -447,7 +447,6 @@ class CongViecController extends Controller
                 $P_TEN_CV = NULL;
                 $P_NGAY_TIEP_NHAN = NULL;
                 $P_NGAY_HOAN_THANH = NULL;
-                $P_NGAY_GIAO_VIEC = null;
                 $P_NGUOI_GIAO_VIEC = NULL;
                 $P_TRANG_THAI = $request->get('trang_thai');
                 $P_DO_UU_TIEN = NULL;
@@ -464,33 +463,30 @@ class CongViecController extends Controller
                 $P_THAM_DINH_CHAT_LUONG =  NULL; 
                 $P_TRANG_THAI_LTRINH =  NULL; 
                 $P_ACTION = 3;
-                $P_ID_LOAI_CV = null;
                 $P_TYPE = $request->get('P_TYPE');
                 $P_NGUOI_NHAP = null;
-                $P_NGUOI_NHAP =null;
                 $result = $this->CallFunction($P_ID_CV_DA,
-                $P_TEN_CV ,
-                $P_NOI_DUNG_CV ,
-                $P_NGAY_TIEP_NHAN ,
-                $P_NGAY_GIAO_VIEC ,
-                $P_NGAY_HOAN_THANH ,
-                $P_NGAY_CAM_KET,
-                $P_GIO_THUC_HIEN ,
-                $P_DO_UU_TIEN,
-                $P_MA_JIRA ,
-                $P_NGUOI_GIAO_VIEC ,
-                $P_NGUOI_NHAN_VIEC ,
-                $P_TIEN_DO ,
-                $P_GHI_CHU ,
-                $P_LY_DO ,
-                $P_THAM_DINH_TGIAN ,
-                $P_THAM_DINH_KHOI_LUONG,
-                $P_THAM_DINH_CHAT_LUONG,
-                $P_ID_LOAI_CV,
-                $P_TRANG_THAI,
-                $P_ACTION,
-                $P_TYPE,
-                $P_NGUOI_NHAP);
+                    $P_TEN_CV ,
+                    $P_NOI_DUNG_CV ,
+                    $P_NGAY_TIEP_NHAN ,
+                    $P_NGAY_HOAN_THANH ,
+                    $P_NGAY_CAM_KET,
+                    $P_GIO_THUC_HIEN ,
+                    $P_DO_UU_TIEN,
+                    $P_MA_JIRA ,
+                    $P_NGUOI_GIAO_VIEC ,
+                    $P_NGUOI_NHAN_VIEC ,
+                    $P_TIEN_DO ,
+                    $P_GHI_CHU ,
+                    $P_LY_DO ,
+                    $P_THAM_DINH_TGIAN ,
+                    $P_THAM_DINH_KHOI_LUONG,
+                    $P_THAM_DINH_CHAT_LUONG,
+                    $P_TRANG_THAI_LTRINH,
+                    $P_TRANG_THAI,
+                    $P_ACTION,
+                    $P_TYPE,
+                    $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,
                     'message' => 'Cập công việc thành công',

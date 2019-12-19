@@ -74,7 +74,7 @@ Route::post('cap-nhat-quyen-thanhvien','DuAnKhachHangController@update_quyen_tha
 //cong viec
 Route::get('cong-viec','CongViecController@index')->middleware('cors');
 Route::get('cong-viec-chua-phan-cong','CongViecController@cvchuaphancong')->middleware('cors');
-Route::post('tham-dinh-cong-viec/{id}','CongViecController@thamdinh')->middleware('cors');
+Route::post('tham-dinh-cong-viec','CongViecController@thamdinh')->middleware('cors');
 Route::post('capnhat_congviec/{id}','CongViecController@capnhat_congviec')->middleware('cors');
 Route::post('cong-viec','CongViecController@store')->middleware('cors');
 Route::get('cong-viec/{id}/{id_du_an}','CongViecController@show')->middleware('cors');
