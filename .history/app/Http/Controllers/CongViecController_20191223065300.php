@@ -575,8 +575,6 @@ class CongViecController extends Controller
         }
     }
 
-
-
     public function thamdinh(Request $request,$id)
     {
         if($request->has('api_token'))
@@ -589,11 +587,11 @@ class CongViecController extends Controller
                 if($id_rule > 0)
                 {
                     $sql = "DECLARE
-                        P_ID_CV_DA NUMBER;
-                        P_THAM_DINH_TGIAN NUMBER;
-                        P_THAM_DINH_CHAT_LUONG NUMBER;
-                        P_THAM_DINH_KHOI_LUONG NUMBER;
-                        P_NGUOI_THAM_DINH NUMBER;
+                        P_ID_CV_DA NUMBER,
+                        P_THAM_DINH_TGIAN DATE,
+                        P_THAM_DINH_CHAT_LUONG NUMBER,
+                        P_THAM_DINH_KHOI_LUONG NUMBER,
+                        P_NGUOI_THAM_DINH NUMBER
                     BEGIN
                         :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
                     END;";
