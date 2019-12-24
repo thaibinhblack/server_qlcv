@@ -331,7 +331,7 @@ class CongViecController extends Controller
             return response()->json($cong_viec[0], 200);
         }
         else {
-            return response()->json(null, 200);
+            return response()->json({}, 200);
         }
     }
 
