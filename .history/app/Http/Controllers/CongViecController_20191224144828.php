@@ -256,7 +256,7 @@ class CongViecController extends Controller
                 $P_THAM_DINH_CHAT_LUONG =  $request->get('P_THAM_DINH_CHAT_LUONG') != 'undefined' ?  $request->get('P_THAM_DINH_CHAT_LUONG') : NULL; 
                 $P_ID_LOAI_CV =  $request->get('P_ID_LOAI_CV') != 'undefined' ?  $request->get('P_ID_LOAI_CV') : 1; 
                 $P_TYPE = $request->get('P_TYPE');
-                $P_NGUOI_YEU_CAU = $request->get('P_NGUOI_YEU_CAU') != 'undefined' ?  $request->get('P_NGUOI_YEU_CAU') : null; 
+                $P_NGUOI_YEU_CAU = $request->get('P_NGUOI_YEU_CAU') != 'undefined' ?  $request->get('P_ID_LOAI_CV') : null; 
                 $P_ACTION = $request->get('P_ACTION');
                 $P_NGUOI_NHAP = $request->get('P_NGUOI_NHAP');
                 $result = $this->CallFunction($P_ID_CV_DA,
@@ -435,7 +435,6 @@ class CongViecController extends Controller
                     $P_TRANG_THAI,
                     $P_ACTION,
                     $P_TYPE,
-                    $P_NGUOI_YEU_CAU = NULL,
                     $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,
@@ -495,7 +494,6 @@ class CongViecController extends Controller
                 $P_TRANG_THAI,
                 $P_ACTION,
                 $P_TYPE,
-                $P_NGUOI_YEU_CAU = NULL,
                 $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,

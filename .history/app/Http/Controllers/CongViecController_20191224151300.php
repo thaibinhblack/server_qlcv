@@ -495,7 +495,6 @@ class CongViecController extends Controller
                 $P_TRANG_THAI,
                 $P_ACTION,
                 $P_TYPE,
-                $P_NGUOI_YEU_CAU = NULL,
                 $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,
