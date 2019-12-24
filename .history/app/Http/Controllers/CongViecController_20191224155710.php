@@ -320,15 +320,6 @@ class CongViecController extends Controller
         }
     }
 
-    public function congviecgoc($id)
-    {
-        $cong_viec = DB::select("SELECT cv.*, nv_giao.display_name as nv_giao , nv_nhan.display_name as nv_nhan, nguoi_nhap.display_name as nguoi_nhap, lcv.ten_loai_cv as ten_loai_cv from TB_CONG_VIEC_DA cv left join tb_nguoi_dung nv_giao on cv.nguoi_giao_viec = nv_giao.id_nd 
-        left join tb_nguoi_dung nv_nhan on cv.nguoi_nhan_viec = nv_nhan.id_nd
-        left join tb_nguoi_dung nguoi_nhap on cv.nguoi_nhap = nguoi_nhap.id_nd 
-        left join tb_loai_cv lcv on cv.id_loai_cv = lcv.id_loai_cv  where cv.cv_goc = $id");
-        return response()->json($cong_viec[0], 200);
-    }
-
     public function show(Request $request,$id,$id_du_an)
     {
         if($request->has('api_token'))
@@ -349,7 +340,7 @@ class CongViecController extends Controller
                     }
                     // hiển thị tất cả công việc 
                     $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd ");
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd where CV.YEU_CAU = 1");
                     return response()->json($cong_viec, 200);
                 }
                 else { // công việc theo dự án

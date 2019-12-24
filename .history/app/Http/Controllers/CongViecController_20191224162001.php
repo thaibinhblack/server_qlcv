@@ -322,11 +322,8 @@ class CongViecController extends Controller
 
     public function congviecgoc($id)
     {
-        $cong_viec = DB::select("SELECT cv.*, nv_giao.display_name as nv_giao , nv_nhan.display_name as nv_nhan, nguoi_nhap.display_name as nguoi_nhap, lcv.ten_loai_cv as ten_loai_cv from TB_CONG_VIEC_DA cv left join tb_nguoi_dung nv_giao on cv.nguoi_giao_viec = nv_giao.id_nd 
-        left join tb_nguoi_dung nv_nhan on cv.nguoi_nhan_viec = nv_nhan.id_nd
-        left join tb_nguoi_dung nguoi_nhap on cv.nguoi_nhap = nguoi_nhap.id_nd 
-        left join tb_loai_cv lcv on cv.id_loai_cv = lcv.id_loai_cv  where cv.cv_goc = $id");
-        return response()->json($cong_viec[0], 200);
+        $cong_viec = DB::select("SELECT * from TB_CONG_VIEC_DA where cv_goc = $id");
+        return response()->json($cong_viec, 200);
     }
 
     public function show(Request $request,$id,$id_du_an)
