@@ -43,7 +43,7 @@ class DuAnController extends Controller
         {
             //CHECK TOKEN
 
-            $du_an = DB::SELECT("SELECT DA.*, ND.display_name, LDA.ten_loai_da FROM TB_DU_AN DA
+            $du_an = DB::SELECT("SELECT DA.*, ND.display_name, LDA.* FROM TB_DU_AN DA
                 LEFT JOIN TB_NGUOI_DUNG ND ON ND.id_nd = DA.id_ql
                 LEFT JOIN TB_LOAI_DU_AN LDA ON LDA.id_loai_da = DA.id_loai_da   ");
             return response()->json($du_an, 200);

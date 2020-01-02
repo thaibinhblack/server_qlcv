@@ -300,14 +300,6 @@ class DuAnKhachHangController extends Controller
         }
     }
 
-    public function destroy_trang_thai(Request $request,$id_trang_thai)
-    {
-        if($request->has('api_token'))
-        {
-            $result = $this->CallFunctionTrangThai($id_trang_thai,null,null,null,3);
-            return response()->json($result, 200);
-        }
-    }
  
 
 }

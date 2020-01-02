@@ -46,7 +46,7 @@ class LoaiCongViecController extends Controller
             }
             $loai_cv = DB::SELECT("SELECT lcv.*, lcv_parent.ten_loai_cv as ten_cv_cha FROM TB_LOAI_CV lcv
             LEFT JOIN TB_LOAI_CV lcv_parent ON lcv_parent.id_loai_cv = lcv.parent
-             ORDER BY lcv.id_loai_cv DESC");
+             ORDER BY id_loai_cv DESC");
             return response()->json($loai_cv, 200);
         }
     }

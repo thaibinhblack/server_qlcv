@@ -281,11 +281,7 @@ class DuAnKhachHangController extends Controller
     }
 
     //trạng thái dự án khách hàng
-    public function index_trang_thai(Request $request)
-    {
-        $trang_thai = DB::select("SELECT * FROM TB_TRANG_THAI_DU_AN_KH");
-        return response()->json($trang_thai, 200);
-    }
+
     public function store_trang_thai(Request $request)
     {
         if($request->has('api_token'))
@@ -300,14 +296,5 @@ class DuAnKhachHangController extends Controller
         }
     }
 
-    public function destroy_trang_thai(Request $request,$id_trang_thai)
-    {
-        if($request->has('api_token'))
-        {
-            $result = $this->CallFunctionTrangThai($id_trang_thai,null,null,null,3);
-            return response()->json($result, 200);
-        }
-    }
- 
 
 }

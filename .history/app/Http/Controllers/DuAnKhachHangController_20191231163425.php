@@ -45,16 +45,19 @@ class DuAnKhachHangController extends Controller
             P_GHI_CHU_TRANG_THAI VARCHAR2(255);
             P_ACTION NUMBER(1);
         BEGIN
-            :result := THEM_CAPNHAT_TT_DUAN_KH(:P_ID_TRANG_THAI, :P_TEN_TRANG_THAI, :P_NOI_DUNG_TRANG_THAI, :P_GHI_CHU_TRANG_THAI,:P_ACTION);
+            :n := THEM_CAPNHAT_TT_DUAN_KH(:P_ID_TRANG_THAI, :P_TEN_TRANG_THAI, :P_TEN_DU_AN_KH, :P_NOI_DUNG_TRANG_THAI, :P_GHI_CHU_TRANG_THAI,:P_ACTION);
         END;";  
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_TRANG_THAI',$P_ID_TRANG_THAI,  PDO::PARAM_INT);
-        $stmt->bindParam(':P_TEN_TRANG_THAI',$P_TEN_TRANG_THAI);
-        $stmt->bindParam(':P_NOI_DUNG_TRANG_THAI',$P_NOI_DUNG_TRANG_THAI);
-        $stmt->bindParam(':P_GHI_CHU_TRANG_THAI',$P_GHI_CHU_TRANG_THAI);
+        $stmt->bindParam(':P_ID_DU_AN_KH',$P_ID_DU_AN_KH);
+        $stmt->bindParam(':P_ID_DU_AN',$P_ID_DU_AN);
+        $stmt->bindParam(':P_TEN_DU_AN_KH',$P_TEN_DU_AN_KH);
+        $stmt->bindParam(':P_MO_TA_DU_AN',$P_MO_TA_DU_AN);
+        $stmt->bindParam(':P_GHI_CHU_DU_AN',$P_GHI_CHU_DU_AN);
+        $stmt->bindParam(':P_TRANG_THAI_DU_AN',$P_TRANG_THAI_DU_AN);
+        $stmt->bindParam(':P_ID_KHACH_HANG',$P_ID_KHACH_HANG);
         $stmt->bindParam(':P_ACTION',$P_ACTION);
-        $stmt->bindParam(':result',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':n',$result);
         $stmt->execute();
         return $result;
     }
@@ -279,35 +282,5 @@ class DuAnKhachHangController extends Controller
             }
         }
     }
-
-    //trạng thái dự án khách hàng
-    public function index_trang_thai(Request $request)
-    {
-        $trang_thai = DB::select("SELECT * FROM TB_TRANG_THAI_DU_AN_KH");
-        return response()->json($trang_thai, 200);
-    }
-    public function store_trang_thai(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $P_ID_TRANG_THAI = 0;
-            $P_TEN_TRANG_THAI = $request->get('P_TEN_TRANG_THAI');
-            $P_NOI_DUNG_TRANG_THAI = $request->get('P_NOI_DUNG_TRANG_THAI');
-            $P_GHI_CHU_TRANG_THAI = $request->get('P_GHI_CHU_TRANG_THAI'); 
-            $P_ACTION = 1;
-            $result = $this->CallFunctionTrangThai($P_ID_TRANG_THAI, $P_TEN_TRANG_THAI, $P_NOI_DUNG_TRANG_THAI, $P_GHI_CHU_TRANG_THAI, $P_ACTION);
-            return response()->json($result, 200);
-        }
-    }
-
-    public function destroy_trang_thai(Request $request,$id_trang_thai)
-    {
-        if($request->has('api_token'))
-        {
-            $result = $this->CallFunctionTrangThai($id_trang_thai,null,null,null,3);
-            return response()->json($result, 200);
-        }
-    }
- 
 
 }
