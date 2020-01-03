@@ -139,53 +139,40 @@ class CongViecController extends Controller
                         return response()->json($cong_viec, 200);
                     }
                 }
-                if($request->has('id_du_an'))
-                {
-                    $id_du_an = $request->get('id_du_an');
-                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' AND DA_KH.id_du_an = $id_du_an ");
-                    return response()->json($cong_viec, 200);
-                }
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end'");
-                    return response()->json($cong_viec, 200);
+                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.ngay_cam_ket <= '$time_end'");
+                        return response()->json($cong_viec, 200);
 
                }
                else {
                 $id_nd = $user[0]->id_nd;
                 $time_start = $request->get('time_start');
                 $time_end = $request->get('time_end');
-                if($request->has('status'))
+                if($request->get('status')  == 1) // ngày tiếp nhận
                 {
-                    if($request->get('status')  == 1) // ngày tiếp nhận
-                    {
-                    
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and CV.nguoi_nhan_viec= $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    if($request->get('status')  == "2") // ngày giao việc
-                    {
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_giao_viec >= '$time_start' and CV.ngay_giao_viec <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    if($request->get('status')  == "3") // ngày hoàn thành 
-                    {
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_hoan_thanh >= '$time_start' and CV.ngay_hoan_thanh <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                    if($request->get('status')  == "4") // ngày cam kết
-                    {
-                        $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                        WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_cam_ket >= '$time_start' and CV.ngay_cam_ket <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
-                        return response()->json($cong_viec, 200);
-                    }
-                }
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' and CV.nguoi_nhan_viec= $id_nd ");
+                
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and CV.nguoi_nhan_viec= $id_nd");
                     return response()->json($cong_viec, 200);
+                }
+                if($request->get('status')  == "2") // ngày giao việc
+                {
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_giao_viec >= '$time_start' and CV.ngay_giao_viec <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
+                    return response()->json($cong_viec, 200);
+                }
+                if($request->get('status')  == "3") // ngày hoàn thành 
+                {
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_hoan_thanh >= '$time_start' and CV.ngay_hoan_thanh <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
+                    return response()->json($cong_viec, 200);
+                }
+                if($request->get('status')  == "4") // ngày cam kết
+                {
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_cam_ket >= '$time_start' and CV.ngay_cam_ket <= '$time_end'  and CV.nguoi_nhan_viec= $id_nd");
+                    return response()->json($cong_viec, 200);
+                }
                }
             }
             if($request->has('trang_thai'))
@@ -238,54 +225,6 @@ class CongViecController extends Controller
         }
         // $cong_viec = DB::select("SELECT * FROM TB_CONG_VIEC_DA");
         // return response()->json($cong_viec, 200);
-    }
-
-    public function filter(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT id_nd, id_rule from TB_NGUOI_DUNG where token_nd = '$token'");
-            
-            $time_start = $request->get('time_start');
-            $time_end = $request->get('time_end');
-            $sql = "SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd AND CV.created_at >= '$time_start' AND CV.created_at <= '$time_end' ";
-            $sql_id_du_an = " AND DA_KH.id_du_an is not null";
-            if($request->get('id_du_an') != '-1'  && $request->has('id_du_an') )
-            {
-                $id_du_an = $request->get('id_du_an');
-                $sql_id_du_an = " AND DA_KH.id_du_an = $id_du_an";
-            }
-            $sql_id_du_an_kh  = " AND DA_KH.id_du_an_kh is not null";
-            if($request->get('id_du_an_kh') != '-1' && $request->has('id_du_an_kh') )
-            {
-                $id_du_an_kh = $request->get('id_du_an_kh');
-                $sql_id_du_an_kh = " AND DA_KH.id_du_an_kh = $id_du_an_kh";
-            }
-            $sql_id_loai_cv  = " AND CV.id_loai_cv is not null";
-            if($request->get('id_loai_cv') != '-1' && $request->has('id_loai_cv') )
-            {
-                $id_loai_cv = $request->get('id_loai_cv');
-                $sql_id_loai_cv = " AND CV.id_loai_cv = $id_loai_cv";
-            }
-            $sql_id_nhan_vien  = " AND CV.nguoi_nhan_viec is not null";
-            if($request->get('nguoi_nhan_viec') != '-1' && $request->has('nguoi_nhan_viec') )
-            {
-                $nguoi_nhan_viec = $request->get('nguoi_nhan_viec');
-                $sql_id_nhan_vien = " AND CV.nguoi_nhan_viec = $nguoi_nhan_viec";
-            }
-            $sql .= $sql_id_du_an .= $sql_id_du_an_kh .= $sql_id_nhan_vien .= $sql_id_loai_cv;
-            if($user[0]->id_rule == 0)
-            {
-                $id_nd = $user[0]->id_nd;
-                $sql_user = " AND CV.nguoi_nhan_viec = $id_nd";
-                $sql .=$sql_user;
-            }
-            $cong_viec = DB::select($sql);
-            return response()->json($cong_viec, 200);
-        }
-       
     }
 
     /**

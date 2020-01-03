@@ -249,7 +249,7 @@ class DuAnKhachHangController extends Controller
             {
                 if($request->get('show') == 'ID_DU_AN')
                 {
-                    $du_an = DB::SELECT("SELECT * FROM TB_DU_AN_KH WHERE id_du_an = $id");
+                    $du_an = DB::SELECT("SELECT * FROM TB_DU_AN_KH WHERE ID_DU_AN = $id");
                     return response()->json($du_an, 200);
                 }
             }

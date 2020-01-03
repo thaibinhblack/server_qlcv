@@ -278,7 +278,7 @@ class CongViecController extends Controller
             $sql .= $sql_id_du_an .= $sql_id_du_an_kh .= $sql_id_nhan_vien .= $sql_id_loai_cv;
             if($user[0]->id_rule == 0)
             {
-                $id_nd = $user[0]->id_nd;
+                $id_nd = $user[0[->id_nd;
                 $sql_user = " AND CV.nguoi_nhan_viec = $id_nd";
                 $sql .=$sql_user;
             }

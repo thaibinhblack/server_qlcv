@@ -245,7 +245,7 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $token = $request->get('api_token');
-            $user = DB::select("SELECT id_nd, id_rule from TB_NGUOI_DUNG where token_nd = '$token'");
+            $user = DB::select("SELECT id_nd from TB_NGUOI_DUNG where token_nd = '$token'");
             
             $time_start = $request->get('time_start');
             $time_end = $request->get('time_end');
@@ -278,7 +278,7 @@ class CongViecController extends Controller
             $sql .= $sql_id_du_an .= $sql_id_du_an_kh .= $sql_id_nhan_vien .= $sql_id_loai_cv;
             if($user[0]->id_rule == 0)
             {
-                $id_nd = $user[0]->id_nd;
+                $id_nd = $user->id_nd;
                 $sql_user = " AND CV.nguoi_nhan_viec = $id_nd";
                 $sql .=$sql_user;
             }
