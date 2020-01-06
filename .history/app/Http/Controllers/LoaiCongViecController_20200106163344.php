@@ -74,9 +74,8 @@ class LoaiCongViecController extends Controller
                 $TRANG_THAI = $request->get("P_TRANG_THAI");
                 $P_MO_TA = $request->get("P_MO_TA") != 'undefined' ? $request->get('P_MO_TA') : NULL;
                 $P_PARENT = $request->get('P_PARENT');
-                $P_COLOR = $request->get('P_COLOR');
                 $P_ACTION = 1;
-                $reuslt = $this->CallFunction($ID_LOAI_CV, $TEN_LOAI_CV, $TRANG_THAI, $P_MO_TA, $P_ACTION, $P_PARENT,$P_COLOR);
+                $reuslt = $this->CallFunction($ID_LOAI_CV, $TEN_LOAI_CV, $TRANG_THAI, $P_MO_TA, $P_ACTION, $P_PARENT);
                 return response()->json([
                     'success' => true,
                     'message' => 'Thêm loại công việc mới thành công',
@@ -117,8 +116,7 @@ class LoaiCongViecController extends Controller
             $P_MO_TA = $request->get("P_MO_TA") != 'undefined' ? $request->get('P_MO_TA') : NULL;
             $P_ACTION = 2;
             $P_PARENT = $request->get('P_PARENT');
-            $P_COLOR = $request->get('P_COLOR');
-            $reuslt = $this->CallFunction($ID_LOAI_CV, $TEN_LOAI_CV, $TRANG_THAI, $P_MO_TA, $P_ACTION, $P_PARENT, $P_COLOR);
+            $reuslt = $this->CallFunction($ID_LOAI_CV, $TEN_LOAI_CV, $TRANG_THAI, $P_MO_TA, $P_ACTION, $P_PARENT);
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật '.$TEN_LOAI_CV. ' thành công',

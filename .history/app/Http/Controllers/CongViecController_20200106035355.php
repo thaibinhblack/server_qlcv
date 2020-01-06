@@ -146,8 +146,8 @@ class CongViecController extends Controller
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' AND DA_KH.id_du_an = $id_du_an ");
                     return response()->json($cong_viec, 200);
                 }
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh, LCV.ten_loai_cv, LCV.color_status  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.id_loai_cv = LCV.id_loai_cv and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' ");
+                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' ");
                     return response()->json($cong_viec, 200);
 
                }
@@ -386,21 +386,7 @@ class CongViecController extends Controller
             return response()->json($cong_viec, 200);
         }
     }
-    public function congviec_chitiet(Request $request,$id)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT * FROM TB_NGUOI_DUNG where token_nd = '$token'");
-            if($user[0])
-            {
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.id_cv_da = $id ");
-                return response()->json($cong_viec[0], 200);
-            }
 
-        }
-    }
     public function congviecgoc($id)
     {
         $cong_viec = DB::select("SELECT cv.*, nv_giao.display_name as nv_giao , nv_nhan.display_name as nv_nhan, nguoi_nhap.display_name as nguoi_nhap, lcv.ten_loai_cv as ten_loai_cv from TB_CONG_VIEC_DA cv left join tb_nguoi_dung nv_giao on cv.nguoi_giao_viec = nv_giao.id_nd 

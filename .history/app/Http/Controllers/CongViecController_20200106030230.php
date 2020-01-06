@@ -75,8 +75,8 @@ class CongViecController extends Controller
     $stmt->bindParam(':P_GIO_THUC_HIEN',$P_GIO_THUC_HIEN);
     $stmt->bindParam(':P_DO_UU_TIEN',$P_DO_UU_TIEN);
     $stmt->bindParam(':P_MA_JIRA',$P_MA_JIRA);
-    $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$P_NGUOI_GIAO_VIEC);
-    $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$P_NGUOI_NHAN_VIEC);
+    $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$P_NGUOI_GIAO_VIEC, PDO::PARAM_INT);
+    $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$P_NGUOI_NHAN_VIEC, PDO::PARAM_INT);
     $stmt->bindParam(':P_TIEN_DO',$P_TIEN_DO);
     $stmt->bindParam(':P_GHI_CHU',$P_GHI_CHU);
     $stmt->bindParam(':P_LY_DO',$P_LY_DO);
@@ -146,8 +146,8 @@ class CongViecController extends Controller
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' AND DA_KH.id_du_an = $id_du_an ");
                     return response()->json($cong_viec, 200);
                 }
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh, LCV.ten_loai_cv, LCV.color_status  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.id_loai_cv = LCV.id_loai_cv and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' ");
+                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <'$time_end'");
                     return response()->json($cong_viec, 200);
 
                }
@@ -386,21 +386,7 @@ class CongViecController extends Controller
             return response()->json($cong_viec, 200);
         }
     }
-    public function congviec_chitiet(Request $request,$id)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::select("SELECT * FROM TB_NGUOI_DUNG where token_nd = '$token'");
-            if($user[0])
-            {
-                $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.id_cv_da = $id ");
-                return response()->json($cong_viec[0], 200);
-            }
 
-        }
-    }
     public function congviecgoc($id)
     {
         $cong_viec = DB::select("SELECT cv.*, nv_giao.display_name as nv_giao , nv_nhan.display_name as nv_nhan, nguoi_nhap.display_name as nguoi_nhap, lcv.ten_loai_cv as ten_loai_cv from TB_CONG_VIEC_DA cv left join tb_nguoi_dung nv_giao on cv.nguoi_giao_viec = nv_giao.id_nd 
@@ -482,24 +468,25 @@ class CongViecController extends Controller
         }
     }
 
+
     public function capnhat_congviec(Request $request,$id)
     {
                 $P_ID_CV_DA = $id;
-                $P_TEN_CV = $request->get('P_TEN_CV');;
+                $P_TEN_CV = $request->get('P_TEN_CV');
                 $P_NGAY_TIEP_NHAN = $request->get('P_NGAY_TIEP_NHAN');
                 $P_NGAY_GIAO_VIEC = $request->get('P_NGAY_GIAO_VIEC');
                 $P_NGAY_HOAN_THANH = $request->get("P_NGAY_HOAN_THANH");
                 $P_NGUOI_GIAO_VIEC = $request->get('P_NGUOI_GIAO_VIEC');
                 $P_TRANG_THAI = $request->get('P_TRANG_THAI');
-                $P_DO_UU_TIEN = $request->get('P_DO_UU_TIEN');
+                $P_DO_UU_TIEN = NULL;
                 $P_NOI_DUNG_CV = $request->get('P_NOI_DUNG_CV');
                 $P_NGAY_CAM_KET = $request->get("P_NGAY_CAM_KET"); 
-                $P_GIO_THUC_HIEN = 
-                $P_MA_JIRA = NULL; 
+                $P_GIO_THUC_HIEN =  $request->get("P_GIO_THUC_HIEN"); 
+                $P_MA_JIRA = $request->get("P_MA_JIRA"); ; 
                 $P_NGUOI_NHAN_VIEC = $request->get('P_NGUOI_NHAN_VIEC') == 'undefined'? NULL : $request->get('P_NGUOI_NHAN_VIEC'); 
                 $P_TIEN_DO = $request->get('P_TIEN_DO'); 
-                $P_GHI_CHU =   $request->get("P_GHI_CHU");; 
-                $P_LY_DO = NULL; 
+                $P_GHI_CHU =  $request->get("P_GHI_CHU"); ; 
+                $P_LY_DO = $request->get("P_LY_DO"); ; 
                 $P_THAM_DINH_TGIAN  =  NULL; 
                 $P_THAM_DINH_KHOI_LUONG = NULL; 
                 $P_THAM_DINH_CHAT_LUONG =  NULL; 
