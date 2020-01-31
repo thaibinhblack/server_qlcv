@@ -332,8 +332,6 @@ class CongViecController extends Controller
                 $P_NGUOI_YEU_CAU = $request->get('P_NGUOI_YEU_CAU') != 'undefined' ?  $request->get('P_NGUOI_YEU_CAU') : null; 
                 $P_ACTION = $request->get('P_ACTION');
                 $P_NGUOI_NHAP = $request->get('P_NGUOI_NHAP');
-                $P_TIME_NHAN_VIEC = $request->get('P_TIME_NHAN_VIEC');
-                $P_TIME_HOAN_THANH = $request->get('P_TIME_HOAN_THANH');
                 $result = $this->CallFunction($P_ID_CV_DA,
                 $P_TEN_CV ,
                 $P_NOI_DUNG_CV ,
@@ -357,9 +355,7 @@ class CongViecController extends Controller
                 $P_ACTION,
                 $P_TYPE,
                 $P_NGUOI_YEU_CAU,
-                $P_NGUOI_NHAP,
-                $P_TIME_NHAN_VIEC,
-                $P_TIME_HOAN_THANH);
+                $P_NGUOI_NHAP);
                 return response()->json([
                     'success' => true,
                     'message' => 'Thêm công việc thành công',
@@ -517,8 +513,6 @@ class CongViecController extends Controller
                 $P_ACTION = 2;
                 $P_TYPE = $request->get('P_TYPE');
                 $P_NGUOI_NHAP = null;
-                $P_TIME_NHAN_VIEC = $request->get('P_TIME_NHAN_VIEC');
-                $P_TIME_HOAN_THANH = $request->get('P_TIME_HOAN_THANH');
                 $result = $this->CallFunction($P_ID_CV_DA,
                     $P_TEN_CV ,
                     $P_NOI_DUNG_CV ,
@@ -543,8 +537,8 @@ class CongViecController extends Controller
                     $P_TYPE,
                     $P_NGUOI_YEU_CAU = NULL,
                     $P_NGUOI_NHAP,
-                    $P_TIME_NHAN_VIEC,
-                    $P_TIME_HOAN_THANH);
+                    null,
+                    null);
                 return response()->json([
                     'success' => true,
                     'message' => 'Cập công việc thành công',
