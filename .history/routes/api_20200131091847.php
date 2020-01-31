@@ -95,7 +95,6 @@ Route::get('bao-cao/{id}','CongViecController@get_baocao')->middleware('cors');
 Route::post('cong-viec/{id}/baocao','CongViecController@baocao')->middleware('cors');
 //FILE CÔNG VIỆC
 Route::post('file-cv','FileController@store')->middleware('cors');
-Route::get('file-cv/{id}','FileController@show')->middleware('cors');
 //cong việc dự án
 Route::post('cong-viec-da','CongViecController@chitiet')->middleware('cors');
 // loại công việc

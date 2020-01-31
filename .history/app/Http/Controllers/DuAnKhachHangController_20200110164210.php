@@ -102,8 +102,8 @@ class DuAnKhachHangController extends Controller
                 WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG AND DA_KH.id_du_an = $id_du_an AND DA_KH.trang_thai_du_an = TT_DAKH.id_trang_thai");
             return response()->json($du_an, 200);
            }
-            $du_an = DB::SELECT("SELECT DA_KH.*, DA.TEN_DU_AN, KH.TEN_KH, KH.ID_KHACH_HANG, TT_DAKH.ten_trang_thai  FROM TB_DU_AN_KH DA_KH, TB_DU_AN DA, TB_KH KH, TB_TRANG_THAI_DU_AN_KH TT_DAKH
-            WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG  AND DA_KH.trang_thai_du_an = TT_DAKH.id_trang_thai");
+            $du_an = DB::SELECT("SELECT DA_KH.*, DA.TEN_DU_AN, KH.TEN_KH, KH.ID_KHACH_HANG FROM TB_DU_AN_KH DA_KH, TB_DU_AN DA, TB_KH KH
+            WHERE DA_KH.ID_DU_AN = DA.ID_DU_AN AND DA_KH.ID_KHACH_HANG = KH.ID_KHACH_HANG");
             return response()->json($du_an, 200);
         }
     }

@@ -39,17 +39,17 @@ class CustomerController extends Controller
     {
         if($request->has('api_token'))
         {
-            //CHECK TOKEN ADN RULE
-            $customers = DB::select("SELECT * FROM TB_KH order by CREATED_AT DESC");
-            return response()->json([
-                'success' => true,
-                'message' => 'Danh sách khách hàng',
-                'results' => $customers
-            ], 200);
-            // $token = $request->get('api_token');
-            // $result = DB::select('SELECT  
-            // SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
-            // return response()->json($result, 200);
+            // //CHECK TOKEN ADN RULE
+            // $customers = DB::select("SELECT * FROM TB_KH order by CREATED_AT DESC");
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Danh sách khách hàng',
+            //     'results' => $customers
+            // ], 200);
+            $token = $request->get('api_token');
+            $result = DB::select('SELECT  
+            SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
+            return response()->json($result, 200);
         }
     }
 

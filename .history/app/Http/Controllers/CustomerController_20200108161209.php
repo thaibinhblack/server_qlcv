@@ -46,11 +46,8 @@ class CustomerController extends Controller
                 'message' => 'Danh sách khách hàng',
                 'results' => $customers
             ], 200);
-            // $token = $request->get('api_token');
-            // $result = DB::select('SELECT  
-            // SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
-            // return response()->json($result, 200);
         }
+        
     }
 
     /**
@@ -83,7 +80,6 @@ class CustomerController extends Controller
                     'result' => '',
                     'status' => 200
                 ], 200);
-            }
             // }
             //     $p_id_khach_hang = 0;
             //     $p_ten_kh = $request->get('TEN_KH');

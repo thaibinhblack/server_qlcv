@@ -1,0 +1,60 @@
+create or replace PROCEDURE "HGI_TKHS_TIEP_NHAN_THEO_CB" (P_CUR                 IN OUT SYS_REFCURSOR,
+                                     P_TU_NGAY             NVARCHAR2,
+                                     P_DEN_NGAY            NVARCHAR2,
+                                     P_MA_THU_TUC          NVARCHAR2,
+                                     P_MA_DON_VI           NVARCHAR2,
+                                     P_MA_CAN_BO           NUMBER,
+                                     P_START               NUMBER,
+                                     P_END                 NUMBER) AS
+    V_TONG_SO_MAU_TIN INT;
+
+  BEGIN
+      OPEN P_CUR FOR
+        SELECT *
+          FROM (SELECT ROWNUM            RNUM,
+                       V_TONG_SO_MAU_TIN AS TONG_SO_MAU_TIN,
+                       O.*,
+                       GET_TEN_GIAY_TO(O.MA_HO_SO) AS THANH_PHAN_HO_SO
+                  FROM (SELECT CASE
+                                 WHEN HOSO.MA_HO_SO_TAM IS NULL THEN
+                                  'NOP_HS_TRUC_TIEP'
+                                 ELSE
+                                  'NOP_HS_ONLINE'
+                               END AS HINH_THUC_NOP_HS,
+                               HOSO.*,
+
+                               DC.TEN_PHUONG_XA,
+                               DC.TEN_QUAN_HUYEN,
+                               DC.TEN_TINH_THANH,
+
+                               COUNT(1) OVER() AS V_TONG_SO_MAU_TIN
+                          FROM
+                               (SELECT PX.MA_PHUONG_XA,
+                                       PX.TEN_PHUONG_XA,
+                                       QH.TEN_QUAN_HUYEN,
+                                       TT.TEN_TINH_THANH
+                                  FROM DM_PHUONG_XA  PX,
+                                       DM_QUAN_HUYEN QH,
+                                       DM_TINH_THANH TT
+                                 WHERE PX.MA_QUAN_HUYEN = QH.MA_QUAN_HUYEN
+                                 AND QH.MA_TINH_THANH = TT.MA_TINH_THANH) DC,
+                                 (SELECT HS.*,B.TEN_THU_TUC,CB.TEN_CAN_BO FROM CB_CAN_BO CB,HS_HO_SO HS
+                                    JOIN TT_THU_TUC B ON HS.MA_THU_TUC = B.MA_THU_TUC
+                                    JOIN HS_CONG_VIEC_HO_SO HSCVHS ON HS.MA_CONG_VIEC_HIEN_TAI = HSCVHS.MA_CONG_VIEC_HO_SO
+                                    JOIN TT_CONG_VIEC_QTTT TTCVQTTT ON TTCVQTTT.MA_CONG_VIEC_QTTT = HSCVHS.MA_CONG_VIEC_QTTT
+                                    JOIN DM_LOAI_CONG_VIEC DMLCV ON DMLCV.MA_LOAI_CONG_VIEC = TTCVQTTT.MA_LOAI_CONG_VIEC
+                                    WHERE HSCVHS.TRANG_THAI_CONG_VIEC_HO_SO = 1
+                                    AND HS.TRANG_THAI_HO_SO = 0
+                                    AND (HSCVHS.MA_TO_CHUYEN_MON_THUC_HIEN IN (SELECT CBTCM.MA_TO_CHUYEN_MON FROM CB_THUOC_TO_CHUYEN_MON CBTCM WHERE CBTCM.MA_CAN_BO = CB.MA_CAN_BO AND CBTCM.DEN_NGAY IS NULL))
+                                    AND ((HSCVHS.MA_CAN_BO_THUC_HIEN IS NULL AND HSCVHS.CHON_CB_NHAN = 0) OR HSCVHS.MA_CAN_BO_THUC_HIEN = CB.MA_CAN_BO OR CB.MA_CAN_BO IN (SELECT CBN.MA_CAN_BO FROM HS_CAN_BO_NHAN CBN WHERE CBN.MA_CONG_VIEC_HO_SO =HSCVHS.MA_CONG_VIEC_HO_SO))
+                                    AND (P_MA_DON_VI IS NULL OR HSCVHS.MA_DON_VI_THUC_HIEN IN (SELECT CBDV.MA_DON_VI FROM CB_DON_VI CBDV WHERE CBDV.MA_DON_VI = P_MA_DON_VI))
+                                    AND (P_MA_THU_TUC IS NULL OR HS.MA_THU_TUC = P_MA_THU_TUC)
+                                    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10), 'DD/MM/YYYY') >=  TO_DATE(SUBSTR(P_TU_NGAY, 0, 10), 'DD/MM/YYYY'))
+                                    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10),'DD/MM/YYYY') <= TO_DATE(SUBSTR(P_DEN_NGAY, 0, 10), 'DD/MM/YYYY'))
+                                    AND CB.MA_CAN_BO = P_MA_CAN_BO
+                                  )HOSO
+                           WHERE HOSO.MA_PHUONG_XA_NGUOI_NOP = DC.MA_PHUONG_XA(+)
+                         ORDER BY HOSO.NGAY_GIO_TIEP_NHAN DESC,HOSO.SO_HO_SO DESC)O
+                 WHERE ROWNUM <= P_END)
+         WHERE RNUM >= P_START;
+  END;

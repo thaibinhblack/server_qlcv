@@ -1,0 +1,732 @@
+
+
+// sửa file view_thongkexuly thành 
+<?php
+use Nth\Helper\Html;
+use Model\Entity;
+if (!defined('SERVER_ROOT')) {
+    exit('No direct script access allowed');
+}
+//header
+$this->template->title = 'Thống kê hồ sơ đã xử lý';
+$this->template->pageName = 'Thống kê hồ sơ đã xử lý';
+$this->template->display('admin.header.php');
+//$this->template->display('admin.optimize-header.php');
+echo $this->hidden('controller', $this->get_controller_url());
+echo $this->hidden('hdn_dsp_single_method', 'dsp_indanhsach');
+$TONG_SO_MAU_TIN = 0;
+$SS_MA_CO_QUAN=$arr_filter['P_MA_CO_QUAN'];
+$TEN_CO_QUAN = Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN');
+$MA_CAN_BO = Session::get(TIEP_DAU_NGU_SESSION.'MA_CAN_BO');
+//$v_TIEP_NHAN_TU_NGAY = $arr_filter['P_TIEP_NHAN_TU_NGAY'];
+//$v_TIEP_NHAN_DEN_NGAY = $arr_filter['P_TIEP_NHAN_DEN_NGAY'];
+
+echo $this->hidden('hdn_tiepnhan_tungay', '01/' . date('m/Y'));
+echo $this->hidden('hdn_tiepnhan_denngay', date('d/m/Y'));
+
+?>
+<style type="text/css">
+    /*LỢI 2 style này dùng để ẩn menu phân trang dataTable*/
+    /*.dataTables_info{*/
+    /*opacity: 0;*/
+    /*}*/
+    /*.pagination {*/
+    /*opacity: 0 !important;*/
+    /*}*/
+    /*#dtBasicExample_length{*/
+    /*visibility: hidden;*/
+    /*}*/
+    .label-fill-out, .label-fill-out-sm{font-size: 11px;position: relative;top:-8px;margin-right: 5px;}
+    .label-fill-out-sm{font-size: 9px;top:-5px;margin-right: 2px;}
+    .page-header{font-size:18px;margin-top:25px}
+    .custom-bootstrap-select .dropdown-menu{width: 100%}
+    .custom-bootstrap-select .dropdown-menu li a{white-space: normal}
+    #_table_sort th{
+        vertical-align: middle;
+    }
+</style>
+<form name="frmMain" id="frmMain" action="" method="POST" enctype="multipart/form-data">
+    <?php
+    echo $this->hidden('controller', $this->get_controller_url());
+    $v_row = 0;
+    ?>
+    <div class="box box-solid" id="filter">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                    <!-- <input type="hidden" name="cbx_LOAI_THONG_KE" value="DSHS_CHUYEN_LD_SO_TNMT"> -->
+                        <!-- <label>Loại thống kê</label> -->
+<!-- <select name="cbx_LOAI_THONG_KE" id="cbx_LOAI_THONG_KE" class="form-control" required="required">
+    <option value="-1" <?php if($arr_filter['P_LOAI_THONG_KE']==-1) echo"selected='selected'" ?>>Không</option>
+    <option value="DSHS_CHUYEN_LD_SO_TNMT" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_CHUYEN_LD_SO_TNMT') echo"selected='selected'" ?>>Danh sách hồ sơ đã chuyển lên cho Lãnh đạo Sở TN&MT chờ ký duyệt</option> -->
+    <!-- <option value="DSHS_DUOC_DUYET_BOI_LD_SO_TNMT" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_DUOC_DUYET_BOI_LD_SO_TNMT') echo"selected='selected'" ?>>Danh sách hồ sơ Lãnh đạo Sở TN&MT đã ký duyệt</option>
+    <option value="DSHS_DUOC_DUYET_BOI_LD_SO_TNMT_TH" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_DUOC_DUYET_BOI_LD_SO_TNMT_TH') echo"selected='selected'" ?>>Danh sách hồ sơ Lãnh đạo Sở TN&MT đã ký duyệt bị trễ hẹn</option>
+    <option value="DSHS_DUOC_DUYET_BOI_LD_SO_TNMT_DH" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_DUOC_DUYET_BOI_LD_SO_TNMT_DH') echo"selected='selected'" ?>>Danh sách hồ sơ Lãnh đạo Sở TN&MT đã ký duyệt đúng hẹn</option>
+    <option value="DSHS_TRA_LAI_BOI_LD_SO_TNMT" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_TRA_LAI_BOI_LD_SO_TNMT') echo"selected='selected'" ?>>Danh sách hồ sơ Lãnh đạo Sở TN&MT trả thẩm định lại</option>
+    <option value="DSHS_CN_CHUYEN_PHONG_DKGCN" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_CN_CHUYEN_PHONG_DKGCN') echo"selected='selected'" ?>>Danh sách hồ sơ còn tồn của các Chi nhánh VPĐKĐĐ đã chuyển lên cho Phòng ĐK và cấp GCN (DSHS chưa phân công thẩm định)</option>
+    <option value="DSHS_TRA_LAI_PHONG_DKGCN" <?php if($arr_filter['P_LOAI_THONG_KE']=='DSHS_TRA_LAI_PHONG_DKGCN') echo"selected='selected'" ?>>Danh sách hồ sơ đã trả lại cho Phòng ĐK và cấp GCN</option> -->
+<!-- </select> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Tiếp nhận từ ngày</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" onclick="DoCal('txt_TIEP_NHAN_TU_NGAY')"><i class="fa fa-calendar"></i></div>
+                            <?php if (empty($arr_filter['P_TIEP_NHAN_TU_NGAY'])): ?>
+                                <input class="form-control date" type="text" id="txt_TIEP_NHAN_TU_NGAY" name="txt_TIEP_NHAN_TU_NGAY" valid-datatype="DATE"
+                                       value="<?php echo date('d/m/Y'); ?>">
+                            <?php else: ?>
+                                <input class="form-control date" type="text" id="txt_TIEP_NHAN_TU_NGAY" name="txt_TIEP_NHAN_TU_NGAY" valid-datatype="DATE"
+                                       value="<?php echo $arr_filter['P_TIEP_NHAN_TU_NGAY']; ?>">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Tiếp nhận đến ngày</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" onclick="DoCal('txt_TIEP_NHAN_DEN_NGAY')"><i class="fa fa-calendar"></i></div>
+                            <?php if (empty($arr_filter['P_TIEP_NHAN_DEN_NGAY'])): ?>
+                                <input class="form-control date" type="text" id="txt_TIEP_NHAN_DEN_NGAY" name="txt_TIEP_NHAN_DEN_NGAY" valid-datatype="DATE"
+                                       value="<?php echo date('d/m/Y'); ?>">
+                            <?php else: ?>
+                                <input class="form-control date" type="text" id="txt_TIEP_NHAN_DEN_NGAY" name="txt_TIEP_NHAN_DEN_NGAY" valid-datatype="DATE"
+                                       value="<?php echo $arr_filter['P_TIEP_NHAN_DEN_NGAY']; ?>">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- 03/11/2019 GIA THÊM -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>LĐ/CB phê duyệt/chuyển/trả</label>
+                        <select class="form-control" multiple="multiple" data-none-selected-text="Tất cả" data-live-search="true" data-actions-box='true'
+                                id='cbo_MA_CAN_BO_CHUYEN_DEN' name="cbo_MA_CAN_BO_CHUYEN_DEN[]">
+                                    <?php
+                                        $htmloptionModel = $this->model->call('htmloption');
+                                        echo $htmloptionModel->HGI_SELECT_CAN_BO_CHUYEN_DEN($arr_filter['P_MA_CAN_BO_CHUYEN_DEN'], false);
+                                    ?>
+                        </select>
+                    </div>
+                </div>
+                <!-- END 03/11/2019 GIA THÊM -->
+                <!-- 04/11/2019 GIA THÊM -->
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>LĐ/CB thực hiện</label>
+                        <select class="form-control" multiple="multiple" data-none-selected-text="Chưa chọn" data-live-search="true" data-actions-box='true'
+                                id='cbo_MA_CB_DANG_THUC_HIEN' name="cbo_MA_CB_DANG_THUC_HIEN[]">
+                                    <?php
+                                    $htmloptionModel = $this->model->call('htmloption');
+                                    echo $htmloptionModel->HGI_SELECT_CB_DANG_THUC_HIEN_TK($arr_filter['P_MA_CB_DANG_THUC_HIEN'], false);
+                                    ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">
+                <span id="filter_action" class="btn btn-flat btn-primary" onclick="startFilter()"><i class="fa fa-search"></i> Lọc danh sách</span>
+                <!-- <span onclick="in_onclick();" class="btn btn-flat btn-default"><i class="fa fa-print"></i> In danh sách</span> -->
+                <span class="btn-group" >
+                   <button type="button" class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown">
+                       <span>Xuất Excel</span>
+                       <span  class="caret"></span>
+                       <span class="sr-only">Toggle Dropdown</span>
+                   </button>
+                   <ul class="dropdown-menu simple" role="menu">
+                       <!-- <li><a href="javascript:void(0)" title="" onclick="xuat_excel()"><i class="fa fa-download"></i> Định dạng xlsx</a></li> -->
+                       <li><a href="javascript:void(0)" title="" onclick="xuat_excel_xls()"><i class="fa fa-download"></i> Định dạng xls</a></li>
+                   </ul>
+               </span>
+            </h3>
+        </div>
+        <div class="box-body no-padding" id="thongtin_taikhoan_congdan" style="overflow-x:auto;">
+        <table id="_table_sort" class="table table-bordered table-striped table-hover" width="100%" cellpadding="0">
+                <thead style="background: #3c8dbc">
+                    <tr>
+                        <th scope="col" style="text-align:center;width:3%;">STT</th>
+                        <th scope="col" style="text-align:center;">ĐƠN VỊ THỰC HIỆN</th>
+                        <th scope="col" style="text-align:center;">HỒ SƠ ĐĂNG KÝ</th>
+                        <th scope="col" style="text-align:center;">HỒ SƠ ĐÚNG HẸN</th>
+                        <th scope="col" style="text-align:center;">TRỄ HẸN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $stt = 0;            // var_dump($arr_ds_hs);
+                    $total_hs_dk = 0;
+                    $total_hs_dh = 0;
+                    $total_hs_th = 0;
+            foreach ($arr_ds_hs as $arr) {
+                $TEN_DON_VI_NHAP_HO_SO =$arr['TEN_DON_VI_NHAP_HO_SO'];
+                $TONG_HS = $arr["SL_HS"];
+                
+                $HS_TH = $arr["SL_TH"];
+                $total_hs_th += $HS_TH;
+                $HS_DH = $arr["SL_DH"];
+                $total_hs_dh += $HS_DH;
+                $total_hs_dk += $TONG_HS + $HS_TH + $HS_DH;
+                $stt++;
+                ?>
+            <tr>
+                <td style="text-align:center;"><?php echo $stt ?></td>
+                <td><?php echo $TEN_DON_VI_NHAP_HO_SO  ?></td>
+                <td><?php echo $TONG_HS + $HS_TH + $HS_DH; ?></td>
+                <td><?php echo $HS_TH; ?></td>
+                <td><?php echo $HS_DH; ?></td>
+            </tr>
+            
+            <!-- ------------CỘT 7 - TÌNH TRẠNG XỬ LÝ -------------->
+    
+
+        <?php
+            }
+        ?>       
+        <tr>
+                <td></td>
+                <td align-center>Tổng cộng</td>
+                <td><?php echo $total_hs_dk ?></td>
+                <td><?php echo $total_hs_th ?></td>
+                <td><?php echo $total_hs_dh ?></td>
+            </tr>  
+         </tbody>
+     </table>
+        </div>
+    </div>
+</form>
+    <script type="text/javascript">
+        // Basic example
+        $(document).ready(function () {
+        /*        $('#_table_sort').DataTable({
+                "ordering": true // false to disable sorting (or any other option)
+                //, "bPaginate": false
+                //     .dataTables_length label { display:none;}
+                // "lengthChange": false
+                // "bLengthMenu" : false
+                , "aoColumnDefs": [
+                    {
+                        "mRender": function ( data, type, row ) {
+                            // If display or filter data is requested, format the date
+                            if ( data !== "" && (type === 'display' || type === 'filter') ) {
+                                var d = new Date( data * 1000 );         
+                                var yy = d.getFullYear();
+                                var mm = d.getMonth() + 1;
+                                var dd = d.getDate();
+                                var hh = d.getHours();
+                                var mi = d.getMinutes();
+                                var ss = d.getSeconds();
+                                return [(dd > 9 ? "" : "0") + dd] + '/' 
+                                    + [(mm > 9 ? "" : "0") + mm] + '/' 
+                                    + yy + " "
+                                    + [(hh > 9 ? "" : "0") + hh] + ':' 
+                                    + [(mi > 9 ? "" : "0") + mi] + ':' 
+                                    + [(ss > 9 ? "" : "0") + ss];
+                            }
+
+                            // Otherwise the data type requested (`type`) is type detection or
+                            // sorting data, for which we want to use the integer, so just return
+                            // that, unaltered
+                            return data;
+                        },
+                        "aTargets": [8,9,10,11,12]
+                    }
+                ]
+            });
+            $('.dataTables_length').addClass('bs-select');*/
+            
+        /*var d = new Date();
+            var ngay_hientai = parseDate(d.getDate()+"/"+(d.getMonth() + 1)+"/"+d.getFullYear()).getTime();
+
+            $('.date').on('change', function () {
+            var tiepnhan_tungay = parseDate($('#txt_TIEP_NHAN_TU_NGAY').val()).getTime(),
+                tiepnhan_denngay = parseDate($('#txt_TIEP_NHAN_DEN_NGAY').val()).getTime();
+
+                if(tiepnhan_tungay > ngay_hientai) {
+                    alert('Vui lòng chọn tiếp nhận từ ngày nhỏ hơn hoặc bằng ngày hiện tại');
+                    $('#txt_TIEP_NHAN_TU_NGAY').val($('#hdn_tiepnhan_tungay').val());
+                }
+                if(tiepnhan_tungay > tiepnhan_denngay) {
+                    alert('Vui lòng chọn tiếp nhận từ ngày nhỏ hơn tiếp nhận đến ngày');
+                    $('#txt_TIEP_NHAN_TU_NGAY').val($('#hdn_tiepnhan_tungay').val());
+                    $('#txt_TIEP_NHAN_DEN_NGAY').val($('#hdn_tiepnhan_denngay').val());
+                }
+            });*/
+
+        $("select[name='sel_rows_per_page'] option[value='1000']").remove();
+
+            // Khôi TGG : 07/08/2019 : Sổ theo dõi hồ sơ không load được
+        $('#filter .form-control[type=text]').on('keypress', function (e) {
+            if (e.which == 13) {
+                startFilter();
+            }
+        });
+        $('#cbx_MA_LINH_VUC_THU_TUC').selectpicker({
+            selectAllText: 'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn',
+        });
+        $('#cbx_MA_THU_TUC').selectpicker({
+            selectAllText: 'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbx_MA_QTTT').selectpicker({
+            selectAllText: 'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbx_MA_CVQT').selectpicker({
+            selectAllText: 'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbo_MA_DON_VI_TIEP_NHAN').selectpicker({
+            selectAllText:'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbx_MA_LINH_VUC_THU_TUC').change(function(e) {
+            $('#frmMain').attr('action', '').submit();
+        });
+        $('#cbx_MA_LINH_VUC_THU_TUC').selectpicker('val', 'DD');
+        // $('#cbx_MA_LINH_VUC_THU_TUC').selectpicker('render');
+        $('#cbx_MA_THU_TUC').change(function(e) {
+            $('#frmMain').attr('action', '').submit();
+        });
+        // $('#cbx_MA_THU_TUC').selectpicker('val', '17348');
+        
+        $('#cbx_MA_QTTT').change(function(e) {
+            $('#frmMain').attr('action', '').submit();
+        });
+        // $('#cbx_MA_QTTT').selectpicker('val', '14802');
+
+        //03/11/2019 GIA THÊM
+        var ma_cb = <?php echo $MA_CAN_BO; ?>;
+        $('#cbo_MA_CAN_BO_CHUYEN_DEN').selectpicker({
+            selectAllText:'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbo_MA_CAN_BO_CHUYEN_DEN').selectpicker('val', ma_cb);
+        // $('#cbo_MA_CAN_BO_CHUYEN_DEN').selectpicker('refresh');
+        //03/11/2019 GIA THÊM
+        //04/11/2019 GIA THÊM
+        $('#cbo_MA_CB_DANG_THUC_HIEN').selectpicker({
+            selectAllText:'Chọn tất cả',
+            deselectAllText: 'Bỏ chọn'
+        });
+        $('#cbo_MA_CB_DANG_THUC_HIEN').selectpicker('val', ma_cb);
+        //04/11/2019 GIA THÊM
+        $('.date').on('change onblur', function () {
+            var tiepnhan_tungay = checkDate($('#txt_TIEP_NHAN_TU_NGAY').val()),
+                tiepnhan_denngay = checkDate($('#txt_TIEP_NHAN_DEN_NGAY').val());
+            if(tiepnhan_tungay && tiepnhan_denngay){
+                if (tiepnhan_tungay > tiepnhan_denngay) {
+                    alert('Vui lòng chọn từ ngày nhỏ hơn đến ngày!');
+                    $('#txt_TIEP_NHAN_TU_NGAY').val($('#hdn_tiepnhan_tungay').val());
+                    $('#txt_TIEP_NHAN_DEN_NGAY').val($('#hdn_tiepnhan_denngay').val());
+                }
+            }else{
+                alert("Dữ liệu ngày tháng năm không hợp lệ");
+            }
+        });
+        });
+        //12/11/2019 GIA THÊM LOẠI THỐNG KÊ
+        $('#cbx_LOAI_THONG_KE').change(function(e) {
+            $('#frmMain').attr('action', '').submit();
+            // functin1();
+        });
+        check_func_loai_tk();
+        function check_func_loai_tk(){
+            var loaitk = <?php echo "'".$arr_filter['P_LOAI_THONG_KE']."'"; ?>;
+            console.log("loaitk: " + loaitk);
+            if(loaitk=='-1')
+            {
+                // $('#cbo_MA_DON_VI_TIEP_NHAN').prop( "disabled", true );
+                $('#cbx_TRANG_THAI_HO_SO').prop( "disabled", true );
+                // $('#cbo_MA_CAN_BO_CHUYEN_DEN').prop( "disabled", true );
+                // $('#cbo_MA_CB_DANG_THUC_HIEN').prop( "disabled", true );
+            }
+            if(loaitk=='DSHS_CHUYEN_LD_SO_TNMT')
+            {
+                // $('#cbo_MA_DON_VI_TIEP_NHAN').prop( "disabled", true );
+                $('#cbx_MA_CVQT').prop( "disabled", true );
+                $('#cbx_TRANG_THAI_HO_SO').prop( "disabled", true );
+                // $('#cbo_MA_CAN_BO_CHUYEN_DEN').prop( "disabled", true );
+            }
+            if(loaitk=='DSHS_DUOC_DUYET_BOI_LD_SO_TNMT' || loaitk=='DSHS_TRA_LAI_BOI_LD_SO_TNMT')
+            {
+                // $('#cbo_MA_DON_VI_TIEP_NHAN').prop( "disabled", true );
+                $('#cbx_MA_CVQT').prop( "disabled", true );
+                $('#cbx_TRANG_THAI_HO_SO').prop( "disabled", true );
+                // $('#cbo_MA_CB_DANG_THUC_HIEN').prop( "disabled", true );
+            }
+            if(loaitk=='DSHS_CN_CHUYEN_PHONG_DKGCN' || loaitk=='DSHS_TRA_LAI_PHONG_DKGCN' || loaitk=='DSHS_PHONG_DKGCN_NHAN_LAI')
+            {
+                // $('#cbo_MA_DON_VI_TIEP_NHAN').prop( "disabled", true );
+                $('#cbx_MA_CVQT').prop( "disabled", true );
+                $('#cbx_TRANG_THAI_HO_SO').prop( "disabled", true );
+                // $('#cbo_MA_CB_DANG_THUC_HIEN').prop( "disabled", true );
+                // $('#cbo_MA_CAN_BO_CHUYEN_DEN').prop( "disabled", true );
+            }
+        }
+        //END 12/11/2019 GIA THÊM LOẠI THỐNG KÊ
+        // $(document).ready(function () {
+        //     // var d = new Date();
+        //     // var ngay_hientai = parseDate(d.getDate()+"/"+(d.getMonth() + 1)+"/"+d.getFullYear()).getTime();
+        //
+        //     $('.date').on('change keyup', function () {
+        //         var tiepnhan_tungay = parseDate($('#txt_TIEP_NHAN_TU_NGAY').val()).getTime(),
+        //             tiepnhan_denngay = parseDate($('#txt_TIEP_NHAN_DEN_NGAY').val()).getTime();
+        //
+        //         if(tiepnhan_tungay > tiepnhan_denngay) {
+        //             alert('Vui lòng chọn tiếp nhận từ ngày nhỏ hơn tiếp nhận đến ngày');
+        //             $('#txt_TIEP_NHAN_TU_NGAY').val($('#hdn_tiepnhan_tungay').val());
+        //             $('#txt_TIEP_NHAN_DEN_NGAY').val($('#hdn_tiepnhan_denngay').val());
+        //         }
+        //     });
+        // });
+
+        
+        // chuyển thành nút để dữ liệu lớn event change không làm chậm hệ thống
+        // $("#thongKe").click(function(){
+        //     thongke();
+        // });
+        function checkDate(strDate) {
+            var comp = strDate.split('/')
+            var d = parseInt(comp[0], 10)
+            var m = parseInt(comp[1], 10)
+            var y = parseInt(comp[2], 10)
+            var date = new Date(y,m-1,d);
+            if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d && y > 1990) {
+                return date;
+            }
+            return false;
+        }
+        function startFilter(action) {
+            var tiepnhan_tungay = checkDate($('#txt_TIEP_NHAN_TU_NGAY').val()),
+                tiepnhan_denngay = checkDate($('#txt_TIEP_NHAN_DEN_NGAY').val());
+            if(tiepnhan_tungay && tiepnhan_denngay){
+                if (tiepnhan_tungay > tiepnhan_denngay) {
+                    alert('Vui lòng chọn từ ngày nhỏ hơn đến ngày!');
+                    $('#txt_TIEP_NHAN_TU_NGAY').val($('#hdn_tiepnhan_tungay').val());
+                    $('#txt_TIEP_NHAN_DEN_NGAY').val($('#hdn_tiepnhan_denngay').val());
+                }
+                else
+                {
+                    // alert(action)
+                    console.log(action)
+                    action = action || '';
+                    $('#filter').FormHelper({
+                        groupClass: 'form-control'
+                    });
+                    if ($('#filter').FormHelper('validate')) {
+                        $('#frmMain').attr('action', action).submit();
+                    }
+                }
+            }
+            else
+            {
+                alert("Dữ liệu ngày tháng năm không hợp lệ");
+            }
+        }
+        function getRequestFilter() {
+            return request.param({
+                tungay: $('#txt_TIEP_NHAN_TU_NGAY').val(),
+                denngay: $('#txt_TIEP_NHAN_DEN_NGAY').val(),
+                lv: $('#cbx_MA_LINH_VUC_THU_TUC').val(),
+                tlv: $('#cbx_MA_LINH_VUC_THU_TUC :selected').text(),
+                dv: $('#cbo_MA_DON_VI_TIEP_NHAN').val(),
+                tdv: $('#cbo_MA_DON_VI_TIEP_NHAN :selected').text(),
+                tt: $('#cbx_MA_THU_TUC').val(),
+                ttt: $('#cbx_MA_THU_TUC :selected').text(),
+                qttt: $('#cbx_MA_QTTT').val(),
+                tqttt: $('#cbx_MA_QTTT :selected').text(),
+                cv: $('#cbx_MA_CVQT').val(),
+                tcv: $('#cbx_MA_CVQT :selected').text(),
+                tths: $('#cbx_TRANG_THAI_HO_SO').val(),
+                //03/11/2019 GIA THÊM
+                cbcd: $('#cbx_MA_CAN_BO_CHUYEN_DEN').val(),
+                tcbcd: $('#cbx_MA_CAN_BO_CHUYEN_DEN :selected').text(),
+                cbth: $('#cbo_MA_CB_DANG_THUC_HIEN').val(),
+                tcbth: $('#cbo_MA_CB_DANG_THUC_HIEN :selected').text(),
+                ltk: $('#cbx_LOAI_THONG_KE').val(),
+                tltk: $('#cbx_LOAI_THONG_KE :selected').text()
+                //END 03/11/2019 GIA THÊM
+            }, false);
+        }
+        function xuat_excel() {
+            window.location.href = controller_url + 'xuat_excel_02?' + getRequestFilter();
+        }
+
+        function bc_excel() {
+            window.location.href = controller_url + 'bc_excel?' + getRequestFilter();
+        }
+
+        function bc_excel_xls(){
+            window.location.href = controller_url + 'bc_excel_xls?' + getRequestFilter();
+        }
+
+        function xuat_excel_xls(){
+            window.location.href = controller_url + 'xuat_excel_xls?' + 
+            // console.dir(getRequestFilter());
+            getRequestFilter();
+        }
+
+        function in_onclick() {
+            var url = controller_url + 'indshosotiepnhan?' + getRequestFilter();
+            console.log(url);
+            showPopWin(url, 1400, 1000, null);
+        }
+
+        //function printDiv(divID) {
+        //    hide_sort();
+        //    // var tungay  = $('#txt_TU_NGAY').val();
+        //    // var denngay = $('#txt_DEN_NGAY').val();
+        //    var tungay = $('#txt_TIEP_NHAN_TU_NGAY').val();
+        //    var denngay = $('#txt_TIEP_NHAN_DEN_NGAY').val();
+        //    //Get the HTML of div
+        //    $("#" + divID).find("a").each(function () {
+        //        var linkText = $(this).text();
+        //        $(this).before(linkText);
+        //        $(this).remove();
+        //    });
+        //    var divElements = document.getElementById(divID).innerHTML;
+        //    // console.log(divElements);
+        //    //Get the HTML of whole page
+        //    var oldPage = document.body.innerHTML;
+        //
+        //    //Reset the page's HTML with div's HTML only
+        //    document.body.innerHTML =
+        //        "<html><head><title></title></head><body><style>.dataTables_filter{opacity:0;}#_table_sort_length{opacity:0;}.dataTables_info{opacity:0;}</style><div style='float:left;text-align:center;text-transform: uppercase'>UBND TỈNH  <?php //echo $this->model->hososingle->getTenTinhThanh();?>//<br/><b><?php //echo $TEN_CO_QUAN;?>//</b><br/><div style='margin-top:-15px;'>___________</div></div><div style='float:right;text-align:center;margin-right:15%;margin-bottom:30px;font-weight:bold;'>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br/>Độc lập - Tự do - Hạnh phúc<br/><div style='margin-top:-15px;'>_________________</div></div><div style='color:#f03;font-weight:bold;font-size:16px;text-align:center;clear:both;'>SỔ THEO DÕI</div><br/><div style='color: blue;text-align:center;font-size:14px;margin-bottom:25px;margin-top:-10px;text-transform: uppercase;font-weight:bold'>từ ngày " + tungay + " đến ngày "+ denngay + "</div>" +
+        //        divElements + "<div style='margin-left:80%;margin-top:20px;font-weight:bold'>Người lập</div></body>";
+        //    //an khi in
+        //    //Print Page
+        //    window.print();
+        //    //Restore orignal HTML
+        //    document.body.innerHTML = oldPage;
+        //    startFilter();
+        //}
+
+    </script>
+<?php
+$this->template->display('admin.footer.php');
+
+
+
+// chỉnh sửa file view_xuatexcel thành
+
+<?php
+use Model\Entity;
+$s = array(
+	'exportFileName'=>'Export_'.date('d_m_Y'),
+	'columnWriteStart'=>'B',
+	'rowWriteStart'=>2,
+	'rowWriteEnd'=>NULL,
+	'defaultStyle'=>array(
+		'font'=>array(
+			'size'=>13,
+			'name'=>'Times New Roman',
+		),
+	),
+	'fields'=>array(
+		array(
+			'label'=>'STT',
+			'columnWidth'=>6
+		),
+		array(
+			'label'=>'ĐƠN VỊ THỰC HIỆN',
+			'columnWidth'=>50,
+			'formatCode'=>'0'
+		),
+		array(
+			'label'=>'HỒ SƠ ĐĂNG KÝ',
+			'columnWidth'=>25
+		),
+		array(
+			'label'=>'HỒ SƠ ĐÚNG HẸN',
+			'columnWidth'=>25
+		),
+		array(
+			'label'=>'HỒ SƠ TRỄ HẸN',
+			'columnWidth'=>25,
+			'formatCode'=>'###0'
+		)
+	)
+);
+$objPHPExcel = new PHPExcel();
+$MC_TKPackage = ora::callPackage('MC_TK');
+if(!empty($arr_ds_hs)){
+	$objPHPExcel->getDefaultStyle()->applyFromArray($s['defaultStyle']);
+	$objWorkSheet = $objPHPExcel->getSheet(0);
+	$objWorkSheet->mergeCells('B2:D2');
+	//$objWorkSheet->setCellValue('B2', nth::upper(Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN')));
+    $TEN_CQ =  Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN');
+    $objWorkSheet->setCellValue('B2', nth::upper(Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN')));
+
+	$objWorkSheet->getStyle('B2:D2')->applyFromArray(array(
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	$objWorkSheet->mergeCells('B3:D3');
+	$objWorkSheet->setCellValue('B3', 'VĂN PHÒNG ĐĂNG KÝ ĐẤT ĐAI');
+	$objWorkSheet->getStyle('B3:D4')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+	
+	$objWorkSheet->mergeCells('E2:F2');
+	$objWorkSheet->setCellValue('E2', 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM');
+	$objWorkSheet->mergeCells('E3:F3');
+	$objWorkSheet->setCellValue('E3', 'Độc lập - Tự do - Hạnh phúc');
+	$objWorkSheet->getStyle('E2:F3')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	$objWorkSheet->mergeCells('B7:F7');
+	$objWorkSheet->setCellValue('B7', 'THỐNG KÊ HỒ SƠ ĐÃ XỬ LÝ');
+	$objWorkSheet->getStyle('B7:F7')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+			'size'=>16,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	$objWorkSheet->getStyle('B9:F9')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+			'size'=>13,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		)
+	));
+	
+	$row = $s['rowWriteStart'] + 7;
+	$column = $s['columnWriteStart'];
+	$cntField = count($s['fields']);
+	for($j=0; $j<$cntField; $j++){
+		$field = $s['fields'][$j];
+		if(empty($field['group'])){
+			$objWorkSheet->mergeCells($column.$row.':'.$column.($row+1));
+			$objWorkSheet->setCellValue($column.$row, $field['label']);
+			$objWorkSheet->getColumnDimension($column)->setWidth($field['columnWidth']);	
+		} else {
+			$subColumm = $column;
+			$cntSubField = count($field['group']);
+			for($i=0; $i<$cntSubField; $i++){
+				$subField = $field['group'][$i];
+				$objWorkSheet->setCellValue($subColumm.($row+1), $subField['label']);
+				$objWorkSheet->getColumnDimension($subColumm)->setWidth($subField['columnWidth']);
+				if($i<$cntSubField-1){
+					$subColumm++;	
+				}
+			}	
+			$objWorkSheet->mergeCells($column.$row.':'.$subColumm.$row);
+			$objWorkSheet->setCellValue($column.$row, $field['label']);
+			$objWorkSheet->getStyle($column.$row.':'.$subColumm.$row)->applyFromArray(array(
+				'alignment'=>array(
+					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				)
+			));
+			$column = $subColumm;
+		}
+		if($j<$cntField-1){
+			$column++;
+		}
+	}
+	
+	$row = $s['rowWriteStart'] + 9;
+	$cntSTD = count($arr_ds_hs);
+	// var_dump($arr_ds_hs);
+	$cntField = count($s['fields']);
+	$total_SL_HS = 0;
+	$total_SL_DH = 0;
+	$total_SL_TH = 0;
+	for($i=0; $i<$cntSTD; $i++){
+		$arr = $arr_ds_hs[$i];
+		$TEN_DON_VI_NHAP_HO_SO = $arr['TEN_DON_VI_NHAP_HO_SO'];
+		$SL_HS = $arr['SL_HS'] + $arr['SL_TH'] + $arr['SL_DH'];
+		$SL_DH = $arr['SL_DH'];
+		$SL_TH = $arr['SL_TH'];
+		$total_SL_HS += $SL_HS;
+		$total_SL_DH += $SL_DH;
+		$total_SL_TH += $SL_TH;
+		
+		$rowData = array(
+			$i+1,
+			$TEN_DON_VI_NHAP_HO_SO,
+			$SL_HS,
+			$SL_DH,
+			$SL_TH
+		);
+		$column = $s['columnWriteStart'];
+		$k=0;
+		for($j=0; $j<$cntField; $j++){
+			$field = $s['fields'][$j];
+			if(isset($field['formatCode'])){
+				$objWorkSheet->getStyle($column.$row)->getNumberFormat()->setFormatCode($field['formatCode']);
+			}
+			if(empty($field['group'])){
+				$objWorkSheet->setCellValue($column.$row, $rowData[$k]);
+			} else {
+				$cntSubField = count($field['group']);
+				for($l=0; $l<$cntSubField; $l++){
+					$objWorkSheet->setCellValue($column.$row, $rowData[$k]);
+					if($l<$cntSubField-1){
+						$k++;
+						$column++;	
+					}
+				}
+			}
+			if($j<$cntField-1){
+				$k++;
+				$column++;
+			}
+		}
+		$row++;
+	}
+	
+		$objWorkSheet->setCellValue("C$row", 'TỔNG HỒ SƠ');
+		$objWorkSheet->setCellValue("D$row", $total_SL_HS);
+		$objWorkSheet->setCellValue("E$row", $total_SL_DH);
+		$objWorkSheet->setCellValue("F$row", $total_SL_TH);
+		$objWorkSheet->getStyle("C$row:F$row")->applyFromArray(array(
+			'font'=>array(
+				'bold'=>true,
+			),
+			'alignment'=>array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			)
+		));
+        $objWorkSheet->getStyle("B9:F$row")->getAlignment()->setWrapText(true); 
+        $objWorkSheet->getStyle("B9:F$row")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+}
+// Redirect output to a client’s web browser (Excel5)
+ob_clean();
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="'.$s['exportFileName'].'.xls"');
+header('Cache-Control: max-age=0');
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+$objWriter->save('php://output');

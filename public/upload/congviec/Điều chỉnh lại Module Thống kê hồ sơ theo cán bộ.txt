@@ -1,0 +1,98 @@
+// ORACLE
+Tạo PROCEDURE "HGI_TK_HS_THEO_CAN_BO_V2"
+
+create or replace PROCEDURE HGI_TK_HS_THEO_CAN_BO_V2 (P_CUR IN OUT SYS_REFCURSOR,
+    P_DEN_NGAY NVARCHAR2,
+    P_TU_NGAY NVARCHAR2,
+    P_MA_DON_VI NVARCHAR2
+) IS
+BEGIN
+OPEN P_CUR FOR
+    SELECT   CB.ten_can_bo, CB.ma_can_bo, CB.tai_khoan , count(HS.ma_can_bo_tiep_nhan) as TONG_SO  FROM HS_HO_SO HS
+    JOIN HS_CONG_VIEC_HO_SO HSCVHS ON HS.MA_CONG_VIEC_HIEN_TAI = HSCVHS.MA_CONG_VIEC_HO_SO,
+    CB_CAN_BO CB 
+    where HS.ma_can_bo_tiep_nhan = CB.ma_can_bo 
+    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10), 'DD/MM/YYYY') >=  TO_DATE(SUBSTR(P_TU_NGAY, 0, 10), 'DD/MM/YYYY'))
+    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10),'DD/MM/YYYY') <= TO_DATE(SUBSTR(P_DEN_NGAY, 0, 10), 'DD/MM/YYYY'))
+    AND (P_MA_DON_VI IS NULL OR HSCVHS.MA_DON_VI_THUC_HIEN IN (SELECT CBDV.MA_DON_VI FROM CB_DON_VI CBDV WHERE CBDV.MA_DON_VI = P_MA_DON_VI))
+    GROUP BY  HS.ma_can_bo_tiep_nhan, CB.ten_can_bo, CB.tai_khoan, CB.ma_can_bo
+    ORDER BY CB.TAI_KHOAN;
+END HGI_TK_HS_THEO_CAN_BO_V2;
+-------------------------------------------------------------------------------------------------------------------------
+//TẠO FUNCTION TRONG FILE tktiepnhancanbo_Controller.php
+
+    public function filterHSCB_V2()
+    {
+        $MA_CO_QUAN = Session::get(TIEP_DAU_NGU_SESSION.'MA_CO_QUAN');
+        $TU_NGAY = get_request_var('P_TU_NGAY');
+        $DEN_NGAY = get_request_var('P_DEN_NGAY');
+        $P_MA_DON_VI = get_request_var('P_MA_DON_VI');
+        $VIEW_DATA['arr_tkhs'] = $this->model->TK_HS_THEO_CAN_BO_V2($TU_NGAY, $DEN_NGAY, $P_MA_DON_VI);
+        $VIEW_DATA['TU_NGAY'] = $TU_NGAY;
+        $VIEW_DATA['DEN_NGAY'] = $DEN_NGAY;
+        $VIEW_DATA['P_MA_DON_VI'] = $P_MA_DON_VI;
+        $this->view->render('aj_main', $VIEW_DATA);
+    }
+-------------------------------------------------------------------------------------------------------------------------
+// TẠO FUNCTION TRONG FILE tktiepnhancanbo_Model.php
+
+    public function TK_HS_THEO_CAN_BO_V2($TU_NGAY,$DEN_NGAY,$MA_DON_VI){
+        // $MA_THU_TUC = Model\Entity\System\Parameter::fromId('HGI_MA_THU_TUC_THONG_KE_THEO_CAN_BO')->getValue();
+        $sp = new StoreProcedure\HGI_TK_HS_THEO_CAN_BO_V2([
+            'P_TU_NGAY' => $TU_NGAY,
+            'P_DEN_NGAY' => $DEN_NGAY,
+            'P_MA_DON_VI' => $MA_DON_VI
+        ]);	
+        return $sp->getDefaultResult();
+	}
+
+-------------------------------------------------------------------------------------------------------------------------
+// TẠO FILE HGI_TK_HS_THEO_CAN_BO_V2.php trong thư mục StoreProcedure
+
+<?php
+namespace Oracle\StoreProcedure;
+use ReflectionClass;
+use Oracle\StoreProcedure;
+
+class HGI_TK_HS_THEO_CAN_BO_V2 extends StoreProcedure {
+    public function __construct($data=[]) {
+        parent::__construct((new ReflectionClass(__CLASS__))->getShortName(),
+                'P_CUR IN OUT SYS_REFCURSOR,
+                P_DEN_NGAY NVARCHAR2,
+                P_TU_NGAY NVARCHAR2,
+                P_MA_DON_VI NVARCHAR2
+                ',$data);
+    } 
+}
+-------------------------------------------------------------------------------------------------------------------------
+// sửa đoạn code trong tktiepnhancanbo/file dsp_main.php dòng 141 -> 169
+
+    $('#locDS').click(function(){
+        var check = checkDate();
+        if(!check){
+            return false;
+        }else{
+            var dn = $('#txt_DEN_NGAY').val();
+            var tn = $('#txt_TU_NGAY').val();
+            var madonvi = $('#P_MA_DON_VI').val();
+           
+            var controller = $("#controller").val();
+            console.log(controller);
+            $('#loading').show();
+            $.ajax({type: 'POST',
+            url: controller + 'filterHSCB_V2',
+            data: {
+                P_TU_NGAY: tn,
+                P_DEN_NGAY: dn,
+                P_MA_DON_VI: madonvi
+                },
+            success: function(result)
+                { 
+                    $('#hienthithongtin').html(result);
+                    $('#loading').hide();
+                }
+            }); 
+        }
+        
+           
+    });

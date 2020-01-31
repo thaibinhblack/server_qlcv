@@ -1,0 +1,90 @@
+// chỉnh sửa HGI_TK_HS_THEO_CAN_BO_V2 
+create or replace PROCEDURE HGI_TK_HS_THEO_CAN_BO_V2 (P_CUR IN OUT SYS_REFCURSOR,
+    P_DEN_NGAY NVARCHAR2,
+    P_TU_NGAY NVARCHAR2,
+    P_MA_DON_VI NVARCHAR2
+) IS
+BEGIN
+OPEN P_CUR FOR
+   SELECT   CB.ten_can_bo, CB.ma_can_bo, CB.tai_khoan ,  count(HS.ma_can_bo_tiep_nhan) as TONG_SO  FROM HS_HO_SO HS,
+--    JOIN HS_CONG_VIEC_HO_SO HSCVHS ON HS.MA_CONG_VIEC_HIEN_TAI = HSCVHS.MA_CONG_VIEC_HO_SO,
+    CB_CAN_BO CB , HS_CONG_VIEC_HO_SO HSCVHS 
+    where hscvhs.ma_can_bo_thuc_hien = CB.ma_can_bo 
+    AND hs.ma_ho_so = hscvhs.ma_ho_so
+    --AND CB.ma_can_bo = CB_TTCM.MA_CAN_BO
+    AND EXISTS (SELECT 1 FROM CB_TO_CHUYEN_MON CB_TCM, CB_THUOC_TO_CHUYEN_MON CB_TTCM
+        WHERE CB_TTCM.MA_TO_CHUYEN_MON = CB_TCM.MA_TO_CHUYEN_MON 
+            AND CB.ma_can_bo = CB_TTCM.MA_CAN_BO
+            AND( P_MA_DON_VI IS NULL OR CB_TCM.MA_DON_VI = P_MA_DON_VI))    
+    AND CB.MA_CO_QUAN = 'STNMT'
+    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10), 'DD/MM/YYYY') >=  TO_DATE(SUBSTR(P_TU_NGAY, 0, 10), 'DD/MM/YYYY'))
+    AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10),'DD/MM/YYYY') <= TO_DATE(SUBSTR(P_DEN_NGAY , 0, 10), 'DD/MM/YYYY'))
+
+    GROUP BY  HSCVHS.ma_can_bo_thuc_hien, CB.ten_can_bo, CB.tai_khoan, CB.ma_can_bo
+    ORDER BY CB.TAI_KHOAN;
+END HGI_TK_HS_THEO_CAN_BO_V2;
+
+
+// chỉnh sửa "HGI_TKHS_TIEP_NHAN_THEO_CB_V2" 
+create or replace PROCEDURE "HGI_TKHS_TIEP_NHAN_THEO_CB_V2" (P_CUR                 IN OUT SYS_REFCURSOR,
+                                     P_TU_NGAY             NVARCHAR2,
+                                     P_DEN_NGAY            NVARCHAR2,
+                                     P_MA_THU_TUC          NVARCHAR2,
+                                     P_MA_DON_VI           NVARCHAR2,
+                                     P_MA_CAN_BO           NUMBER,
+                                     P_START               NUMBER,
+                                     P_END                 NUMBER) AS
+    V_TONG_SO_MAU_TIN INT;
+
+  BEGIN
+      OPEN P_CUR FOR
+        SELECT *
+          FROM (SELECT ROWNUM            RNUM,
+                       V_TONG_SO_MAU_TIN AS TONG_SO_MAU_TIN,
+                       O.*,
+                       GET_TEN_GIAY_TO(O.MA_HO_SO) AS THANH_PHAN_HO_SO,
+                       HGI_GET_THONGTIN_DK('IDS_HGI_BANG_NGUOI_SO_HUU_KHAC', O.MA_HO_SO) AS THONGTIN_DK,
+                       HGI_GET_THONGTIN_DK('IDS_HGI_SDT_NGUOI_DANG_KY', O.MA_HO_SO) AS SDT_DK
+                  FROM (SELECT CASE
+                                 WHEN HOSO.MA_HO_SO_TAM IS NULL THEN
+                                  'NOP_HS_TRUC_TIEP'
+                                 ELSE
+                                  'NOP_HS_ONLINE'
+                               END AS HINH_THUC_NOP_HS,
+                               HOSO.*,
+
+                               DC.TEN_PHUONG_XA,
+                               DC.TEN_QUAN_HUYEN,
+                               DC.TEN_TINH_THANH,
+
+                               COUNT(1) OVER() AS V_TONG_SO_MAU_TIN
+                          FROM
+                               (SELECT PX.MA_PHUONG_XA,
+                                       PX.TEN_PHUONG_XA,
+                                       QH.TEN_QUAN_HUYEN,
+                                       TT.TEN_TINH_THANH
+                                  FROM DM_PHUONG_XA  PX,
+                                       DM_QUAN_HUYEN QH,
+                                       DM_TINH_THANH TT
+                                 WHERE PX.MA_QUAN_HUYEN = QH.MA_QUAN_HUYEN
+                                 AND QH.MA_TINH_THANH = TT.MA_TINH_THANH) DC,
+                                 ( SELECT   CB.ten_can_bo, CB.ma_can_bo, CB.tai_khoan, HS.*  FROM HS_HO_SO HS,
+                                    --    JOIN HS_CONG_VIEC_HO_SO HSCVHS ON HS.MA_CONG_VIEC_HIEN_TAI = HSCVHS.MA_CONG_VIEC_HO_SO,
+                                        CB_CAN_BO CB , HS_CONG_VIEC_HO_SO HSCVHS 
+                                        where hscvhs.ma_can_bo_thuc_hien = CB.ma_can_bo 
+                                        AND hs.ma_ho_so = hscvhs.ma_ho_so
+                                        --AND CB.ma_can_bo = CB_TTCM.MA_CAN_BO
+--                                        AND EXISTS (SELECT 1 FROM CB_TO_CHUYEN_MON CB_TCM, CB_THUOC_TO_CHUYEN_MON CB_TTCM
+--                                            WHERE CB_TTCM.MA_TO_CHUYEN_MON = CB_TCM.MA_TO_CHUYEN_MON 
+--                                                AND CB.ma_can_bo = CB_TTCM.MA_CAN_BO
+--                                                AND( NULL IS NULL OR CB_TCM.MA_DON_VI = NULL))    
+                                        AND CB.MA_CO_QUAN = 'STNMT'
+                                        AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10), 'DD/MM/YYYY') >=  TO_DATE(SUBSTR('01/01/2019', 0, 10), 'DD/MM/YYYY'))
+                                        AND (TO_DATE(SUBSTR(HS.NGAY_GIO_TIEP_NHAN, 0, 10),'DD/MM/YYYY') <= TO_DATE(SUBSTR('01/01/2020', 0, 10), 'DD/MM/YYYY'))
+                                    AND CB.MA_CAN_BO = P_MA_CAN_BO
+                                  )HOSO
+                           WHERE HOSO.MA_PHUONG_XA_NGUOI_NOP = DC.MA_PHUONG_XA(+)
+                         ORDER BY HOSO.NGAY_GIO_TIEP_NHAN DESC,HOSO.SO_HO_SO DESC)O
+                 WHERE ROWNUM <= P_END)
+         WHERE RNUM >= P_START;
+  END;

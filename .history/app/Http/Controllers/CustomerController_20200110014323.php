@@ -46,10 +46,6 @@ class CustomerController extends Controller
                 'message' => 'Danh sách khách hàng',
                 'results' => $customers
             ], 200);
-            // $token = $request->get('api_token');
-            // $result = DB::select('SELECT  
-            // SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
-            // return response()->json($result, 200);
         }
     }
 
