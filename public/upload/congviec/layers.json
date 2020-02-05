@@ -1,0 +1,213 @@
+{
+  "layers" : [
+    {
+      "currentVersion" : 10.7, 
+      "id" : 0, 
+      "name" : "province", 
+      "type" : "Feature Layer", 
+      "displayField" : "", 
+      "description" : "", 
+      "copyrightText" : "", 
+      "defaultVisibility" : true, 
+      "editingInfo" : {
+        "lastEditDate" : 1576932720767
+      }, 
+      "relationships" : [], 
+      "isDataVersioned" : false, 
+      "supportsAppend" : true, 
+      "supportsCalculate" : true, 
+      "supportsASyncCalculate" : true, 
+      "supportsTruncate" : false, 
+      "supportsAttachmentsByUploadId" : true, 
+      "supportsAttachmentsResizing" : true, 
+      "supportsRollbackOnFailureParameter" : true, 
+      "supportsStatistics" : true, 
+      "supportsExceedsLimitStatistics" : true, 
+      "supportsAdvancedQueries" : true, 
+      "supportsValidateSql" : true, 
+      "supportsCoordinatesQuantization" : true, 
+      "supportsFieldDescriptionProperty" : true, 
+      "supportsQuantizationEditMode" : true, 
+      "supportsApplyEditsWithGlobalIds" : false, 
+      "supportsReturningQueryGeometry" : true, 
+      "advancedQueryCapabilities" : {
+        "supportsPagination" : true, 
+        "supportsPaginationOnAggregatedQueries" : true, 
+        "supportsQueryRelatedPagination" : true, 
+        "supportsQueryWithDistance" : true, 
+        "supportsReturningQueryExtent" : true, 
+        "supportsStatistics" : true, 
+        "supportsOrderBy" : true, 
+        "supportsDistinct" : true, 
+        "supportsQueryWithResultType" : true, 
+        "supportsSqlExpression" : true, 
+        "supportsAdvancedQueryRelated" : true, 
+        "supportsCountDistinct" : true, 
+        "supportsPercentileStatistics" : true, 
+        "supportsQueryAttachments" : true, 
+        "supportsLod" : true, 
+        "supportsQueryWithLodSR" : false, 
+        "supportedLodTypes" : [
+          "geohash"
+        ], 
+        "supportsReturningGeometryCentroid" : false, 
+        "supportsQueryWithDatumTransformation" : true, 
+        "supportsHavingClause" : true, 
+        "supportsOutFieldSQLExpression" : true, 
+        "supportsMaxRecordCountFactor" : true, 
+        "supportsTopFeaturesQuery" : true, 
+        "supportsDisjointSpatialRel" : true, 
+        "supportsQueryWithCacheHint" : true, 
+        "supportsQueryAttachmentsWithReturnUrl" : true
+      }, 
+      "useStandardizedQueries" : true, 
+      "geometryType" : "esriGeometryPoint", 
+      "minScale" : 0, 
+      "maxScale" : 0, 
+      "extent" : {
+        "xmin" : -161.69675114151386, 
+        "ymin" : -72.6726762942099, 
+        "xmax" : 161.69675114151386, 
+        "ymax" : 80.694523184052116, 
+        "spatialReference" : {
+          "wkid" : 4326, 
+          "latestWkid" : 4326
+        }
+      }, 
+      "drawingInfo":{"transparency":0,"labelingInfo":null,"renderer":{"type":"simple","symbol":{"color":[20,158,206,130],"size":18,"angle":0,"xoffset":0,"yoffset":0,"type":"esriSMS","style":"esriSMSCircle","outline":{"color":[255,255,255,220],"width":2.25,"type":"esriSLS","style":"esriSLSSolid"}}}}, 
+      "allowGeometryUpdates" : true, 
+      "hasAttachments" : true, 
+      
+      "attachmentProperties" : [
+        {
+          "name" : "name", 
+          "isEnabled" : true
+        }, 
+        {
+          "name" : "size", 
+          "isEnabled" : true
+        }, 
+        {
+          "name" : "contentType", 
+          "isEnabled" : true
+        }, 
+        {
+          "name" : "keywords", 
+          "isEnabled" : true
+        }, 
+        {
+          "name" : "exifInfo", 
+          "isEnabled" : true
+        }
+      ], 
+      "htmlPopupType" : "esriServerHTMLPopupTypeNone", 
+      "hasM" : false, 
+      "hasZ" : false, 
+      "objectIdField" : "OBJECTID", 
+      "uniqueIdField" : 
+      {
+        "name" : "OBJECTID", 
+        "isSystemMaintained" : true
+      }, 
+      "globalIdField" : "", 
+      "typeIdField" : "", 
+      "fields" : [
+        {
+          "name" : "OBJECTID", 
+          "type" : "esriFieldTypeOID", 
+          "alias" : "OBJECTID", 
+          "sqlType" : "sqlTypeOther", 
+          "nullable" : false, 
+          "editable" : false, 
+          "domain" : null, 
+          "defaultValue" : null
+        }, 
+        {
+          "name" : "id_province", 
+          "type" : "esriFieldTypeString", 
+          "alias" : "ID_PROVINCE", 
+          "sqlType" : "sqlTypeNVarchar", 
+          "length" : 256, 
+          "nullable" : true, 
+          "editable" : true, 
+          "domain" : null, 
+          "defaultValue" : null
+        }, 
+        {
+          "name" : "name_province", 
+          "type" : "esriFieldTypeString", 
+          "alias" : "NAME_PROVINCE", 
+          "sqlType" : "sqlTypeNVarchar", 
+          "length" : 256, 
+          "nullable" : true, 
+          "editable" : true, 
+          "domain" : null, 
+          "defaultValue" : null
+        }, 
+        {
+          "name" : "long_province", 
+          "type" : "esriFieldTypeString", 
+          "alias" : "LONG_PROVINCE", 
+          "sqlType" : "sqlTypeNVarchar", 
+          "length" : 256, 
+          "nullable" : true, 
+          "editable" : true, 
+          "domain" : null, 
+          "defaultValue" : null
+        }, 
+        {
+          "name" : "lat_province", 
+          "type" : "esriFieldTypeString", 
+          "alias" : "LAT_PROVINCE", 
+          "sqlType" : "sqlTypeNVarchar", 
+          "length" : 256, 
+          "nullable" : true, 
+          "editable" : true, 
+          "domain" : null, 
+          "defaultValue" : null
+        }
+      ], 
+      "indexes" : [
+        {
+          "name" : "user_63186.province_PROVINCE_Shape_sidx", 
+          "fields" : "Shape", 
+          "isAscending" : false, 
+          "isUnique" : false, 
+          "description" : "Shape Index"
+        }, 
+        {
+          "name" : "PK__province__F4B70D85A5A1EA07", 
+          "fields" : "OBJECTID", 
+          "isAscending" : true, 
+          "isUnique" : true, 
+          "description" : "clustered, unique, primary key"
+        }
+      ], 
+      "types" : [], 
+      "templates" : [
+        {
+          "name" : "New Feature", 
+          "description" : "", 
+          "drawingTool" : "esriFeatureEditToolPoint", 
+          "prototype" : {
+            "attributes" : {
+              "id_province" : null, 
+              "name_province" : null, 
+              "long_province" : null, 
+              "lat_province" : null
+            }
+          }
+        }
+      ], 
+      "supportedQueryFormats" : "JSON, geoJSON", 
+      "hasStaticData" : false, 
+      "maxRecordCount" : 10000, 
+      "standardMaxRecordCount" : 32000, 
+      "standardMaxRecordCountNoGeometry" : 32000, 
+      "tileMaxRecordCount" : 8000, 
+      "maxRecordCountFactor" : 1, 
+      "capabilities" : "Create,Delete,Query,Update,Editing"
+    }
+  ], 
+  "tables" : []
+}
