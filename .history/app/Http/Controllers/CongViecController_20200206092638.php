@@ -105,7 +105,7 @@ class CongViecController extends Controller
     public function DELETE_CONG_VIEC_DA($P_ID_CV_DA)
     {
         $sql = "DECLARE
-                P_ID_CV_DA NUMBER;
+            P_ID_CV_DA NUMBER;
             BEGIN
                 :RESULT_CV := DELETE_CONG_VIEC_DA(:P_ID_CV_DA);
             END;
@@ -114,9 +114,6 @@ class CongViecController extends Controller
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':P_ID_CV_DA',$P_ID_CV_DA, PDO::PARAM_INT);
-        $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
-        $stmt->execute();
-        return $result;
     }
 
     //procedure SELECT_CONG_VIEC_DA
@@ -224,7 +221,7 @@ class CongViecController extends Controller
                     }
                 }
                 $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and  (CV.nguoi_giao_viec = $id_nd or CV.nguoi_nhan_viec = $id_nd) ");
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and CV.nguoi_nhan_viec= $id_nd ");
                     return response()->json($cong_viec, 200);
                }
             }

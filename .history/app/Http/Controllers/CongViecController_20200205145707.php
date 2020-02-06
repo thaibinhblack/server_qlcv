@@ -101,44 +101,12 @@ class CongViecController extends Controller
     return $result;
     }
 
-    //DELETE CONG VIEC
-    public function DELETE_CONG_VIEC_DA($P_ID_CV_DA)
-    {
-        $sql = "DECLARE
-                P_ID_CV_DA NUMBER;
-            BEGIN
-                :RESULT_CV := DELETE_CONG_VIEC_DA(:P_ID_CV_DA);
-            END;
-        ";
-
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_CV_DA',$P_ID_CV_DA, PDO::PARAM_INT);
-        $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
-        $stmt->execute();
-        return $result;
-    }
-
-    //procedure SELECT_CONG_VIEC_DA
-    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA)
-    {
-        $P_TIME_START = '01/01/2019';
-        $P_TIME_END = '06/02/2020';
-        $P_ID_ND = 0;
-        $P_ID_DA = 0;
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA) FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
     public function index(Request $request)
     {
         if($request->has('api_token'))
         {
             $token = $request->get('api_token');
             $user = DB::SELECT("SELECT * from TB_NGUOI_DUNG WHERE TOKEN_ND = '$token'");
-            $P_TIME_END = 
             // return response()->json($user, 200);
             $id_nd = $user[0]->id_nd;
             if($request->has('time_start') && $request->has('time_end'))
@@ -185,7 +153,6 @@ class CongViecController extends Controller
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.created_at >= '$time_start' and CV.created_at <= '$time_end' AND DA_KH.id_du_an = $id_du_an ");
                     return response()->json($cong_viec, 200);
                 }
-
                 $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh, LCV.ten_loai_cv, LCV.color_status  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV
                     WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.id_loai_cv = LCV.id_loai_cv and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' ");
                     return response()->json($cong_viec, 200);
@@ -224,7 +191,7 @@ class CongViecController extends Controller
                     }
                 }
                 $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
-                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and  (CV.nguoi_giao_viec = $id_nd or CV.nguoi_nhan_viec = $id_nd) ");
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and CV.ngay_tiep_nhan >= '$time_start' and CV.ngay_tiep_nhan <= '$time_end' and CV.nguoi_nhan_viec= $id_nd ");
                     return response()->json($cong_viec, 200);
                }
             }
@@ -777,17 +744,20 @@ class CongViecController extends Controller
         }
     }
 
-    public function destroy(Request $request,$id)
-    {
-        if($request->has('api_token'))
-        {
-            $result = $this->DELETE_CONG_VIEC_DA($id);
-            return response()->json($result, 200);
-        }
-    }
-
     public function test()
     {
-        
+        $pdo = DB::getPdo();
+        $p1 = '01/01/2019';
+        $p2 = '05/02/2020';
+        $P_CUR = NULL;
+        $stmt = $pdo->prepare("begin SELECT_CONG_VIEC(:P_CUR, :P_TIME_START, :P_TIME_END); end;");
+        $stmt->bindParam(':P_CUR', $P_CUR, 'PDO::PARAM_NULL');
+        $stmt->bindParam(':P_TIME_START', $p1, 'PDO::PARAM_STR');
+        $stmt->bindParam(':P_TIME_END', $p2, 'PDO::PARAM_STR');
+        // $P_CUR = $stmt->fetchAll(PDO::FETCH_CLASS);
+        $stmt->execute();
+        $stmt->closeCursor();
+
+        return '123';
     }
 }
