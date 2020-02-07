@@ -120,10 +120,10 @@ class CongViecController extends Controller
     }
 
     //procedure SELECT_CONG_VIEC_DA
-    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV)
+    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV) FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -138,46 +138,97 @@ class CongViecController extends Controller
             $P_TIME_START = date("01/m/Y");
             $P_ID_DA = 0;
             $P_ID_ND = 0;
-            $P_ID_LOAI_CV = 0;
-            $P_ID_DU_AN_KH = 0;
             // return response()->json($user, 200);
             $id_nd = $user[0]->id_nd;
-           
             if($request->has('time_start') && $request->has('time_end'))
             {
+               
+                // return response()->json($request->get('status'), 200);
+                
+               if($user[0]->id_rule > 0)
+               {
                 $P_TIME_START = $time_start = $request->get('time_start');
                 $P_TIME_END = $time_end = $request->get('time_end');
+                if($request->has('id_du_an'))
+                {
+                    $P_ID_DA = $id_du_an = $request->get('id_du_an');
+                
+                }
                 $P_TIME_START=date_create($P_TIME_START);
                 $P_TIME_END=date_create($P_TIME_END);
                 $P_TIME_START =  date_format($P_TIME_START,"d/m/Y");
                 $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
-                // return response()->json($request->get('status'), 200);
-            }
-            if($request->has('P_ID_LOAI_CV'))
-            {
-                $P_ID_LOAI_CV = $request->get('P_ID_LOAI_CV');
-            }
-            if($request->has('id_du_an'))
-            {
-                $P_ID_DA = $id_du_an = $request->get('id_du_an');   
-            }
-            if($request->has('id_du_an_kh'))
-            {
-                $P_ID_DU_AN_KH = $request->get('id_du_an_kh');
-            }
-            if($user[0]->id_rule > 0)
-               {
-                
-                return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV);
+                // var_dump($P_TIME_START, $P_TIME_START);
+                return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA);
                }
                else {
-                   $P_ID_ND = $user[0]->id_nd;
-                    return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV);
+                    $P_ID_ND = $id_nd = $user[0]->id_nd;
+                    $P_TIME_START=date_create($P_TIME_START);
+                    $P_TIME_END=date_create($P_TIME_END);
+
+                    if($request->has('id_du_an'))
+                    {
+                        $P_ID_DA = $id_du_an = $request->get('id_du_an');
+                    
+                    }
+                    $P_TIME_START=date_create($P_TIME_START);
+                    $P_TIME_END=date_create($P_TIME_END);
+                    $P_TIME_START =  date_format($P_TIME_START,"d/m/Y");
+                    $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
+                   
+                    return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA);
                }
+            }
+            if($request->has('trang_thai'))
+            {
+                if($user[0]->id_rule == 0)
+                {
+                        $trang_thai = $request->get('trang_thai');
+                        $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.trang_thai = $trang_thai and CVDA.id_loai_cv = LCV.id_loai_cv");
+                        return response()->json($cv, 200);
+                }
+                else {
+                        $trang_thai = $request->get('trang_thai');
+                        $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and CVDA.trang_thai = $trang_thai and CVDA.id_loai_cv = LCV.id_loai_cv");
+                        return response()->json($cv, 200);
+                }
+            }
+            if($request->has('id_loai_cv'))
+            {
+                if($user[0]->id_rule == 0)
+                {
+                        $id_loai_cv = $request->get('id_loai_cv');
+                        $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and nguoi_nhan_viec = '$id_nd' and CVDA.id_loai_cv = $id_loai_cv and CVDA.id_loai_cv = LCV.id_loai_cv");
+                        return response()->json($cv, 200);
+                }
+                else {
+                        $id_loai_cv = $request->get('id_loai_cv');
+                        $cv = DB::select("SELECT CVDA.*, ND.username_nd, LCV.ten_loai_cv FROM TB_CONG_VIEC_DA CVDA, TB_NGUOI_DUNG ND, TB_LOAI_CV LCV where CVDA.nguoi_giao_viec = ND.id_nd and CVDA.id_loai_cv = $id_loai_cv and CVDA.id_loai_cv = LCV.id_loai_cv");
+                        return response()->json($cv, 200);
+                } 
+            }
+            if($request->has('ID_ND'))
+            {
+                if($user[0]->id_rule >0 )
+                {
+                    $id_nd = $request->get('ID_ND');
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and cv.nguoi_nhan_viec=$id_nd");
+                    return response()->json($cong_viec, 200);
+                }
+                else {
+                    
+                    $id_nd = $request->get('ID_ND');
+                    $cong_viec = DB::select("SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+                    WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd and cv.nguoi_nhan_viec=$id_nd");
+                    return response()->json($cong_viec, 200);
+                }
+            }
             // $cv = DB::select("SELECT * from TB_CONG_VIEC_DA");
             // return response()->json($cv, 200);
         }
-        return response()->json([], 200);
+        // $cong_viec = DB::select("SELECT * FROM TB_CONG_VIEC_DA");
+        // return response()->json($cong_viec, 200);
     }
 
     public function filter(Request $request)

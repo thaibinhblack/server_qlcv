@@ -120,10 +120,10 @@ class CongViecController extends Controller
     }
 
     //procedure SELECT_CONG_VIEC_DA
-    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV)
+    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA, $P_ID_LOAI_CV)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV) FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_LOAI_CV) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -168,11 +168,11 @@ class CongViecController extends Controller
             if($user[0]->id_rule > 0)
                {
                 
-                return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV);
+                return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA, $P_ID_LOAI_CV);
                }
                else {
                    $P_ID_ND = $user[0]->id_nd;
-                    return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV);
+                    return $this->SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END,$P_ID_ND, $P_ID_DA, $P_ID_LOAI_CV);
                }
             // $cv = DB::select("SELECT * from TB_CONG_VIEC_DA");
             // return response()->json($cv, 200);
