@@ -165,10 +165,6 @@ class CongViecController extends Controller
             {
                 $P_ID_DU_AN_KH = $request->get('id_du_an_kh');
             }
-            if($request->has('nguoi_nhan_viec'))
-            {
-                $P_ID_ND = $request->get("nguoi_nhan_viec");
-            }
             if($user[0]->id_rule > 0)
                {
                 

@@ -40,7 +40,7 @@ class CongViecController extends Controller
      $sql = "DECLARE
         P_ID_CV_DA NUMBER;
         P_TEN_CV VARCHAR2(255);
-        P_NOI_DUNG_CV VARCHAR2(1000);
+        P_NOI_DUNG_CV VARCHAR2(255);
         P_NGAY_TIEP_NHAN DATE;
         P_NGAY_GIAO_VIEC DATE;
         P_NGAY_HOAN_THANH DATE;
@@ -164,10 +164,6 @@ class CongViecController extends Controller
             if($request->has('id_du_an_kh'))
             {
                 $P_ID_DU_AN_KH = $request->get('id_du_an_kh');
-            }
-            if($request->has('nguoi_nhan_viec'))
-            {
-                $P_ID_ND = $request->get("nguoi_nhan_viec");
             }
             if($user[0]->id_rule > 0)
                {
