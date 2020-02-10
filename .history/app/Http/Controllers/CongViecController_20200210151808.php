@@ -109,45 +109,34 @@ class CongViecController extends Controller
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
-    public function SELECT_SETTING_MODAL_CV($id_nd)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_SETTING_MODAL_CV($id_nd) FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function CAPNHAT_SETTING($P_ID_SETTING, $P_ID_ND, $P_VALUE_SETTING)
+    public function CAPNHAT_SETTING($P_ID_SETTING, $P_VALUE_SETTING)
     {
         $sql = "DECLARE
             P_ID_SETTING NUMBER;
             P_VALUE_SETTING VARCHAR2(2000);
             BEGIN
-                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_VALUE_SETTING);
             END;"; 
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
-        $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
         $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
         $stmt->bindParam(':RESULT_CV',$RESULT_CV);
         $stmt->execute();
         return $RESULT_CV;
     }
 
-    public function SETTING_HIENTHI_MODAL_CV($P_ID_SETTING ,$P_ID_ND, $P_VALUE_SETTING)
+    public function SETTING_HIENTHI_MODAL_CV($P_ID_ND, $P_VALUE_SETTING)
     {
         $sql = "DECLARE
             P_ID_ND NUMBER;
             P_ID_SETTING NUMBER;
             P_VALUE_SETTING VARCHAR2(2000);
             BEGIN
-                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+                :RESULT_CV := SETTING_HIENTHI_MODAL_CV(:P_VALUE_SETTING, :P_ID_ND, :P_VALUE_SETTING);
             END;"; 
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
         $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
         $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
         $stmt->bindParam(':RESULT_CV',$RESULT_CV);
@@ -752,23 +741,8 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get("P_VALUE_SETTING") : "";
-            $result = $this->CAPNHAT_SETTING($id_setting,0, $P_VALUE_SETTING);
+            $result = $this->CAPNHAT_SETTING($id_setting, $P_VALUE_SETTING);
             return response()->json($result, 200);
-        }
-    }
-
-    public function show_setting_modal(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::SELECT("SELECT id_nd FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
-            if($user[0]->id_nd)
-            {
-               $result =  $this->SELECT_SETTING_MODAL_CV($user[0]->id_nd);
-               return response()->json($result, 200);
-            }
-            
         }
     }
 
@@ -781,8 +755,8 @@ class CongViecController extends Controller
             if($user[0]->id_nd)
             {
                 $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get('P_VALUE_SETTING') : "";
-                $result = $this->SETTING_HIENTHI_MODAL_CV(0,$user[0]->id_nd, $P_VALUE_SETTING);
-                return response()->json($result, 200);
+                $result = $this->SETTING_HIENTHI_MODAL_CV($user[0]->id_nd, $P_VALUE_SETTING);
+                return response()->json($P_VALUE_SETTING, 200);
             }
         }
     }

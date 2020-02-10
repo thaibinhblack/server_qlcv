@@ -766,7 +766,7 @@ class CongViecController extends Controller
             if($user[0]->id_nd)
             {
                $result =  $this->SELECT_SETTING_MODAL_CV($user[0]->id_nd);
-               return response()->json($result, 200);
+               return response()->json($result, 200, $headers);
             }
             
         }

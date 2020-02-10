@@ -765,8 +765,7 @@ class CongViecController extends Controller
             $user = DB::SELECT("SELECT id_nd FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0]->id_nd)
             {
-               $result =  $this->SELECT_SETTING_MODAL_CV($user[0]->id_nd);
-               return response()->json($result, 200);
+                $this->SELECT_SETTING_MODAL_CV($user[0]->id_nd);
             }
             
         }

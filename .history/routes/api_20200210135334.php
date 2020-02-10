@@ -96,9 +96,7 @@ Route::get('bao-cao/{id}','CongViecController@get_baocao')->middleware('cors');
 Route::post('cong-viec/{id}/baocao','CongViecController@baocao')->middleware('cors');
 Route::get('cong-viec-setting/{id_setting}','CongViecController@show_setting')->middleware('cors');
 Route::post('cong-viec-setting/{id_setting}','CongViecController@setting')->middleware('cors');
-Route::post('cong-viec-setting-modal','CongViecController@setting_modal')->middleware('cors');
-Route::get('cong-viec-setting-modal','CongViecController@show_setting_modal')->middleware('cors');
-
+Route::post('cong-viec-setting-modal/{id_setting}','CongViecController@setting_modal')->middleware('cors');
 
 //FILE CÔNG VIỆC
 Route::post('file-cv','FileController@store')->middleware('cors');

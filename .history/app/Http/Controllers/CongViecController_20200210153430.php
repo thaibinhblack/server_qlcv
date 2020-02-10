@@ -113,7 +113,7 @@ class CongViecController extends Controller
     public function SELECT_SETTING_MODAL_CV($id_nd)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_SETTING_MODAL_CV($id_nd) FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_SETTING($id_setting) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -757,19 +757,9 @@ class CongViecController extends Controller
         }
     }
 
-    public function show_setting_modal(Request $request)
+    public function show_setting_modal()
     {
-        if($request->has('api_token'))
-        {
-            $token = $request->get('api_token');
-            $user = DB::SELECT("SELECT id_nd FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
-            if($user[0]->id_nd)
-            {
-               $result =  $this->SELECT_SETTING_MODAL_CV($user[0]->id_nd);
-               return response()->json($result, 200);
-            }
-            
-        }
+
     }
 
     public function setting_modal(Request $request)
