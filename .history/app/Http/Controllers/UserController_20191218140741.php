@@ -253,7 +253,7 @@ class UserController extends Controller
             if($user[0]->username_nd == $request->get('username_nd'))
             {
                 $avatar = null;
-                if($request->has('file') )
+                if($request->get('file') != 'null' )
                 {
                     $file = $request->file('avatar');
                     $name = $file->getClientOriginalName();
