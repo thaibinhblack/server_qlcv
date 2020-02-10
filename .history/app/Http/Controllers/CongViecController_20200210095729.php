@@ -102,13 +102,7 @@ class CongViecController extends Controller
     }
 
     //SETTING HIỂN THỊ DATA LIST
-    public function SELECT_SETTING($id_setting)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_SETTING($id_setting) FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
+
     public function CAPNHAT_SETTING($P_ID_SETTING, $P_VALUE_SETTING)
     {
         $sql = "DECLARE
@@ -714,10 +708,7 @@ class CongViecController extends Controller
             return response()->json($result, 200);
         }
     }
-    public function show_setting($id_setting)
-    {
-        return $this->SELECT_SETTING($id_setting);
-    }
+
     public function setting(Request $request, $id_setting)
     {
         if($request->has('api_token'))

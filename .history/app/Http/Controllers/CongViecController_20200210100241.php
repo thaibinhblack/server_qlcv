@@ -714,7 +714,7 @@ class CongViecController extends Controller
             return response()->json($result, 200);
         }
     }
-    public function show_setting($id_setting)
+    public function show_setting ($id_setting)
     {
         return $this->SELECT_SETTING($id_setting);
     }

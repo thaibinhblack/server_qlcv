@@ -107,7 +107,7 @@ class CongViecController extends Controller
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare("SELECT SELECT_SETTING($id_setting) FROM dual");
         $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ)[0];
     }
     public function CAPNHAT_SETTING($P_ID_SETTING, $P_VALUE_SETTING)
     {
