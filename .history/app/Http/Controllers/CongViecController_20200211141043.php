@@ -790,8 +790,7 @@ class CongViecController extends Controller
     public function test()
     {
         return response()->json([
-                "Browser" => "Safari",
-                "Share" => 100   
+        
         ],200);
     }
 }

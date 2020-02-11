@@ -789,9 +789,6 @@ class CongViecController extends Controller
 
     public function test()
     {
-        return response()->json([
-                "Browser" => "Safari",
-                "Share" => 100   
-        ],200);
+        return $this->SELECT_CONG_VIEC_DA('2020-02-06','2020-02-06',0,0);
     }
 }
