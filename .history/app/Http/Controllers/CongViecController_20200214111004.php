@@ -378,22 +378,15 @@ class CongViecController extends Controller
                     $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);
                     return response()->json([
                         "success" => true,
-                        "message" => "Cập nhật công việc thành công",
-                        "result" => $cong_viec
-                    ], 200);
+                        "message" => "Cập nhật công việc thành công"
+                    ], 200, $headers);
                 }
-                return response()->json([
-                    "success" => false,
-                    'message' => 'Tài khoản của bạn chưa đăng nhập xin vui lòng đăng nhập lại!',
-                    'results' => null,
-                    'status' => 404
-                ], 200);
             }
            
             return response()->json([
-                'success' => false,
-                'message' => 'Authorizon',
-                'status' => 401
+                'success' => true,
+                'message' => 'Cập công việc thành công',
+                'status' => 200
             ], 200);
             
     }
@@ -541,41 +534,42 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $token = $request->get('api_token');
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($token);
+            $user = DB::select("SELECT * FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0])
             {
                 $id_rule = $user[0]->id_rule;
                 if($id_rule > 0)
                 {
-                    $arr_params = [
-                        "P_ID_CV_DA" => $id,
-                        "P_THAM_DINH_TGIAN" => $request->get('P_THAM_DINH_TGIAN'),
-                        "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG'),
-                        "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
-                    ];
-                    $cong_viec_model = new CongViecModel();
-                    $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
-                    
+                    $sql = "DECLARE
+                        P_ID_CV_DA NUMBER;
+                        P_THAM_DINH_TGIAN NUMBER;
+                        P_THAM_DINH_CHAT_LUONG NUMBER;
+                        P_THAM_DINH_KHOI_LUONG NUMBER;
+                        P_NGUOI_THAM_DINH NUMBER;
+                    BEGIN
+                        :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
+                    END;";
+                    $P_ID_CV_DA = $id;
+                    $P_THAM_DINH_TGIAN = $request->get('P_THAM_DINH_TGIAN');
+                    $P_THAM_DINH_CHAT_LUONG = $request->get('P_THAM_DINH_CHAT_LUONG');
+                    $P_THAM_DINH_KHOI_LUONG = $request->get('P_THAM_DINH_KHOI_LUONG');
+                    $P_NGUOI_THAM_DINH = $user[0]->id_nd;
+                    $pdo = DB::getPdo();
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':P_ID_CV_DA',$id,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_THAM_DINH_TGIAN',$P_THAM_DINH_TGIAN);
+                    $stmt->bindParam(':P_THAM_DINH_CHAT_LUONG', $P_THAM_DINH_CHAT_LUONG,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_THAM_DINH_KHOI_LUONG',$P_THAM_DINH_KHOI_LUONG,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_NGUOI_THAM_DINH',$P_NGUOI_THAM_DINH,PDO::PARAM_INT);
+                    $stmt->bindParam(':result',$result);
+                    $stmt->execute();
                     return response()->json([
                         'success' => true,
                         'message' => 'Thẩm định thành công',
                         'status' => 200
                     ], 200);
                 }
-                return response()->json([
-                    "success" => false,
-                    "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
-                    "status" => 401
-                ], 200);
             }
-            return response()->json([
-                "success" => false,
-                "message" => "Tài khoản của bạn dã bị đăng nhập hoặc chưa đăng nhập!",
-                "result" => null,
-                "status" => 404
-            ], 200);
         }
     }
 

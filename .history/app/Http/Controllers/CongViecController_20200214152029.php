@@ -568,7 +568,7 @@ class CongViecController extends Controller
                     "success" => false,
                     "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
                     "status" => 401
-                ], 200);
+                ], 200, $headers);
             }
             return response()->json([
                 "success" => false,

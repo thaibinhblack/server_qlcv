@@ -1,0 +1,40 @@
+<?php
+
+namespace App\model;
+
+use Illuminate\Database\Eloquent\Model;
+use DB;
+use PDO;
+class LichCTModel extends Model
+{
+    public function THEM_CAPNHAT_LICH_CT($arr_params)
+    {
+        $P_ID_LICH_CT = $arr_params["P_ID_LICH_CT"];
+        $P_TEN_LICH_CT = $arr_params["P_TEN_LICH_CT"];
+        $P_NOI_DUNG_LICH_CT = $arr_params["P_NOI_DUNG_LICH_CT"];
+        $P_TIME_START = $arr_params["P_TIME_START"];
+        $P_DATE_START = $arr_params["P_DATE_START"];
+        $P_TIME_END = $arr_params["P_TIME_END"];
+        $P_DATE_END = $arr_params["P_DATE_END"];
+        $P_NHAN_VIEN_CT = $arr_params["P_NHAN_VIEN_CT"];
+        $P_ACTION = $arr_params["P_ACTION"];
+        $sql = "DECLARE
+                P_ID_LICH_CT NUMBER;
+                P_TEN_LICH_CT VARCHAR2(255);
+                P_NOI_DUNG_LICH_CT VARCHAR2(4000);
+                P_TIME_START VARCHAR2(100);
+                P_DATE_START DATE;
+                P_TIME_END VARCHAR2(100);
+                P_DATE_END DATE;
+                P_VALUE_SETTING VARCHAR2(2000);
+
+            BEGIN
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+        END;"; 
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("SELECT THEM_CAPNHAT_LICH_CT($P_ID_LICH_CT, '$P_TEN_LICH_CT', '$P_NOI_DUNG_LICH_CT',
+         '$P_TIME_START', '$P_DATE_START', '$P_TIME_END', '$P_DATE_END', '$P_NHAN_VIEN_CT', $P_ACTION) FROM dual");
+        $result = $stmt->execute();
+        return $result;
+    }
+}

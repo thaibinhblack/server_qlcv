@@ -99,9 +99,6 @@ Route::post('cong-viec-setting/{id_setting}','CongViecController@setting')->midd
 Route::post('cong-viec-setting-modal','CongViecController@setting_modal')->middleware('cors');
 Route::get('cong-viec-setting-modal','CongViecController@show_setting_modal')->middleware('cors');
 
-//Thẩm định công việc
-
-Route::post('gui-tham-dinh', 'ThamDinhController@gui_tham_dinh')->middleware('cors');
 
 //FILE CÔNG VIỆC
 Route::post('file-cv','FileController@store')->middleware('cors');
@@ -117,7 +114,7 @@ Route::post('loai-cv/{id}','LoaiCongViecController@update')->middleware('cors');
 Route::get('thong-ke-lcv-12-thang','ThongKeController@so_luong_lcv_12_thang')->middleware('cors');
 
 //Lịch công tác
-Route::get("lich-cong-tac",'LichCongTacController@index')->middleware('cors');
+
 Route::post("lich-cong-tac",'LichCongTacController@store')->middleware('cors');
 
 Route::get('/test','CongViecController@test')->middleware('cors');

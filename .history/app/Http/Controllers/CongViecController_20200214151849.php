@@ -564,18 +564,7 @@ class CongViecController extends Controller
                         'status' => 200
                     ], 200);
                 }
-                return response()->json([
-                    "success" => false,
-                    "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
-                    "status" => 401
-                ], 200);
             }
-            return response()->json([
-                "success" => false,
-                "message" => "Tài khoản của bạn dã bị đăng nhập hoặc chưa đăng nhập!",
-                "result" => null,
-                "status" => 404
-            ], 200);
         }
     }
 

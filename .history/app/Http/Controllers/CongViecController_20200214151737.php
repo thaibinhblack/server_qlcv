@@ -541,8 +541,7 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $token = $request->get('api_token');
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($token);
+            $user = DB::select("SELECT * FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0])
             {
                 $id_rule = $user[0]->id_rule;
@@ -555,8 +554,6 @@ class CongViecController extends Controller
                         "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
                         "P_NGUOI_THAM_DINH" => $user[0]->id_nd
                     ];
-                    $cong_viec_model = new CongViecModel();
-                    $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
                     
                     return response()->json([
                         'success' => true,
@@ -564,18 +561,7 @@ class CongViecController extends Controller
                         'status' => 200
                     ], 200);
                 }
-                return response()->json([
-                    "success" => false,
-                    "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
-                    "status" => 401
-                ], 200);
             }
-            return response()->json([
-                "success" => false,
-                "message" => "Tài khoản của bạn dã bị đăng nhập hoặc chưa đăng nhập!",
-                "result" => null,
-                "status" => 404
-            ], 200);
         }
     }
 

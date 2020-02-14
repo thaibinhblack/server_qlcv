@@ -8,10 +8,99 @@ use DB;
 use PDO;
 use ODB;
 use App\model\UserModel;
-use App\model\CongViecModel;
 class CongViecController extends Controller
 {
-   
+    public function CallFunction($P_ID_CV_DA,
+                $P_TEN_CV ,
+                $P_NOI_DUNG_CV ,
+                $P_NGAY_TIEP_NHAN ,
+                $P_NGAY_GIAO_VIEC,
+                $P_NGAY_HOAN_THANH ,
+                $P_NGAY_CAM_KET,
+                $P_GIO_THUC_HIEN ,
+                $P_DO_UU_TIEN,
+                $P_MA_JIRA ,
+                $P_NGUOI_GIAO_VIEC ,
+                $P_NGUOI_NHAN_VIEC ,
+                $P_TIEN_DO ,
+                $P_GHI_CHU ,
+                $P_LY_DO ,
+                $P_THAM_DINH_TGIAN ,
+                $P_THAM_DINH_KHOI_LUONG,
+                $P_THAM_DINH_CHAT_LUONG,
+                $P_ID_LOAI_CV,
+                $P_TRANG_THAI,
+                $P_ACTION,
+                $P_TYPE,
+                $P_NGUOI_YEU_CAU,
+                $P_NGUOI_NHAP,
+                $P_TIME_NHAN_VIEC,
+                $P_TIME_HOAN_THANH
+    )
+    {
+     $sql = "DECLARE
+        P_ID_CV_DA NUMBER;
+        P_TEN_CV VARCHAR2(255);
+        P_NOI_DUNG_CV VARCHAR2(1000);
+        P_NGAY_TIEP_NHAN DATE;
+        P_NGAY_GIAO_VIEC DATE;
+        P_NGAY_HOAN_THANH DATE;
+        P_NGAY_CAM_KET DATE;
+        P_GIO_THUC_HIEN NUMBER;
+        P_DO_UU_TIEN NUMBER;
+        P_MA_JIRA VARCHAR2(255);
+        P_NGUOI_GIAO_VIEC VARCHAR2(255);
+        P_NGUOI_NHAN_VIEC VARCHAR2(255);
+        P_TIEN_DO NUMBER;
+        P_GHI_CHU VARCHAR2(255);
+        P_LY_DO VARCHAR2(255);
+        P_THAM_DINH_TGIAN DATE;
+        P_THAM_DINH_KHOI_LUONG NUMBER;
+        P_THAM_DINH_CHAT_LUONG NUMBER;
+        P_ID_LOAI_CV NUMBER;
+        P_TRANG_THAI NUMBER;
+        P_ACTION NUMBER;
+        P_TYPE NUMBER;
+        P_NGUOI_NHAP VARCHAR2(100);
+        P_TIME_NHAN_VIEC VARCHAR2(100);
+        P_TIME_HOAN_THANH VARCHAR2(100);
+    BEGIN
+       :RESULT_CV := THEM_CAPNHAT_CONGVIEC(:P_ID_CV_DA, :P_TEN_CV, :P_NOI_DUNG_CV, :P_NGAY_TIEP_NHAN, :P_NGAY_GIAO_VIEC,  :P_NGAY_HOAN_THANH, :P_NGAY_CAM_KET, :P_GIO_THUC_HIEN, :P_DO_UU_TIEN, 
+    :P_MA_JIRA, :P_NGUOI_GIAO_VIEC, :P_NGUOI_NHAN_VIEC, :P_TIEN_DO, :P_GHI_CHU, :P_LY_DO, :P_THAM_DINH_TGIAN, :P_THAM_DINH_KHOI_LUONG, :P_THAM_DINH_CHAT_LUONG, :P_ID_LOAI_CV, 
+    :P_TRANG_THAI, :P_ACTION, :P_TYPE, :P_NGUOI_YEU_CAU, :P_NGUOI_NHAP, :P_TIME_NHAN_VIEC, :P_TIME_HOAN_THANH);
+    END;";  
+    $pdo = DB::getPdo();
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':P_ID_CV_DA',$P_ID_CV_DA, PDO::PARAM_INT);
+    $stmt->bindParam(':P_TEN_CV',$P_TEN_CV);
+    $stmt->bindParam(':P_NOI_DUNG_CV',$P_NOI_DUNG_CV);
+    $stmt->bindParam(':P_NGAY_TIEP_NHAN',$P_NGAY_TIEP_NHAN);
+    $stmt->bindParam(':P_NGAY_GIAO_VIEC',$P_NGAY_GIAO_VIEC);
+    $stmt->bindParam(':P_NGAY_HOAN_THANH',$P_NGAY_HOAN_THANH);
+    $stmt->bindParam(':P_NGAY_CAM_KET',$P_NGAY_CAM_KET);
+    $stmt->bindParam(':P_GIO_THUC_HIEN',$P_GIO_THUC_HIEN);
+    $stmt->bindParam(':P_DO_UU_TIEN',$P_DO_UU_TIEN);
+    $stmt->bindParam(':P_MA_JIRA',$P_MA_JIRA);
+    $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$P_NGUOI_GIAO_VIEC);
+    $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$P_NGUOI_NHAN_VIEC);
+    $stmt->bindParam(':P_TIEN_DO',$P_TIEN_DO);
+    $stmt->bindParam(':P_GHI_CHU',$P_GHI_CHU);
+    $stmt->bindParam(':P_LY_DO',$P_LY_DO);
+    $stmt->bindParam(':P_THAM_DINH_TGIAN',$P_THAM_DINH_TGIAN);
+    $stmt->bindParam(':P_THAM_DINH_KHOI_LUONG',$P_THAM_DINH_KHOI_LUONG);
+    $stmt->bindParam(':P_THAM_DINH_CHAT_LUONG',$P_THAM_DINH_CHAT_LUONG);
+    $stmt->bindParam(':P_ID_LOAI_CV',$P_ID_LOAI_CV);
+    $stmt->bindParam(':P_TRANG_THAI',$P_TRANG_THAI);
+    $stmt->bindParam(':P_ACTION',$P_ACTION);
+    $stmt->bindParam(':P_TYPE',$P_TYPE);
+    $stmt->bindParam(':P_NGUOI_YEU_CAU',$P_NGUOI_YEU_CAU);
+    $stmt->bindParam(':P_NGUOI_NHAP',$P_NGUOI_NHAP);
+    $stmt->bindParam(':P_TIME_NHAN_VIEC',$P_TIME_NHAN_VIEC);
+    $stmt->bindParam(':P_TIME_HOAN_THANH',$P_TIME_HOAN_THANH);
+    $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
+    $stmt->execute();
+    return $result;
+    }
 
     //SETTING HIỂN THỊ DATA LIST
     public function SELECT_SETTING($id_setting)
@@ -150,6 +239,53 @@ class CongViecController extends Controller
         return response()->json([], 200);
     }
 
+    public function filter(Request $request)
+    {
+        if($request->has('api_token'))
+        {
+            $token = $request->get('api_token');
+            $user = DB::select("SELECT id_nd, id_rule from TB_NGUOI_DUNG where token_nd = '$token'");
+            
+            $time_start = $request->get('time_start');
+            $time_end = $request->get('time_end');
+            $sql = "SELECT CV.*, DA_KH.TEN_DU_AN_KH, ND.display_name, ND.avatar,DA_KH.id_du_an,DA_KH.id_du_an_kh  FROM TB_CONG_VIEC_DA CV, TB_CONG_VIEC_DA_KH CV_KH, TB_DU_AN_KH DA_KH, TB_NGUOI_DUNG ND
+            WHERE CV.ID_CV_DA = CV_KH.ID_CV_DA AND CV_KH.ID_DU_AN_KH = DA_KH.ID_DU_AN_KH AND CV.nguoi_nhan_viec = ND.id_nd AND CV.created_at >= '$time_start' AND CV.created_at <= '$time_end' ";
+            $sql_id_du_an = " AND DA_KH.id_du_an is not null";
+            if($request->get('id_du_an') != '-1'  && $request->has('id_du_an') )
+            {
+                $id_du_an = $request->get('id_du_an');
+                $sql_id_du_an = " AND DA_KH.id_du_an = $id_du_an";
+            }
+            $sql_id_du_an_kh  = " AND DA_KH.id_du_an_kh is not null";
+            if($request->get('id_du_an_kh') != '-1' && $request->has('id_du_an_kh') )
+            {
+                $id_du_an_kh = $request->get('id_du_an_kh');
+                $sql_id_du_an_kh = " AND DA_KH.id_du_an_kh = $id_du_an_kh";
+            }
+            $sql_id_loai_cv  = " AND CV.id_loai_cv is not null";
+            if($request->get('id_loai_cv') != '-1' && $request->has('id_loai_cv') )
+            {
+                $id_loai_cv = $request->get('id_loai_cv');
+                $sql_id_loai_cv = " AND CV.id_loai_cv = $id_loai_cv";
+            }
+            $sql_id_nhan_vien  = " AND CV.nguoi_nhan_viec is not null";
+            if($request->get('nguoi_nhan_viec') != '-1' && $request->has('nguoi_nhan_viec') )
+            {
+                $nguoi_nhan_viec = $request->get('nguoi_nhan_viec');
+                $sql_id_nhan_vien = " AND CV.nguoi_nhan_viec = $nguoi_nhan_viec";
+            }
+            $sql .= $sql_id_du_an .= $sql_id_du_an_kh .= $sql_id_nhan_vien .= $sql_id_loai_cv;
+            if($user[0]->id_rule == 0)
+            {
+                $id_nd = $user[0]->id_nd;
+                $sql_user = " AND CV.nguoi_nhan_viec = $id_nd";
+                $sql .=$sql_user;
+            }
+            $cong_viec = DB::select($sql);
+            return response()->json($cong_viec, 200);
+        }
+       
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -165,53 +301,69 @@ class CongViecController extends Controller
             if($request->has('api_token'))
             {
                 $user_model = new UserModel();
-                $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
+                $user = $user_model->SELECT_INFO_USER();
                 if($user[0])
-                {   
-                    $arr_params = [
-                        "P_ID_CV_DA" => $request->get('P_ID_CV_DA'),
-                        "P_TEN_CV" => $request->get('P_TEN_CV'),
-                        "P_NGAY_TIEP_NHAN" => $request->get('P_NGAY_TIEP_NHAN'),
-                        "P_NGAY_GIAO_VIEC" => $request->get('P_NGAY_GIAO_VIEC'),
-                        "P_NGAY_HOAN_THANH" => $request->get('P_NGAY_HOAN_THANH'),
-                        "P_NGUOI_GIAO_VIEC" => $request->get('P_NGUOI_GIAO_VIEC'),
-                        "P_TRANG_THAI" => $request->get('P_TRANG_THAI'),
-                        "P_DO_UU_TIEN" => $request->get('P_DO_UU_TIEN'),
-                        "P_NOI_DUNG_CV" => $request->get('P_NOI_DUNG_CV') != 'undefined' ?  $request->get('P_NOI_DUNG_CV') : null,
-                        "P_NGAY_CAM_KET" => $request->get('P_NGAY_CAM_KET') != 'undefined' ?  $request->get('P_NGAY_CAM_KET') : NULL,
-                        "P_GIO_THUC_HIEN" => $request->get('P_GIO_THUC_HIEN') != 'undefined' ?  $request->get('P_GIO_THUC_HIEN') : NULL, 
-                        "P_MA_JIRA" => $request->get('P_MA_JIRA') != 'undefined' ?  $request->get('P_MA_JIRA') : NULL,
-                        "P_NGUOI_NHAN_VIEC" => $request->get('P_NGUOI_NHAN_VIEC') != 'undefined' ?  $request->get('P_NGUOI_NHAN_VIEC') : NULL, 
-                        "P_TIEN_DO" => $request->get('P_TIEN_DO') != 'undefined' ?  $request->get('P_TIEN_DO') : NULL,
-                        "P_GHI_CHU" => $request->get('P_GHI_CHU') != 'undefined' ?  $request->get('P_GHI_CHU') : NULL, 
-                        "P_LY_DO" => $request->get('P_LY_DO') != 'undefined' ?  $request->get('P_LY_DO') : NULL,
-                        "P_THAM_DINH_TGIAN"  => $request->get('P_THAM_DINH_TGIAN') != 'undefined' ?  $request->get('P_THAM_DINH_TGIAN') : NULL,
-                        "P_THAM_DINH_KHOI_LUONG" =>  $request->get('P_THAM_DINH_KHOI_LUONG') != 'undefined' ?  $request->get('P_THAM_DINH_KHOI_LUONG') : NULL,
-                        "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG') != 'undefined' ?  $request->get('P_THAM_DINH_CHAT_LUONG') : NULL,
-                        "P_ID_LOAI_CV" =>  $request->get('P_ID_LOAI_CV') != 'undefined' ?  $request->get('P_ID_LOAI_CV') : 1,
-                        "P_TYPE" => $request->get('P_TYPE'),
-                        "P_NGUOI_YEU_CAU" => $request->get('P_NGUOI_YEU_CAU') != 'undefined' ?  $request->get('P_NGUOI_YEU_CAU') : null,
-                        "P_ACTION" => $request->get('P_ACTION'),
-                        "P_NGUOI_NHAP" => $request->get('P_NGUOI_NHAP'),
-                        "P_TIME_NHAN_VIEC" => $request->get('P_TIME_NHAN_VIEC'),
-                        "P_TIME_HOAN_THANH" => $request->get('P_TIME_HOAN_THANH')
-                    ];
-                    $cong_viec_model = new CongViecModel();
-                    $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);
-                   
+                {
+                    $P_ID_CV_DA = $request->get('P_ID_CV_DA');
+                    // $P_ID_DU_AN_KH = $request->get("P_ID_DU_AN_KH");
+                    $P_TEN_CV = $request->get('P_TEN_CV');
+                    $P_NGAY_TIEP_NHAN = $request->get('P_NGAY_TIEP_NHAN');
+                    $P_NGAY_GIAO_VIEC = $request->get('P_NGAY_GIAO_VIEC');
+                    $P_NGAY_HOAN_THANH = $request->get('P_NGAY_HOAN_THANH');
+                    $P_NGUOI_GIAO_VIEC = $request->get('P_NGUOI_GIAO_VIEC');
+                    $P_TRANG_THAI = $request->get('P_TRANG_THAI');
+                    $P_DO_UU_TIEN = $request->get('P_DO_UU_TIEN');
+                    $P_NOI_DUNG_CV = $request->get('P_NOI_DUNG_CV') != 'undefined' ?  $request->get('P_NOI_DUNG_CV') : null; 
+                    $P_NGAY_CAM_KET = $request->get('P_NGAY_CAM_KET') != 'undefined' ?  $request->get('P_NGAY_CAM_KET') : NULL; 
+                    $P_GIO_THUC_HIEN =  $request->get('P_GIO_THUC_HIEN') != 'undefined' ?  $request->get('P_GIO_THUC_HIEN') : NULL; 
+                    $P_MA_JIRA = $request->get('P_MA_JIRA') != 'undefined' ?  $request->get('P_MA_JIRA') : NULL; 
+                    $P_NGUOI_NHAN_VIEC = $request->get('P_NGUOI_NHAN_VIEC') != 'undefined' ?  $request->get('P_NGUOI_NHAN_VIEC') : NULL; 
+                    $P_TIEN_DO = $request->get('P_TIEN_DO') != 'undefined' ?  $request->get('P_TIEN_DO') : NULL; 
+                    $P_GHI_CHU =  $request->get('P_GHI_CHU') != 'undefined' ?  $request->get('P_GHI_CHU') : NULL; 
+                    $P_LY_DO =  $request->get('P_LY_DO') != 'undefined' ?  $request->get('P_LY_DO') : NULL; 
+                    $P_THAM_DINH_TGIAN  =  $request->get('P_THAM_DINH_TGIAN') != 'undefined' ?  $request->get('P_THAM_DINH_TGIAN') : NULL; 
+                    $P_THAM_DINH_KHOI_LUONG =  $request->get('P_THAM_DINH_KHOI_LUONG') != 'undefined' ?  $request->get('P_THAM_DINH_KHOI_LUONG') : NULL; 
+                    $P_THAM_DINH_CHAT_LUONG =  $request->get('P_THAM_DINH_CHAT_LUONG') != 'undefined' ?  $request->get('P_THAM_DINH_CHAT_LUONG') : NULL; 
+                    $P_ID_LOAI_CV =  $request->get('P_ID_LOAI_CV') != 'undefined' ?  $request->get('P_ID_LOAI_CV') : 1; 
+                    $P_TYPE = $request->get('P_TYPE');
+                    $P_NGUOI_YEU_CAU = $request->get('P_NGUOI_YEU_CAU') != 'undefined' ?  $request->get('P_NGUOI_YEU_CAU') : null; 
+                    $P_ACTION = $request->get('P_ACTION');
+                    $P_NGUOI_NHAP = $request->get('P_NGUOI_NHAP');
+                    $P_TIME_NHAN_VIEC = $request->get('P_TIME_NHAN_VIEC');
+                    $P_TIME_HOAN_THANH = $request->get('P_TIME_HOAN_THANH');
+                    $result = $this->CallFunction($P_ID_CV_DA,
+                    $P_TEN_CV ,
+                    $P_NOI_DUNG_CV ,
+                    $P_NGAY_TIEP_NHAN ,
+                    $P_NGAY_GIAO_VIEC ,
+                    $P_NGAY_HOAN_THANH ,
+                    $P_NGAY_CAM_KET,
+                    $P_GIO_THUC_HIEN ,
+                    $P_DO_UU_TIEN,
+                    $P_MA_JIRA ,
+                    $P_NGUOI_GIAO_VIEC ,
+                    $P_NGUOI_NHAN_VIEC ,
+                    $P_TIEN_DO ,
+                    $P_GHI_CHU ,
+                    $P_LY_DO ,
+                    $P_THAM_DINH_TGIAN ,
+                    $P_THAM_DINH_KHOI_LUONG,
+                    $P_THAM_DINH_CHAT_LUONG,
+                    $P_ID_LOAI_CV,
+                    $P_TRANG_THAI,
+                    $P_ACTION,
+                    $P_TYPE,
+                    $P_NGUOI_YEU_CAU,
+                    $P_NGUOI_NHAP,
+                    $P_TIME_NHAN_VIEC,
+                    $P_TIME_HOAN_THANH);
                     return response()->json([
                         'success' => true,
                         'message' => 'Thêm công việc thành công',
-                        'results' => $cong_viec,
+                        'results' => $result,
                         'status' => 200
                     ], 200);
                 }
-                return response()->json([
-                    "success" => false,
-                    'message' => 'Tài khoản của bạn chưa đăng nhập xin vui lòng đăng nhập lại!',
-                    'results' => null,
-                    'status' => 404
-                ], 200);
                
             }
             else
@@ -341,60 +493,62 @@ class CongViecController extends Controller
 
     public function capnhat_congviec(Request $request,$id)
     {
-            if($request->has('api_token'))
-            {
-                $user_model = new UserModel();
-                $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
-                if($user[0])
-                {
-                    $arr_params = [
-                        "P_ID_CV_DA" => $id,
-                        "P_TEN_CV" => $request->get('P_TEN_CV'),
-                        "P_NGAY_TIEP_NHAN" => $request->get('P_NGAY_TIEP_NHAN'),
-                        "P_NGAY_GIAO_VIEC" => $request->get('P_NGAY_GIAO_VIEC'),
-                        "P_NGAY_HOAN_THANH" => $request->get("P_NGAY_HOAN_THANH"),
-                        "P_NGUOI_GIAO_VIEC" => $request->get('P_NGUOI_GIAO_VIEC'),
-                        "P_TRANG_THAI" => $request->get('P_TRANG_THAI'),
-                        "P_DO_UU_TIEN" => $request->get('P_DO_UU_TIEN'),
-                        "P_NOI_DUNG_CV" => $request->get('P_NOI_DUNG_CV'),
-                        "P_NGAY_CAM_KET" => $request->get("P_NGAY_CAM_KET"),
-                        "P_GIO_THUC_HIEN" => $request->get("P_GIO_THUC_HIEN"),
-                        "P_MA_JIRA" => NULL,
-                        "P_NGUOI_NHAN_VIEC" => $request->get('P_NGUOI_NHAN_VIEC') == 'undefined'? NULL : $request->get('P_NGUOI_NHAN_VIEC'), 
-                        "P_TIEN_DO" => $request->get('P_TIEN_DO'),
-                        "P_GHI_CHU" =>  $request->get("P_GHI_CHU"), 
-                        "P_LY_DO" => NULL,
-                        "P_THAM_DINH_TGIAN"  =>  NULL,
-                        "P_THAM_DINH_KHOI_LUONG" => NULL,
-                        "P_THAM_DINH_CHAT_LUONG" =>  NULL,
-                        "P_ID_LOAI_CV" =>  $request->get("P_ID_LOAI_CV"),
-                        "P_ACTION" => 2,
-                        "P_TYPE" => $request->get('P_TYPE'),
-                        "P_NGUOI_NHAP" => null,
-                        "P_TIME_NHAN_VIEC" => $request->get('P_TIME_NHAN_VIEC'),
-                        "P_TIME_HOAN_THANH" => $request->get('P_TIME_HOAN_THANH'),
-                    ];
-                    $cong_viec_model = new CongViecModel();
-                    $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);
-                    return response()->json([
-                        "success" => true,
-                        "message" => "Cập nhật công việc thành công",
-                        "result" => $cong_viec
-                    ], 200);
-                }
+                $P_ID_CV_DA = $id;
+                $P_TEN_CV = $request->get('P_TEN_CV');;
+                $P_NGAY_TIEP_NHAN = $request->get('P_NGAY_TIEP_NHAN');
+                $P_NGAY_GIAO_VIEC = $request->get('P_NGAY_GIAO_VIEC');
+                $P_NGAY_HOAN_THANH = $request->get("P_NGAY_HOAN_THANH");
+                $P_NGUOI_GIAO_VIEC = $request->get('P_NGUOI_GIAO_VIEC');
+                $P_TRANG_THAI = $request->get('P_TRANG_THAI');
+                $P_DO_UU_TIEN = $request->get('P_DO_UU_TIEN');
+                $P_NOI_DUNG_CV = $request->get('P_NOI_DUNG_CV');
+                $P_NGAY_CAM_KET = $request->get("P_NGAY_CAM_KET"); 
+                $P_GIO_THUC_HIEN = $request->get("P_GIO_THUC_HIEN");
+                $P_MA_JIRA = NULL; 
+                $P_NGUOI_NHAN_VIEC = $request->get('P_NGUOI_NHAN_VIEC') == 'undefined'? NULL : $request->get('P_NGUOI_NHAN_VIEC'); 
+                $P_TIEN_DO = $request->get('P_TIEN_DO'); 
+                $P_GHI_CHU =   $request->get("P_GHI_CHU");; 
+                $P_LY_DO = NULL; 
+                $P_THAM_DINH_TGIAN  =  NULL; 
+                $P_THAM_DINH_KHOI_LUONG = NULL; 
+                $P_THAM_DINH_CHAT_LUONG =  NULL; 
+                $P_ID_LOAI_CV =  $request->get("P_ID_LOAI_CV"); 
+                $P_ACTION = 2;
+                $P_TYPE = $request->get('P_TYPE');
+                $P_NGUOI_NHAP = null;
+                $P_TIME_NHAN_VIEC = $request->get('P_TIME_NHAN_VIEC');
+                $P_TIME_HOAN_THANH = $request->get('P_TIME_HOAN_THANH');
+                $result = $this->CallFunction($P_ID_CV_DA,
+                    $P_TEN_CV ,
+                    $P_NOI_DUNG_CV ,
+                    $P_NGAY_TIEP_NHAN ,
+                    $P_NGAY_GIAO_VIEC ,
+                    $P_NGAY_HOAN_THANH ,
+                    $P_NGAY_CAM_KET,
+                    $P_GIO_THUC_HIEN ,
+                    $P_DO_UU_TIEN,
+                    $P_MA_JIRA ,
+                    $P_NGUOI_GIAO_VIEC ,
+                    $P_NGUOI_NHAN_VIEC ,
+                    $P_TIEN_DO ,
+                    $P_GHI_CHU ,
+                    $P_LY_DO ,
+                    $P_THAM_DINH_TGIAN ,
+                    $P_THAM_DINH_KHOI_LUONG,
+                    $P_THAM_DINH_CHAT_LUONG,
+                    $P_ID_LOAI_CV,
+                    $P_TRANG_THAI,
+                    $P_ACTION,
+                    $P_TYPE,
+                    $P_NGUOI_YEU_CAU = NULL,
+                    $P_NGUOI_NHAP,
+                    $P_TIME_NHAN_VIEC,
+                    $P_TIME_HOAN_THANH);
                 return response()->json([
-                    "success" => false,
-                    'message' => 'Tài khoản của bạn chưa đăng nhập xin vui lòng đăng nhập lại!',
-                    'results' => null,
-                    'status' => 404
+                    'success' => true,
+                    'message' => 'Cập công việc thành công',
+                    'status' => 200
                 ], 200);
-            }
-           
-            return response()->json([
-                'success' => false,
-                'message' => 'Authorizon',
-                'status' => 401
-            ], 200);
             
     }
     public function update(Request $request, $id)
@@ -541,41 +695,42 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $token = $request->get('api_token');
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($token);
+            $user = DB::select("SELECT * FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0])
             {
                 $id_rule = $user[0]->id_rule;
                 if($id_rule > 0)
                 {
-                    $arr_params = [
-                        "P_ID_CV_DA" => $id,
-                        "P_THAM_DINH_TGIAN" => $request->get('P_THAM_DINH_TGIAN'),
-                        "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG'),
-                        "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
-                    ];
-                    $cong_viec_model = new CongViecModel();
-                    $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
-                    
+                    $sql = "DECLARE
+                        P_ID_CV_DA NUMBER;
+                        P_THAM_DINH_TGIAN NUMBER;
+                        P_THAM_DINH_CHAT_LUONG NUMBER;
+                        P_THAM_DINH_KHOI_LUONG NUMBER;
+                        P_NGUOI_THAM_DINH NUMBER;
+                    BEGIN
+                        :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
+                    END;";
+                    $P_ID_CV_DA = $id;
+                    $P_THAM_DINH_TGIAN = $request->get('P_THAM_DINH_TGIAN');
+                    $P_THAM_DINH_CHAT_LUONG = $request->get('P_THAM_DINH_CHAT_LUONG');
+                    $P_THAM_DINH_KHOI_LUONG = $request->get('P_THAM_DINH_KHOI_LUONG');
+                    $P_NGUOI_THAM_DINH = $user[0]->id_nd;
+                    $pdo = DB::getPdo();
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':P_ID_CV_DA',$id,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_THAM_DINH_TGIAN',$P_THAM_DINH_TGIAN);
+                    $stmt->bindParam(':P_THAM_DINH_CHAT_LUONG', $P_THAM_DINH_CHAT_LUONG,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_THAM_DINH_KHOI_LUONG',$P_THAM_DINH_KHOI_LUONG,PDO::PARAM_INT);
+                    $stmt->bindParam(':P_NGUOI_THAM_DINH',$P_NGUOI_THAM_DINH,PDO::PARAM_INT);
+                    $stmt->bindParam(':result',$result);
+                    $stmt->execute();
                     return response()->json([
                         'success' => true,
                         'message' => 'Thẩm định thành công',
                         'status' => 200
                     ], 200);
                 }
-                return response()->json([
-                    "success" => false,
-                    "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
-                    "status" => 401
-                ], 200);
             }
-            return response()->json([
-                "success" => false,
-                "message" => "Tài khoản của bạn dã bị đăng nhập hoặc chưa đăng nhập!",
-                "result" => null,
-                "status" => 404
-            ], 200);
         }
     }
 
