@@ -30,7 +30,42 @@ class CongViecController extends Controller
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function CAPNHAT_SETTING($P_ID_SETTING, $P_ID_ND, $P_VALUE_SETTING)
+    {
+        $sql = "DECLARE
+            P_ID_SETTING NUMBER;
+            P_VALUE_SETTING VARCHAR2(2000);
+            BEGIN
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+            END;"; 
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
+        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
+        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
+        $stmt->execute();
+        return $RESULT_CV;
+    }
 
+    public function SETTING_HIENTHI_MODAL_CV($P_ID_SETTING ,$P_ID_ND, $P_VALUE_SETTING)
+    {
+        $sql = "DECLARE
+            P_ID_ND NUMBER;
+            P_ID_SETTING NUMBER;
+            P_VALUE_SETTING VARCHAR2(4000);
+            BEGIN
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+            END;"; 
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
+        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
+        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
+        $stmt->execute();
+        return $RESULT_CV;
+    }
 
     //DELETE CONG VIEC
     public function DELETE_CONG_VIEC_DA($P_ID_CV_DA)
@@ -511,29 +546,22 @@ class CongViecController extends Controller
             if($user[0])
             {
                 $id_rule = $user[0]->id_rule;
-                if($id_rule > 0)
-                {
-                    $arr_params = [
-                        "P_ID_CV_DA" => $id,
-                        "P_THAM_DINH_TGIAN" => $request->get('P_THAM_DINH_TGIAN'),
-                        "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG'),
-                        "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
-                    ];
-                    $cong_viec_model = new CongViecModel();
-                    $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
-                    
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Thẩm định thành công',
-                        'status' => 200
-                    ], 200);
-                }
+                $arr_params = [
+                    "P_ID_CV_DA" => $id,
+                    "P_THAM_DINH_TGIAN" => $request->get('P_THAM_DINH_TGIAN'),
+                    "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG'),
+                    "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
+                    "P_NGUOI_THAM_DINH" => $user[0]->id_nd
+                ];
+                $cong_viec_model = new CongViecModel();
+                $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
+                
                 return response()->json([
-                    "success" => false,
-                    "message" => "Bạn không đủ quyền để thực hiện chức năng này!",
-                    "status" => 401
+                    'success' => true,
+                    'message' => 'Thẩm định thành công',
+                    'status' => 200
                 ], 200);
+
             }
             return response()->json([
                 "success" => false,
@@ -569,8 +597,7 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get("P_VALUE_SETTING") : "";
-            $cong_viec_model = new CongViecModel();
-            $result = $cong_viec_model->CAPNHAT_SETTING($id_setting,0, $P_VALUE_SETTING);
+            $result = $this->CAPNHAT_SETTING($id_setting,0, $P_VALUE_SETTING);
             return response()->json($result, 200);
         }
     }
@@ -598,9 +625,8 @@ class CongViecController extends Controller
             $user = DB::SELECT("SELECT id_nd FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0]->id_nd)
             {
-                $cong_viec_model = new CongViecModel();
                 $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get('P_VALUE_SETTING') : "";
-                $result = $cong_viec_model->SETTING_HIENTHI_MODAL_CV(0,$user[0]->id_nd, $P_VALUE_SETTING);
+                $result = $this->SETTING_HIENTHI_MODAL_CV(0,$user[0]->id_nd, $P_VALUE_SETTING);
                 return response()->json($result, 200);
             }
         }

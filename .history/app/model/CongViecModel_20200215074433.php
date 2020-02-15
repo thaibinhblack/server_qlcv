@@ -54,7 +54,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_DO_UU_TIEN',$arr_params["P_GIO_THUC_HIEN"]);
         $stmt->bindParam(':P_MA_JIRA',$arr_params["P_MA_JIRA"]);
         $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$arr_params["P_NGUOI_GIAO_VIEC"]);
-        $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$arr_params["P_NGUOI_NHAN_VIEC"]);
+        $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$arr_params["P_NGUOI_GIAO_VIEC"]);
         $stmt->bindParam(':P_TIEN_DO',$arr_params["P_TIEN_DO"]);
         $stmt->bindParam(':P_GHI_CHU',$arr_params["P_GHI_CHU"]);
         $stmt->bindParam(':P_LY_DO',$arr_params["P_LY_DO"]);
@@ -132,25 +132,5 @@ class CongViecModel extends Model
         $stmt->execute();
         return $RESULT_CV;
     }
-
-    public function SETTING_HIENTHI_MODAL_CV($P_ID_SETTING ,$P_ID_ND, $P_VALUE_SETTING)
-    {
-        $sql = "DECLARE
-            P_ID_ND NUMBER;
-            P_ID_SETTING NUMBER;
-            P_VALUE_SETTING VARCHAR2(4000);
-            BEGIN
-                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
-            END;"; 
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
-        $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
-        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
-        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
-        $stmt->execute();
-        return $RESULT_CV;
-    }
-
 
 }

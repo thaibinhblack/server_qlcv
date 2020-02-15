@@ -31,6 +31,24 @@ class CongViecController extends Controller
     }
 
 
+    public function SETTING_HIENTHI_MODAL_CV($P_ID_SETTING ,$P_ID_ND, $P_VALUE_SETTING)
+    {
+        $sql = "DECLARE
+            P_ID_ND NUMBER;
+            P_ID_SETTING NUMBER;
+            P_VALUE_SETTING VARCHAR2(4000);
+            BEGIN
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
+            END;"; 
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
+        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
+        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
+        $stmt->execute();
+        return $RESULT_CV;
+    }
 
     //DELETE CONG VIEC
     public function DELETE_CONG_VIEC_DA($P_ID_CV_DA)
@@ -569,8 +587,7 @@ class CongViecController extends Controller
         if($request->has('api_token'))
         {
             $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get("P_VALUE_SETTING") : "";
-            $cong_viec_model = new CongViecModel();
-            $result = $cong_viec_model->CAPNHAT_SETTING($id_setting,0, $P_VALUE_SETTING);
+            $result = $this->CAPNHAT_SETTING($id_setting,0, $P_VALUE_SETTING);
             return response()->json($result, 200);
         }
     }
@@ -598,9 +615,8 @@ class CongViecController extends Controller
             $user = DB::SELECT("SELECT id_nd FROM TB_NGUOI_DUNG WHERE token_nd = '$token'");
             if($user[0]->id_nd)
             {
-                $cong_viec_model = new CongViecModel();
                 $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get('P_VALUE_SETTING') : "";
-                $result = $cong_viec_model->SETTING_HIENTHI_MODAL_CV(0,$user[0]->id_nd, $P_VALUE_SETTING);
+                $result = $this->SETTING_HIENTHI_MODAL_CV(0,$user[0]->id_nd, $P_VALUE_SETTING);
                 return response()->json($result, 200);
             }
         }
