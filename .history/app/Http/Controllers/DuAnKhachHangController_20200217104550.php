@@ -153,7 +153,7 @@ class DuAnKhachHangController extends Controller
         if($request->has('api_token'))
         {
             $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
+            $user = $user_model->CHECK_TOKEN($request->get('api_token'));
             if($user)
             {
                 $action = $request->has('action') == true ? $request->get('action') : 0;

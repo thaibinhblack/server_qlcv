@@ -66,7 +66,7 @@ Route::get("du-an-kh",'DuAnKhachHangController@index')->middleware('cors');
 Route::get("du-an-kh/{id}",'DuAnKhachHangController@show')->middleware('cors');
 Route::post("du-an-kh",'DuAnKhachHangController@store')->middleware('cors');
 Route::post("du-an-kh/{id}",'DuAnKhachHangController@update')->middleware('cors');
-Route::get("du-an-kh-insert-delete/{id_cv_da}/{id_du_an_kh}",'DuAnKhachHangController@insert_destroy')->middleware('cors');
+Route::post("du-an-kh-delete/{id_cv_da}/{id_du_an_kh}",'DuAnKhachHangController@destroy')->middleware('cors');
 //trạng thái dự án khách hàng
 Route::get('trang-thai-du-an-kh',"DuAnKhachHangController@index_trang_thai")->middleware('cors');
 Route::post('trang-thai-du-an-kh',"DuAnKhachHangController@store_trang_thai")->middleware('cors');
