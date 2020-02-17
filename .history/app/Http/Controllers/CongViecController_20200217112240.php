@@ -64,7 +64,6 @@ class CongViecController extends Controller
             $P_ID_ND = 0;
             $P_ID_LOAI_CV = 0;
             $P_ID_DU_AN_KH = 0;
-            $P_TRANG_THAI_TD = 0;
             // return response()->json($user, 200);
             $id_nd = $user[0]->id_nd;
            
@@ -77,10 +76,6 @@ class CongViecController extends Controller
                 $P_TIME_START =  date_format($P_TIME_START,"d/m/Y");
                 $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
                 // return response()->json($request->get('status'), 200);
-            }
-            if($request->has('P_TRANG_THAI_TD'))
-            {
-                $P_TRANG_THAI_TD = $request->get('P_TRANG_THAI_TD');
             }
             if($request->has('P_ID_LOAI_CV'))
             {

@@ -9,16 +9,14 @@ class CongViecModel extends Model
 {
 
 
-    //procedure SELECT_CONG_VIEC_DA
-    public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD) FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    
+        //procedure SELECT_CONG_VIEC_DA
+        public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD)
+        {
+            $pdo = DB::getPdo();
+            $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD) FROM dual");
+            $result = $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }
     public function THEM_CAPNHAT_CONGVIEC($arr_params)
     {
             $sql = "DECLARE

@@ -80,7 +80,7 @@ class CongViecController extends Controller
             }
             if($request->has('P_TRANG_THAI_TD'))
             {
-                $P_TRANG_THAI_TD = $request->get('P_TRANG_THAI_TD');
+                $P_TRANG_THAI_TD = $request->get('P_TRANG_THAI_TD')
             }
             if($request->has('P_ID_LOAI_CV'))
             {

@@ -78,10 +78,6 @@ class CongViecController extends Controller
                 $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
                 // return response()->json($request->get('status'), 200);
             }
-            if($request->has('P_TRANG_THAI_TD'))
-            {
-                $P_TRANG_THAI_TD = $request->get('P_TRANG_THAI_TD');
-            }
             if($request->has('P_ID_LOAI_CV'))
             {
                 $P_ID_LOAI_CV = $request->get('P_ID_LOAI_CV');
