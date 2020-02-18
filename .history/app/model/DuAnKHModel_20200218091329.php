@@ -63,20 +63,20 @@ class DuAnKHModel extends Model
     return $result;
     }
 
-    public function CAPNHAT_VALUE_ATTRIBUTE_DA_KH($P_ID_DU_AN_KH, $P_VALUE_SETTING)
+    public function CAPNHAT_VALUE_ATTRIBUTE_DA($P_ID_CV_DA, $P_ID_DU_AN_KH, $P_ACTION)
     {
         $sql = "DECLARE
-        P_ID_DU_AN_KH NUMBER(10);
-            P_VALUE_SETTING VARCHAR2(4000);
-        BEGIN
-            :n := CAPNHAT_VALUE_ATTRIBUTE_DA_KH(:P_ID_DU_AN_KH, :P_VALUE_SETTING);
-        END;";  
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_DU_AN_KH',$P_ID_DU_AN_KH, PDO::PARAM_INT);
-        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
-        $stmt->bindParam(':n',$result, PDO::PARAM_INT);
-        $stmt->execute();
-        return $result;
+        P_ID_DU_AN NUMBER(10);
+        P_VALUE_SETTING VARCHAR2(4000);
+    BEGIN
+        :n := CAPNHAT_VALUE_ATTRIBUTE_DA(:P_ID_DU_AN, :P_VALUE_SETTING);
+    END;";  
+    $pdo = DB::getPdo();
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':P_ID_DU_AN',$P_ID_CV_DA);
+    $stmt->bindParam(':P_VALUE_SETTING',$P_ID_DU_AN_KH);
+    $stmt->bindParam(':n',$result);
+    $stmt->execute();
+    return $result;
     }
 }

@@ -123,6 +123,5 @@ Route::post("lich-cong-tac",'LichCongTacController@store')->middleware('cors');
 
 Route::get('/test','CongViecController@test')->middleware('cors');
 //setting
-Route::get('/setting-du-an/{id}','SettingController@show_du_an')->middleware('cors');
+Route::post('/setting-du-an/{id}','SettingController@show_du_an')->middleware('cors');
 Route::post('/setting-du-an','SettingController@store_du_an')->middleware('cors');
-Route::post('/setting-value-du-an-kh/{id}','SettingController@update_du_an')->middleware('cors');

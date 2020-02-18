@@ -73,9 +73,9 @@ class DuAnKHModel extends Model
         END;";  
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':P_ID_DU_AN_KH',$P_ID_DU_AN_KH, PDO::PARAM_INT);
-        $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
-        $stmt->bindParam(':n',$result, PDO::PARAM_INT);
+        $stmt->bindParam(':P_ID_DU_AN_KH',$P_ID_DU_AN_KH);
+        $stmt->bindParam(':P_VALUE_SETTING',$P_ID_DU_AN_KH);
+        $stmt->bindParam(':n',$result);
         $stmt->execute();
         return $result;
     }
