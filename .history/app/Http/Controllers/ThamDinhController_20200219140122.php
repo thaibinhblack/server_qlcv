@@ -36,14 +36,14 @@ class ThamDinhController extends Controller
                 for($i=0;$i<$length;$i++)
                 {
                     $cong_viec_model = new CongViecModel();
-                    $cong_viec = $cong_viec_model->THAM_DINH_CONG_VIEC_DA([
-                        "P_ID_CV_DA" => $arr_list[$i],
-                        "P_THAM_DINH_TGIAN" => $arr_tgian[$i],
-                        "P_THAM_DINH_CHAT_LUONG" => null,
-                        "P_THAM_DINH_KHOI_LUONG" => null,
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
-                    ]);
-                    // echo $arr_list[$i].' - '.$arr_tgian[$i].'<br />';
+                    // $cong_viec = $cong_viec_model->THAM_DINH_CONG_VIEC_DA([
+                    //     "P_ID_CV_DA" => $arr_list[$i],
+                    //     "P_THAM_DINH_TGIAN" => $arr_tgian[$i],
+                    //     "P_THAM_DINH_CHAT_LUONG" => null,
+                    //     "P_THAM_DINH_KHOI_LUONG" => null,
+                    //     "P_NGUOI_THAM_DINH" => $user->id_nd
+                    // ]);
+                    echo $arr_list[$i].'<br /'>;
                 }
                 return response()->json($length, 200);
             }

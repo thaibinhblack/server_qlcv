@@ -101,7 +101,7 @@ Route::post('cong-viec-setting-modal','CongViecController@setting_modal')->middl
 Route::get('cong-viec-setting-modal','CongViecController@show_setting_modal')->middleware('cors');
 
 //Thẩm định công việc
-Route::post('tham-dinh-list-cv','ThamDinhController@tham_dinh_cv')->middleware('cors');
+Route::post('tham-dinh-cv','ThamDinhController@tham_dinh_cv')->middleware('cors');
 Route::post('gui-tham-dinh', 'ThamDinhController@gui_tham_dinh')->middleware('cors');
 
 //FILE CÔNG VIỆC

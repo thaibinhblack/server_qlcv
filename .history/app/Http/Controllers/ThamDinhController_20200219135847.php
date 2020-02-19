@@ -41,9 +41,8 @@ class ThamDinhController extends Controller
                         "P_THAM_DINH_TGIAN" => $arr_tgian[$i],
                         "P_THAM_DINH_CHAT_LUONG" => null,
                         "P_THAM_DINH_KHOI_LUONG" => null,
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
-                    ]);
-                    // echo $arr_list[$i].' - '.$arr_tgian[$i].'<br />';
+                        "P_NGUOI_THAM_DINH" => $user->id_nd
+                    ])
                 }
                 return response()->json($length, 200);
             }
