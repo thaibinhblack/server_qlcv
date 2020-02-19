@@ -61,7 +61,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_NGAY_GIAO_VIEC',$arr_params["P_NGAY_GIAO_VIEC"]);
         $stmt->bindParam(':P_NGAY_HOAN_THANH',$arr_params["P_NGAY_HOAN_THANH"]);
         $stmt->bindParam(':P_NGAY_CAM_KET',$arr_params["P_NGAY_HOAN_THANH"]);
-        $stmt->bindParam(':P_GIO_THUC_HIEN',$arr_params["P_GIO_THUC_HIEN"]);
+        $stmt->bindParam(':P_GIO_THUC_HIEN',$arr_params["P_GIO_THUC_HIEN"];
         $stmt->bindParam(':P_DO_UU_TIEN',$arr_params["P_GIO_THUC_HIEN"]);
         $stmt->bindParam(':P_MA_JIRA',$arr_params["P_MA_JIRA"]);
         $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$arr_params["P_NGUOI_GIAO_VIEC"]);
