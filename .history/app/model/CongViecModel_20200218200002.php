@@ -66,7 +66,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_MA_JIRA',$arr_params["P_MA_JIRA"]);
         $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$arr_params["P_NGUOI_GIAO_VIEC"]);
         $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$arr_params["P_NGUOI_NHAN_VIEC"]);
-        $stmt->bindParam(':P_TIEN_DO',$arr_params["P_TIEN_DO"], PDO::PARAM_INT);
+        $stmt->bindParam(':P_TIEN_DO',$arr_params["P_TIEN_DO"]);
         $stmt->bindParam(':P_GHI_CHU',$arr_params["P_GHI_CHU"]);
         $stmt->bindParam(':P_LY_DO',$arr_params["P_LY_DO"]);
         $stmt->bindParam(':P_THAM_DINH_TGIAN',$arr_params["P_THAM_DINH_TGIAN"]);

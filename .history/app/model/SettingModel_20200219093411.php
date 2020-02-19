@@ -56,7 +56,7 @@ class SettingModel extends Model
     public function SELECT_SETTING_V2($P_ID_ND, $P_NAME_SETTING)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_SETTING_V2('$P_NAME_SETTING',$P_ID_ND) FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_SETTING_V2('$P_NAME_SETTING',$id_setting) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }

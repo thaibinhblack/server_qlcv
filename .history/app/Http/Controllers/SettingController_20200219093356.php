@@ -63,7 +63,7 @@ class SettingController extends Controller
     }
 
     //SETTING DATA LIST CÔNG VIỆC
-    public function show_list_cv(Request $request)
+    public function show_list_cv()
     {
         if($request->has('api_token'))
         {

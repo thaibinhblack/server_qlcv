@@ -34,30 +34,22 @@ class SettingModel extends Model
     }
 
 
-    public function CAPNHAT_CAI_DAT($P_ID_ND, $P_NAME_SETTING, $P_VALUE_SETTING)
+    public function CAPNHAT_SETTING($P_ID_SETTING, $P_ID_ND, $P_VALUE_SETTING)
     {
         $sql = "DECLARE
-            P_ID_ND NUMBER;
-            P_NAME_SETTING VARCHAR2(255);
+            P_ID_SETTING NUMBER;
             P_VALUE_SETTING VARCHAR2(2000);
             BEGIN
-                :RESULT_CV := CAPNHAT_CAI_DAT(:P_ID_ND, :P_NAME_SETTING, :P_VALUE_SETTING);
+                :RESULT_CV := CAPNHAT_SETTING(:P_ID_SETTING, :P_ID_ND, :P_VALUE_SETTING);
             END;"; 
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_ID_SETTING',$P_ID_SETTING, PDO::PARAM_INT);
         $stmt->bindParam(':P_ID_ND',$P_ID_ND, PDO::PARAM_INT);
-        $stmt->bindParam(':P_NAME_SETTING',$P_NAME_SETTING);
         $stmt->bindParam(':P_VALUE_SETTING',$P_VALUE_SETTING);
         $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
         $stmt->execute();
         return $RESULT_CV;
     }
 
-    public function SELECT_SETTING_V2($P_ID_ND, $P_NAME_SETTING)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_SETTING_V2('$P_NAME_SETTING',$P_ID_ND) FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
 }

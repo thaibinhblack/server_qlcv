@@ -63,7 +63,7 @@ class SettingController extends Controller
     }
 
     //SETTING DATA LIST CÔNG VIỆC
-    public function show_list_cv(Request $request)
+    public function show_list_cv()
     {
         if($request->has('api_token'))
         {
@@ -73,7 +73,7 @@ class SettingController extends Controller
             {
 
                 $setting_model = new SettingModel();
-                $setting = $setting_model->SELECT_SETTING_V2($user[0]->id_nd, 'CAI_DAT_LIST_CV');
+                $setting = $setting_model->CAPNHAT_CAI_DAT($user[0]->id_nd, 'CAI_DAT_LIST_CV');
                 return response()->json($setting, 200);
             }
         }

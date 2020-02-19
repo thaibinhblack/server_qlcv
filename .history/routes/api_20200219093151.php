@@ -127,7 +127,7 @@ Route::get('/setting-du-an/{id}','SettingController@show_du_an')->middleware('co
 Route::post('/setting-du-an','SettingController@store_du_an')->middleware('cors');
 Route::post('/setting-value-du-an-kh/{id}','SettingController@update_du_an')->middleware('cors');
 Route::post('/setting-cai-dat-list-cv','SettingController@update_list_cv')->middleware('cors');
-Route::get('/setting-cai-dat-list-cv','SettingController@show_list_cv')->middleware('cors');
+Route::get('/setting-cai-dat-list-cv','SettingController@update_list_cv')->middleware('cors');
 
 
 Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');

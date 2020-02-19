@@ -63,22 +63,6 @@ class SettingController extends Controller
     }
 
     //SETTING DATA LIST CÔNG VIỆC
-    public function show_list_cv(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
-            if($user)
-            {
-
-                $setting_model = new SettingModel();
-                $setting = $setting_model->SELECT_SETTING_V2($user[0]->id_nd, 'CAI_DAT_LIST_CV');
-                return response()->json($setting, 200);
-            }
-        }
-    }
-
 
     public function update_list_cv(Request $request)
     {

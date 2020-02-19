@@ -26,7 +26,7 @@ class SettingController extends Controller
                 return response()->json($setting, 200);
             }
         }
-        return response()->json('Authorizon', 200);
+        return response()->jsonp('Authorizon', 200);
     }
 
     public function store_du_an(Request $request)
@@ -58,41 +58,6 @@ class SettingController extends Controller
                $P_VALUE_SETTING = $request->has("P_VALUE_ATTRIBUTE") == true ? $request->get("P_VALUE_ATTRIBUTE") : '[]';
                $du_an_kh = $du_an_kh_model->CAPNHAT_VALUE_ATTRIBUTE_DA_KH($id, $P_VALUE_SETTING);
                return response()->json($du_an_kh, 200);
-            }
-        }
-    }
-
-    //SETTING DATA LIST CÔNG VIỆC
-    public function show_list_cv(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
-            if($user)
-            {
-
-                $setting_model = new SettingModel();
-                $setting = $setting_model->SELECT_SETTING_V2($user[0]->id_nd, 'CAI_DAT_LIST_CV');
-                return response()->json($setting, 200);
-            }
-        }
-    }
-
-
-    public function update_list_cv(Request $request)
-    {
-        if($request->has('api_token'))
-        {
-            $user_model = new UserModel();
-            $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
-            if($user)
-            {
-
-                $P_VALUE_SETTING = $request->has('P_VALUE_SETTING') == true ? $request->get('P_VALUE_SETTING') : '[]';
-                $setting_model = new SettingModel();
-                $setting = $setting_model->CAPNHAT_CAI_DAT($user[0]->id_nd, 'CAI_DAT_LIST_CV', $P_VALUE_SETTING);
-                return response()->json($setting, 200);
             }
         }
     }
