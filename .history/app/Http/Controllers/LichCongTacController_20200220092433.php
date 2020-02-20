@@ -85,7 +85,7 @@ class LichCongTacController extends Controller
             if($user)
             {
                 $arr_params = [
-                    "P_ID_LICH_CT" => $id,
+                    "P_ID_LICH_CT" => $request->has('P_ID_LICH_CT') == true ? $request->get('P_ID_LICH_CT'): 0,
                     "P_TEN_LICH_CT" => $request->get('P_TEN_LICH_CT'),
                     "P_NOI_DUNG_LICH_CT" => $request->get('P_NOI_DUNG_LICH_CT'),
                     "P_TIME_START" => $request->get("P_TIME_START"),
@@ -97,26 +97,8 @@ class LichCongTacController extends Controller
                 ];
 
                 $lich_cong_tac_model = new LichCTModel();
-                $lich_cong_tac = $lich_cong_tac_model->THEM_CAPNHAT_LICH_CT($arr_params);
-                return response()->json([
-                    "success"  => true,
-                    "message" => 'Cập nhật lịch công tác thành công',
-                    "result" => null,
-                    "status" => 200
-                ], 200);
+
             }
-            return response()->json([
-                "success" => false,
-                "message" => "Không thực hiện được chức năng này!",
-                "result" => null,
-                "status" => 404
-            ], 200);
         }
-        return response()->json([
-            "success" => false,
-            "message" => "Authorizon",
-            "result" => null,
-            "status" => 401 
-        ], 200);
     }
 }

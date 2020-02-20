@@ -97,7 +97,7 @@ class LichCongTacController extends Controller
                 ];
 
                 $lich_cong_tac_model = new LichCTModel();
-                $lich_cong_tac = $lich_cong_tac_model->THEM_CAPNHAT_LICH_CT($arr_params);
+                $lich_cong_tac = $lich_cong_tac->THEM_CAPNHAT_LICH_CT($arr_params);
                 return response()->json([
                     "success"  => true,
                     "message" => 'Cập nhật lịch công tác thành công',

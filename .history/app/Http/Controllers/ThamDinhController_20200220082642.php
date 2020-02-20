@@ -8,7 +8,14 @@ use App\model\UserModel;
 class ThamDinhController extends Controller
 {
 
-
+    public function index(Request $request)
+    {
+        if($request->has('api_token'))
+        {
+            $user_model = new UserModel();
+            $user = $user_model->SELECT_INFO_USER($request->get('api_token'));
+        }
+    }
 
     public function gui_tham_dinh(Request $request)
     {
