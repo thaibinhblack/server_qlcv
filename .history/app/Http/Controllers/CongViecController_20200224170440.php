@@ -62,7 +62,7 @@ class CongViecController extends Controller
             $cong_viec = $cong_viec_model-> SELECT_CONGVIEC_TRONG_NGAY($user[0]->id_nd);
             return response()->json($cong_viec, 200);
         }
-        return response()->json([], 200);
+
        
     }
     

@@ -85,16 +85,26 @@ class CongViecModel extends Model
         return $result;
     }
 
-    public function SELECT_CONGVIEC_TRONG_NGAY($P_ID_ND)
+    public function GUI_THAM_DINH($arr_params)
     {
+        $sql = "DECLARE
+                    P_ARRAY_ID_CV_DA VARCHAR2(1000);
+                    P_ACTION_TD NUMBER;
+                BEGIN
+                    :RESULT_CV := GUI_THAM_DINH(:P_ARRAY_ID_CV_DA, :P_ACTION_TD);
+                END;
+        ";
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONGVIEC_TRONG_NGAY('$P_ID_ND') FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_ARRAY_ID_CV_DA',$arr_params["P_ARRAY_ID_CV_DA"]);
+        $stmt->bindParam(':P_ACTION_TD',$arr_params["P_ACTION_TD"], PDO::PARAM_INT);
+        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
+        $stmt->execute();
+        return $RESULT_CV;
     }
 
 
-
+    
     public function GUI_THAM_DINH($arr_params)
     {
         $sql = "DECLARE

@@ -85,7 +85,7 @@ class CongViecModel extends Model
         return $result;
     }
 
-    public function SELECT_CONGVIEC_TRONG_NGAY($P_ID_ND)
+    public function SELECT_CONGVIEC_TRONG_NGAY($arr_params)
     {
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare("SELECT SELECT_CONGVIEC_TRONG_NGAY('$P_ID_ND') FROM dual");

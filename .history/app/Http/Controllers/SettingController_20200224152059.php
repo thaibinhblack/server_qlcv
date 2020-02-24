@@ -50,8 +50,8 @@ class SettingController extends Controller
     {
         $du_an_kh_model = new DuAnKHModel();
         $P_VALUE_SETTING = $request->has("P_VALUE_ATTRIBUTE") == true ? $request->get("P_VALUE_ATTRIBUTE") : '[]';
-        $du_an_kh = $du_an_kh_model->CAPNHAT_VALUE_ATTRIBUTE_DA_KH($id, $P_VALUE_SETTING);
-        return response()->json($du_an_kh, 200);
+        // $du_an_kh = $du_an_kh_model->CAPNHAT_VALUE_ATTRIBUTE_DA_KH($id, $P_VALUE_SETTING);
+        return response()->json($P_VALUE_SETTING, 200);
         // return response()->json($request->all(), 200);
         // if($request->has('api_token'))
         // {

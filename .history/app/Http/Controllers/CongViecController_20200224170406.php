@@ -59,10 +59,8 @@ class CongViecController extends Controller
             $token = $request->get('api_token');
             $user = DB::SELECT("SELECT * from TB_NGUOI_DUNG WHERE TOKEN_ND = '$token'");
             $cong_viec_model = new CongViecModel();
-            $cong_viec = $cong_viec_model-> SELECT_CONGVIEC_TRONG_NGAY($user[0]->id_nd);
-            return response()->json($cong_viec, 200);
         }
-        return response()->json([], 200);
+
        
     }
     
