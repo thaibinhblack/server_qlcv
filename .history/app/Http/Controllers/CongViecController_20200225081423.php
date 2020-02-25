@@ -352,7 +352,6 @@ class CongViecController extends Controller
                         "P_NGUOI_NHAP" => null,
                         "P_TIME_NHAN_VIEC" => $request->get('P_TIME_NHAN_VIEC'),
                         "P_TIME_HOAN_THANH" => $request->get('P_TIME_HOAN_THANH'),
-                        "P_HAN_HOAN_THANH" => $request->get("P_HAN_HOAN_THANH")
                     ];
                     $cong_viec_model = new CongViecModel();
                     $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);

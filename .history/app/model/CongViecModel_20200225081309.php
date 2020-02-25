@@ -51,7 +51,7 @@ class CongViecModel extends Model
         BEGIN
         :RESULT_CV := THEM_CAPNHAT_CONGVIEC(:P_ID_CV_DA, :P_TEN_CV, :P_NOI_DUNG_CV, :P_NGAY_TIEP_NHAN, :P_NGAY_GIAO_VIEC,  :P_NGAY_HOAN_THANH, :P_NGAY_CAM_KET, :P_GIO_THUC_HIEN, :P_DO_UU_TIEN, 
         :P_MA_JIRA, :P_NGUOI_GIAO_VIEC, :P_NGUOI_NHAN_VIEC, :P_TIEN_DO, :P_GHI_CHU, :P_LY_DO, :P_THAM_DINH_TGIAN, :P_THAM_DINH_KHOI_LUONG, :P_THAM_DINH_CHAT_LUONG, :P_ID_LOAI_CV, 
-        :P_TRANG_THAI, :P_ACTION, :P_TYPE, :P_NGUOI_YEU_CAU, :P_NGUOI_NHAP, :P_TIME_NHAN_VIEC, :P_TIME_HOAN_THANH, :P_HAN_HOAN_THANH);
+        :P_TRANG_THAI, :P_ACTION, :P_TYPE, :P_NGUOI_YEU_CAU, :P_NGUOI_NHAP, :P_TIME_NHAN_VIEC, :P_TIME_HOAN_THANH);
         END;";  
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
@@ -81,7 +81,6 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_NGUOI_NHAP',$arr_params["P_NGUOI_NHAP"]);
         $stmt->bindParam(':P_TIME_NHAN_VIEC',$arr_params["P_TIME_NHAN_VIEC"]);
         $stmt->bindParam(':P_TIME_HOAN_THANH',$arr_params["P_TIME_HOAN_THANH"]);
-        $stmt->bindParam(':P_HAN_HOAN_THANH',$arr_params["P_HAN_HOAN_THANH"]);
         $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;

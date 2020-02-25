@@ -82,6 +82,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_TIME_NHAN_VIEC',$arr_params["P_TIME_NHAN_VIEC"]);
         $stmt->bindParam(':P_TIME_HOAN_THANH',$arr_params["P_TIME_HOAN_THANH"]);
         $stmt->bindParam(':P_HAN_HOAN_THANH',$arr_params["P_HAN_HOAN_THANH"]);
+        
         $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;
