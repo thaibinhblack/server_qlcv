@@ -90,7 +90,7 @@ Route::get('cong-viec-goc/{id}','CongViecController@congviecgoc')->middleware('c
 Route::get('cong-viec-chua-phan-cong','CongViecController@cvchuaphancong')->middleware('cors');
 Route::post('tham-dinh-cong-viec/{id}','CongViecController@thamdinh')->middleware('cors');
 Route::post('capnhat_congviec/{id}','CongViecController@capnhat_congviec')->middleware('cors');
-Route::post('cong-viec','CongViecController@store');
+Route::post('cong-viec','CongViecController@store')
 Route::get('cong-viec/{id}/chitietcv','CongViecController@congviec_chitiet')->middleware('cors');
 Route::get('cong-viec/{id}/{id_du_an}','CongViecController@show')->middleware('cors');
 Route::post('cong-viec/{id}','CongViecController@update')->middleware('cors');
