@@ -18,10 +18,10 @@ class CongViecModel extends Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function SELECT_CONG_VIEC_PHANCONG($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_NGUOI_NHAN_VIEC)
+    public function SELECT_CONG_VIEC_PHANCONG($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_PHANCONG('$P_TIME_START', '$P_TIME_END', '$P_ID_ND', $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, '$P_NGUOI_NHAN_VIEC') FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_PHANCONG('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }

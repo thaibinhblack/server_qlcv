@@ -62,7 +62,7 @@ class CongViecController extends Controller
             $P_ID_ND = $user[0]->id_nd;
             $P_ID_LOAI_CV = 0;
             $P_ID_DU_AN_KH = 0;
-            $P_NGUOI_NHAN_VIEC = $request->has('nguoi_nhan_viec') == true ? $request->get('nguoi_nhan_viec') : 0;
+            $P_NGUOI_NHAN_VIEC = $request->has('nguoi_nhan_viec') == true ? $request->get('P_NGUOI_NHAN_VIEC') : 0;
             // return response()->json($user, 200);
             $id_nd = $user[0]->id_nd;
            

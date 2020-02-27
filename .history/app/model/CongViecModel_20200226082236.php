@@ -18,13 +18,6 @@ class CongViecModel extends Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function SELECT_CONG_VIEC_PHANCONG($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_NGUOI_NHAN_VIEC)
-    {
-        $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_PHANCONG('$P_TIME_START', '$P_TIME_END', '$P_ID_ND', $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, '$P_NGUOI_NHAN_VIEC') FROM dual");
-        $result = $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
     
     public function THEM_CAPNHAT_CONGVIEC($arr_params)
     {
@@ -70,7 +63,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_NGAY_HOAN_THANH',$arr_params["P_NGAY_HOAN_THANH"]);
         $stmt->bindParam(':P_NGAY_CAM_KET',$arr_params["P_NGAY_HOAN_THANH"]);
         $stmt->bindParam(':P_GIO_THUC_HIEN',$arr_params["P_GIO_THUC_HIEN"]);
-        $stmt->bindParam(':P_DO_UU_TIEN',$arr_params["P_DO_UU_TIEN"]);
+        $stmt->bindParam(':P_DO_UU_TIEN',$arr_params["P_GIO_THUC_HIEN"]);
         $stmt->bindParam(':P_MA_JIRA',$arr_params["P_MA_JIRA"]);
         $stmt->bindParam(':P_NGUOI_GIAO_VIEC',$arr_params["P_NGUOI_GIAO_VIEC"]);
         $stmt->bindParam(':P_NGUOI_NHAN_VIEC',$arr_params["P_NGUOI_NHAN_VIEC"]);

@@ -59,10 +59,10 @@ class CongViecController extends Controller
             $P_TIME_END = date("d/m/Y");
             $P_TIME_START = date("01/m/Y");
             $P_ID_DA = 0;
-            $P_ID_ND = $user[0]->id_nd;
+            $P_ID_ND = 0;
             $P_ID_LOAI_CV = 0;
             $P_ID_DU_AN_KH = 0;
-            $P_NGUOI_NHAN_VIEC = $request->has('nguoi_nhan_viec') == true ? $request->get('nguoi_nhan_viec') : 0;
+            $P_TRANG_THAI_TD = 0;
             // return response()->json($user, 200);
             $id_nd = $user[0]->id_nd;
            
@@ -76,6 +76,10 @@ class CongViecController extends Controller
                 $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
                 // return response()->json($request->get('status'), 200);
             }
+            if($request->has('P_TRANG_THAI_TD'))
+            {
+                $P_TRANG_THAI_TD = $request->get('P_TRANG_THAI_TD');
+            }
             if($request->has('P_ID_LOAI_CV'))
             {
                 $P_ID_LOAI_CV = $request->get('P_ID_LOAI_CV');
@@ -88,10 +92,8 @@ class CongViecController extends Controller
             {
                 $P_ID_DU_AN_KH = $request->get('id_du_an_kh');
             }
-
             $cong_viec_model = new CongViecModel();
-            $cong_viec = $cong_viec_model->SELECT_CONG_VIEC_PHANCONG($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_NGUOI_NHAN_VIEC);
-            return response()->json($cong_viec, 200);
+            $cong_viec = $cong_viec_model->SELECT_CONG_VIEC_PHANCONG($user[0]->id_nd);
         }
     }
 

@@ -56,42 +56,6 @@ class CongViecController extends Controller
         {
             $token = $request->get('api_token');
             $user = DB::SELECT("SELECT * from TB_NGUOI_DUNG WHERE TOKEN_ND = '$token'");
-            $P_TIME_END = date("d/m/Y");
-            $P_TIME_START = date("01/m/Y");
-            $P_ID_DA = 0;
-            $P_ID_ND = $user[0]->id_nd;
-            $P_ID_LOAI_CV = 0;
-            $P_ID_DU_AN_KH = 0;
-            $P_NGUOI_NHAN_VIEC = $request->has('nguoi_nhan_viec') == true ? $request->get('nguoi_nhan_viec') : 0;
-            // return response()->json($user, 200);
-            $id_nd = $user[0]->id_nd;
-           
-            if($request->has('time_start') && $request->has('time_end'))
-            {
-                $P_TIME_START = $time_start = $request->get('time_start');
-                $P_TIME_END = $time_end = $request->get('time_end');
-                $P_TIME_START=date_create($P_TIME_START);
-                $P_TIME_END=date_create($P_TIME_END);
-                $P_TIME_START =  date_format($P_TIME_START,"d/m/Y");
-                $P_TIME_END =  date_format($P_TIME_END,"d/m/Y");
-                // return response()->json($request->get('status'), 200);
-            }
-            if($request->has('P_ID_LOAI_CV'))
-            {
-                $P_ID_LOAI_CV = $request->get('P_ID_LOAI_CV');
-            }
-            if($request->has('id_du_an'))
-            {
-                $P_ID_DA = $id_du_an = $request->get('id_du_an');   
-            }
-            if($request->has('id_du_an_kh'))
-            {
-                $P_ID_DU_AN_KH = $request->get('id_du_an_kh');
-            }
-
-            $cong_viec_model = new CongViecModel();
-            $cong_viec = $cong_viec_model->SELECT_CONG_VIEC_PHANCONG($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_NGUOI_NHAN_VIEC);
-            return response()->json($cong_viec, 200);
         }
     }
 
