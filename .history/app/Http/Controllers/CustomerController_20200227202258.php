@@ -46,6 +46,10 @@ class CustomerController extends Controller
                 'message' => 'Danh sách khách hàng',
                 'results' => $customers
             ], 200);
+            // $token = $request->get('api_token');
+            // $result = DB::select('SELECT  
+            // SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
+            // return response()->json($result, 200);
         }
     }
 
@@ -61,6 +65,7 @@ class CustomerController extends Controller
         {
 
             //CHECK TOKEN
+            // return response()->json($request->all(), 200);
             if($request->has('TEN_KH') && $request->has('DIA_CHI_KH') && $request->has('SDT_KH') &&
                 $request->has('NGUOI_DAI_DIEN_KH') && $request->has('TRANG_THAI_KH'))
             {

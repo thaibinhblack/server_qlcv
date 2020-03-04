@@ -667,8 +667,7 @@ class CongViecController extends Controller
     public function AUTO_NHAC_VIEC()
     {
         $cong_viec_model = new CongViecModel();
-        $cong_viec = $cong_viec_model->SELECT_CV_TH();
-        return response()->json($cong_viec, 200);
+        $cong_viec = $cong_viec_model->SELECT_CV_TH()
     }
 
     public function test()

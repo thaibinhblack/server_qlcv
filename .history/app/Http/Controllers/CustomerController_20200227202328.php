@@ -39,16 +39,17 @@ class CustomerController extends Controller
     {
         if($request->has('api_token'))
         {
-            // //CHECK TOKEN ADN RULE
-            // $customers = DB::select("SELECT * FROM TB_KH order by CREATED_AT DESC");
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'Danh sách khách hàng',
-            //     'results' => $customers
-            // ], 200);
-            $token = $request->get('api_token');
-            $result = DB::connection('ora_db')->select('exec 
-            PRW_GENERSELECT_DS_KHA_FACTURA(?)',array($token));
+            //CHECK TOKEN ADN RULE
+            $customers = DB::select("SELECT * FROM TB_KH order by CREATED_AT DESC");
+            return response()->json([
+                'success' => true,
+                'message' => 'Danh sách khách hàng',
+                'results' => $customers
+            ], 200);
+            // $token = $request->get('api_token');
+            // $result = DB::select('SELECT  
+            // SELECT_DS_KH(:P_API_TOKEN) FROM DUAL',array("P_API_TOKEN" => $token));
+            // return response()->json($result, 200);
         }
     }
 
@@ -64,6 +65,21 @@ class CustomerController extends Controller
         {
 
             //CHECK TOKEN
+            // return response()->json($request->all(), 200);
+            $p_id_khach_hang = 0;
+                $p_ten_kh = $request->get('TEN_KH');
+                $p_dia_chi_kh = $request->get('DIA_CHI_KH');
+                $p_sdt_kh = $request->get('SDT_KH');
+                $p_nguoi_dai_dien = $request->get('NGUOI_DAI_DIEN_KH');
+                $p_trang_thai_kh = $request->get('TRANG_THAI_KH');
+                $p_action = 1;
+                $result = $this->CallFunction($p_id_khach_hang, $p_ten_kh, $p_dia_chi_kh, $p_sdt_kh, $p_nguoi_dai_dien, $p_trang_thai_kh, $p_action);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thêm khách hàng mới thành công',
+                    'result' => '',
+                    'status' => 200
+                ], 200);
             if($request->has('TEN_KH') && $request->has('DIA_CHI_KH') && $request->has('SDT_KH') &&
                 $request->has('NGUOI_DAI_DIEN_KH') && $request->has('TRANG_THAI_KH'))
             {

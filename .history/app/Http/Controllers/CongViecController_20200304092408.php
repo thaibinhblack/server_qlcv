@@ -669,7 +669,6 @@ class CongViecController extends Controller
         $cong_viec_model = new CongViecModel();
         $cong_viec = $cong_viec_model->SELECT_CV_TH();
         return response()->json($cong_viec, 200);
-    }
 
     public function test()
     {
