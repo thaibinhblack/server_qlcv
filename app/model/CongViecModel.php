@@ -13,7 +13,7 @@ class CongViecModel extends Model
     public function SELECT_CONG_VIEC_DA($P_TIME_START, $P_TIME_END, $P_ID_ND, $P_ID_DA,$P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD) FROM dual");
+        $stmt = $pdo->prepare("SELECT SELECT_CONG_VIEC_DA('$P_TIME_START', '$P_TIME_END', $P_ID_ND, $P_ID_DA, $P_ID_DU_AN_KH, $P_ID_LOAI_CV, $P_TRANG_THAI_TD, null) FROM dual");
         $result = $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -55,10 +55,12 @@ class CongViecModel extends Model
             P_TIME_NHAN_VIEC VARCHAR2(100);
             P_TIME_HOAN_THANH VARCHAR2(100);
             P_HAN_HOAN_THANH DATE;
+            P_FLOW NUMBER;
+            P_PARENT NUMBER;
         BEGIN
         :RESULT_CV := THEM_CAPNHAT_CONGVIEC(:P_ID_CV_DA, :P_TEN_CV, :P_NOI_DUNG_CV, :P_NGAY_TIEP_NHAN, :P_NGAY_GIAO_VIEC,  :P_NGAY_HOAN_THANH, :P_NGAY_CAM_KET, :P_GIO_THUC_HIEN, :P_DO_UU_TIEN, 
         :P_MA_JIRA, :P_NGUOI_GIAO_VIEC, :P_NGUOI_NHAN_VIEC, :P_TIEN_DO, :P_GHI_CHU, :P_LY_DO, :P_THAM_DINH_TGIAN, :P_THAM_DINH_KHOI_LUONG, :P_THAM_DINH_CHAT_LUONG, :P_ID_LOAI_CV, 
-        :P_TRANG_THAI, :P_ACTION, :P_TYPE, :P_NGUOI_YEU_CAU, :P_NGUOI_NHAP, :P_TIME_NHAN_VIEC, :P_TIME_HOAN_THANH, :P_HAN_HOAN_THANH);
+        :P_TRANG_THAI, :P_ACTION, :P_TYPE, :P_NGUOI_YEU_CAU, :P_NGUOI_NHAP, :P_TIME_NHAN_VIEC, :P_TIME_HOAN_THANH, :P_HAN_HOAN_THANH, :P_FLOW, :P_PARENT);
         END;";  
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare($sql);
@@ -89,6 +91,8 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_TIME_NHAN_VIEC',$arr_params["P_TIME_NHAN_VIEC"]);
         $stmt->bindParam(':P_TIME_HOAN_THANH',$arr_params["P_TIME_HOAN_THANH"]);
         $stmt->bindParam(':P_HAN_HOAN_THANH',$arr_params["P_HAN_HOAN_THANH"]);
+        $stmt->bindParam(':P_FLOW',$arr_params["P_FLOW"], PDO::PARAM_INT);
+        $stmt->bindParam(':P_PARENT',$arr_params["P_PARENT"], PDO::PARAM_INT);
         $stmt->bindParam(':RESULT_CV',$result, PDO::PARAM_INT);
         $stmt->execute();
         return $result;
@@ -130,8 +134,9 @@ class CongViecModel extends Model
             P_THAM_DINH_CHAT_LUONG NUMBER;
             P_THAM_DINH_KHOI_LUONG NUMBER;
             P_NGUOI_THAM_DINH NUMBER;
+            P_DANH_GIA VARCHAR2(4000);
         BEGIN
-            :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH);
+            :result :=THAM_DINH_CONG_VIEC_DA(:P_ID_CV_DA, :P_THAM_DINH_TGIAN, :P_THAM_DINH_CHAT_LUONG, :P_THAM_DINH_KHOI_LUONG, :P_NGUOI_THAM_DINH, :P_DANH_GIA);
         END;";
        
         $pdo = DB::getPdo();
@@ -141,6 +146,7 @@ class CongViecModel extends Model
         $stmt->bindParam(':P_THAM_DINH_CHAT_LUONG',$arr_params["P_THAM_DINH_CHAT_LUONG"],PDO::PARAM_INT);
         $stmt->bindParam(':P_THAM_DINH_KHOI_LUONG',$arr_params["P_THAM_DINH_KHOI_LUONG"],PDO::PARAM_INT);
         $stmt->bindParam(':P_NGUOI_THAM_DINH',$arr_params["P_NGUOI_THAM_DINH"],PDO::PARAM_INT);
+        $stmt->bindParam(':P_DANH_GIA',$arr_params["P_DANH_GIA"]);
         $stmt->bindParam(':result',$result);
         $stmt->execute();
         return $result;
@@ -191,4 +197,29 @@ class CongViecModel extends Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function THEM_CAPNHAT_CV_CON($arr_params)
+    {
+        $sql = "DECLARE
+            P_CONGVIEC VARCHAR2(4000);
+            P_ACTION NUMBER;
+            BEGIN
+                :RESULT_CV := THEM_CAPNHAT_CV_CON(:P_CONGVIEC, :P_ACTION);
+        END;"; 
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':P_CONGVIEC',$arr_params["P_CONGVIEC"]);
+        $stmt->bindParam(':P_ACTION',$arr_params["P_ACTION"], PDO::PARAM_INT);
+        $stmt->bindParam(':RESULT_CV',$RESULT_CV, PDO::PARAM_INT);
+        $stmt->execute();
+        return $RESULT_CV;      
+    }
+
+    public function SELECT_CONGVIEC_CON($arr_params)
+    {
+        $pdo = DB::getPdo();
+        $P_PARENT = $arr_params["P_PARENT"];
+        $stmt = $pdo->prepare("SELECT SELECT_CONGVIEC_CON('$P_PARENT') FROM dual");
+        $result = $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }

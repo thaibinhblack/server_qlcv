@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="VB_DI_SO_LDP3" name="Văn bản sở đi từ LĐP 3" isExecutable="true">
+    <documentation>QUYEN_THEM_VANBANDI_CHUYENVIEN_CAP3</documentation>
+    <extensionElements>
+      <activiti:executionListener event="start" class="vsc.activiti.flow.startFlowListener"></activiti:executionListener>
+      <activiti:executionListener event="end" class="vsc.activiti.flow.endFlowListener"></activiti:executionListener>
+    </extensionElements>
+    <startEvent id="START"></startEvent>
+    <endEvent id="END" name="END"></endEvent>
+    <userTask id="GD_STTC" name="GIÁM ĐỐC TRUNG TÂM">
+      <documentation>QUYEN_THEM_VANBANDI_CHUYENVIEN_CAP3</documentation>
+      <extensionElements>
+        <activiti:formProperty id="frm_GDSTNMT" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" name="CHÁNH / PHÓ VĂN PHÒNG">
+      <documentation>QUYEN_XULY_VANBAN_LANHDAO_CAP2</documentation>
+      <extensionElements>
+        <activiti:formProperty id="form_CHANH_PHO_VP_STTC" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="BAN_GIAM_DOC_STTC" name="BAN GIÁM ĐỐC">
+      <documentation>QUYEN_XULY_VANBAN_LANHDAO_CAP1</documentation>
+      <extensionElements>
+        <activiti:formProperty id="form_BGD_STTC" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="VAN_THU_STTC" name="VĂN THƯ">
+      <documentation>QUYEN_XULY_VANBAN_DI_VANTHU_CAP2</documentation>
+      <extensionElements>
+        <activiti:formProperty id="form_VT" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F" name="Luân chuyển" sourceRef="GD_STTC" targetRef="GD_STTC">
+      <documentation>get_userback_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("BGDTT_LUANCHUYEN")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_VT_PH" name="Phát hành" sourceRef="VAN_THU_STTC" targetRef="END">
+      <documentation>get_cleck_publish</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("VT_PHATHANH")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_BGD_KD" name="Ký duyệt" sourceRef="BAN_GIAM_DOC_STTC" targetRef="VAN_THU_STTC">
+      <documentation>get_user_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("BGD_KD")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_BDG_TV_CHANH_PHO_VP" name="Trả về" sourceRef="BAN_GIAM_DOC_STTC" targetRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6">
+      <documentation>get_userback_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("-CHANH_PHO_VP_BDG")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_CHANH_PHOVP_TK_BGD" name="Trình ký" sourceRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" targetRef="BAN_GIAM_DOC_STTC">
+      <documentation>get_user_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("BGDTT_CHANH_PHO_VP")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_CHANH_PHOVP_LC" name="Luân chuyển" sourceRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" targetRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6">
+      <documentation>get_userback_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("CHANH_PHO_VP_LUANCHUYEN")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_CHANH_PHOVP_TV" name="Trả về" sourceRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" targetRef="GD_STTC">
+      <documentation>get_userback_by_role</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("-BGDTT_CHANH_PHO_VP")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_BGDTT_TK" name="Trình ký" sourceRef="GD_STTC" targetRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6">
+      <documentation>get_user_by_role</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("BGDTT_CHANH_PHO_VP")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_CHANH_PHOVP_VT" name="Chuyển" sourceRef="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" targetRef="VAN_THU_STTC">
+      <documentation>get_user_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("BGDTT_CHANH_PHO_VP")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_VBDI_STTC" name="BĐ" sourceRef="START" targetRef="GD_STTC">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("CVSOAN_VB_DI")}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_VB_DI_SO_LDP3">
+    <bpmndi:BPMNPlane bpmnElement="VB_DI_SO_LDP3" id="BPMNPlane_VB_DI_SO_LDP3">
+      <bpmndi:BPMNShape bpmnElement="START" id="BPMNShape_START">
+        <omgdc:Bounds height="30.0" width="30.0" x="135.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="END" id="BPMNShape_END">
+        <omgdc:Bounds height="28.0" width="28.0" x="195.0" y="384.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="GD_STTC" id="BPMNShape_GD_STTC">
+        <omgdc:Bounds height="88.0" width="170.0" x="330.0" y="121.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6" id="BPMNShape_sid-5504AFE3-3B28-4287-B37E-A25F7400E1F6">
+        <omgdc:Bounds height="93.0" width="174.0" x="660.0" y="118.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="BAN_GIAM_DOC_STTC" id="BPMNShape_BAN_GIAM_DOC_STTC">
+        <omgdc:Bounds height="77.0" width="140.00000000000023" x="676.9999999999999" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="VAN_THU_STTC" id="BPMNShape_VAN_THU_STTC">
+        <omgdc:Bounds height="74.0" width="198.0" x="345.0" y="361.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="FL_BGDTT_TK" id="BPMNEdge_FL_BGDTT_TK">
+        <omgdi:waypoint x="500.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="165.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_CHANH_PHOVP_VT" id="BPMNEdge_FL_CHANH_PHOVP_VT">
+        <omgdi:waypoint x="686.6595289079229" y="211.5"></omgdi:waypoint>
+        <omgdi:waypoint x="492.01284796573873" y="361.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_CHANH_PHOVP_TK_BGD" id="BPMNEdge_FL_CHANH_PHOVP_TK_BGD">
+        <omgdi:waypoint x="747.0" y="211.5"></omgdi:waypoint>
+        <omgdi:waypoint x="747.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_BGD_KD" id="BPMNEdge_FL_BGD_KD">
+        <omgdi:waypoint x="676.9999999999999" y="398.5"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="398.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_CHANH_PHOVP_TV" id="BPMNEdge_FL_CHANH_PHOVP_TV">
+        <omgdi:waypoint x="766.0428571428572" y="118.5"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_VBDI_STTC" id="BPMNEdge_FL_VBDI_STTC">
+        <omgdi:waypoint x="165.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="165.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_VT_PH" id="BPMNEdge_FL_VT_PH">
+        <omgdi:waypoint x="345.0" y="398.5"></omgdi:waypoint>
+        <omgdi:waypoint x="223.0" y="398.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F" id="BPMNEdge_sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F">
+        <omgdi:waypoint x="430.4" y="209.0"></omgdi:waypoint>
+        <omgdi:waypoint x="457.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="364.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="396.3" y="209.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_BDG_TV_CHANH_PHO_VP" id="BPMNEdge_FL_BDG_TV_CHANH_PHO_VP">
+        <omgdi:waypoint x="817.0000000000001" y="398.2535211267606"></omgdi:waypoint>
+        <omgdi:waypoint x="889.0" y="398.0"></omgdi:waypoint>
+        <omgdi:waypoint x="775.3390557939914" y="211.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_CHANH_PHOVP_LC" id="BPMNEdge_FL_CHANH_PHOVP_LC">
+        <omgdi:waypoint x="834.0" y="154.18134715025906"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="175.3678756476684"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

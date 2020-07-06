@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="VB_PHONG_DI_LDPTT" name="Văn bản đi trung từ LDP" isExecutable="true">
+    <documentation>QUYEN_THEM_VANBANDI_CHUYENVIEN_CAP3</documentation>
+    <extensionElements>
+      <activiti:executionListener event="start" class="vsc.activiti.flow.startFlowListener"></activiti:executionListener>
+      <activiti:executionListener event="end" class="vsc.activiti.flow.endFlowListener"></activiti:executionListener>
+    </extensionElements>
+    <startEvent id="START">
+      <documentation>QUYEN_THEM_VANBANDI_CHUYENVIEN_CAP3</documentation>
+    </startEvent>
+    <endEvent id="END" name="END"></endEvent>
+    <userTask id="GD_STTC" name="GIÁM ĐỐC TRUNG TÂM">
+      <documentation>QUYEN_XULY_VANBAN_LANHDAO_CAP3</documentation>
+      <extensionElements>
+        <activiti:formProperty id="frm_GDSTNMT" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="VT_STTC" name="VĂN THƯ TRUNG TÂM">
+      <documentation>QUYEN_XULY_VANBAN_DI_VANTHU_CAP3</documentation>
+      <extensionElements>
+        <activiti:formProperty id="form_VT_STNMT" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" class="vsc.activiti.module.usertask.createTaskListener"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="vsc.activiti.module.usertask.completeTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="FL_VT_PH" name="Phát hành" sourceRef="VT_STTC" targetRef="END">
+      <documentation>get_cleck_publish</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("VT_PHATHANH")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_GD_KD" name="Ký duyệt " sourceRef="GD_STTC" targetRef="VT_STTC">
+      <documentation>get_user_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("GD_KYDUYET")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F" name="Luân chuyển" sourceRef="GD_STTC" targetRef="GD_STTC">
+      <documentation>get_user_by_role_and_unit</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("CVSTTC_BGDTT_LUANCHUYEN")}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="FL_VBDI_STNMT" name="BĐ" sourceRef="START" targetRef="GD_STTC">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${$APPROVED.equals("CVSOAN_VB_DI")}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_VB_PHONG_DI_LDPTT">
+    <bpmndi:BPMNPlane bpmnElement="VB_PHONG_DI_LDPTT" id="BPMNPlane_VB_PHONG_DI_LDPTT">
+      <bpmndi:BPMNShape bpmnElement="START" id="BPMNShape_START">
+        <omgdc:Bounds height="30.0" width="30.0" x="210.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="END" id="BPMNShape_END">
+        <omgdc:Bounds height="28.0" width="28.0" x="821.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="GD_STTC" id="BPMNShape_GD_STTC">
+        <omgdc:Bounds height="88.0" width="170.0" x="360.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="VT_STTC" id="BPMNShape_VT_STTC">
+        <omgdc:Bounds height="81.0" width="140.0" x="765.0" y="124.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="FL_GD_KD" id="BPMNEdge_FL_GD_KD">
+        <omgdi:waypoint x="530.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.5" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.5" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="165.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_VBDI_STNMT" id="BPMNEdge_FL_VBDI_STNMT">
+        <omgdi:waypoint x="240.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="164.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="FL_VT_PH" id="BPMNEdge_FL_VT_PH">
+        <omgdi:waypoint x="835.0" y="205.5"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F" id="BPMNEdge_sid-C2EA58ED-8BF0-4F30-A22C-D368ABECF72F">
+        <omgdi:waypoint x="460.27272727272725" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="487.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="394.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.45454545454544" y="208.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -103,6 +103,8 @@ Route::post('cong-viec-setting-modal','CongViecController@setting_modal')->middl
 Route::get('cong-viec-setting-modal','CongViecController@show_setting_modal')->middleware('cors');
 Route::get('auto-nhac-viec','CongViecController@AUTO_NHAC_VIEC')->middleware('cors');
 
+Route::get("cong-viec-con/{ID_PARENT}",'CongViecController@lstsubtask')->middleware('cors');
+Route::post("cong-viec-con",'CongViecController@subtask')->middleware('cors');
 
 //Thẩm định công việc
 Route::post('tham-dinh-list-cv','ThamDinhController@tham_dinh_cv')->middleware('cors');
@@ -136,3 +138,13 @@ Route::get('/setting-cai-dat-list-cv','SettingController@show_list_cv')->middlew
 
 
 Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
+
+Route::get('/season','StudyController@season')->middleware('cors');
+Route::post('/study','StudyController@store')->middleware('cors');
+
+
+Route::get('/test/{id}','TestController@CONGVIEC_ID')->middleware('cors');
+Route::post('/test/{id}','TestController@CONGVIEC_ID_UPDATE')->middleware('cors');
+
+//thống kê
+Route::get('/thong-ke/da-kh','ThongKeController@thongke_du_an_kh')->middleware('cors');

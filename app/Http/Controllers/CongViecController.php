@@ -216,7 +216,9 @@ class CongViecController extends Controller
                         "P_NGUOI_NHAP" => $request->get('P_NGUOI_NHAP'),
                         "P_TIME_NHAN_VIEC" => $request->get('P_TIME_NHAN_VIEC'),
                         "P_TIME_HOAN_THANH" => $request->get('P_TIME_HOAN_THANH'),
-                        "P_HAN_HOAN_THANH" => $request->get('P_HAN_HOAN_THANH')
+                        "P_HAN_HOAN_THANH" => $request->get('P_HAN_HOAN_THANH'),
+                        "P_FLOW" => $request->get("P_FLOW"),
+                        "P_PARENT" => $request->get("P_PARENT")
                     ];
                     $cong_viec_model = new CongViecModel();
                     $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);
@@ -395,7 +397,9 @@ class CongViecController extends Controller
                         "P_NGUOI_NHAP" => null,
                         "P_TIME_NHAN_VIEC" => $request->get('P_TIME_NHAN_VIEC'),
                         "P_TIME_HOAN_THANH" => $request->get('P_TIME_HOAN_THANH'),
-                        "P_HAN_HOAN_THANH" => $request->get("P_HAN_HOAN_THANH")
+                        "P_HAN_HOAN_THANH" => $request->get("P_HAN_HOAN_THANH"),
+                        "P_FLOW" => $request->get("P_FLOW"),
+                        "P_PARENT" => $request->get("P_PARENT")
                     ];
                     $cong_viec_model = new CongViecModel();
                     $cong_viec = $cong_viec_model->THEM_CAPNHAT_CONGVIEC($arr_params);
@@ -576,7 +580,8 @@ class CongViecController extends Controller
                         "P_THAM_DINH_TGIAN" => $request->get('P_THAM_DINH_TGIAN'),
                         "P_THAM_DINH_CHAT_LUONG" => $request->get('P_THAM_DINH_CHAT_LUONG'),
                         "P_THAM_DINH_KHOI_LUONG" => $request->get('P_THAM_DINH_KHOI_LUONG'),
-                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd
+                        "P_NGUOI_THAM_DINH" => $user[0]->id_nd,
+                        "P_DANH_GIA" => $request->get("P_DANH_GIA")
                     ];
                     $cong_viec_model = new CongViecModel();
                     $tham_dinh = $cong_viec_model->THAM_DINH_CONG_VIEC_DA($arr_params);
@@ -669,6 +674,25 @@ class CongViecController extends Controller
         $cong_viec_model = new CongViecModel();
         $cong_viec = $cong_viec_model->SELECT_CV_TH();
         return response()->json($cong_viec, 200);
+    }
+
+    public function subtask(Request $request)
+    {
+        $cong_viec_model = new CongViecModel();
+        $id_cv = $cong_viec_model->THEM_CAPNHAT_CV_CON([
+            "P_CONGVIEC" => $request->get("P_CONGVIEC"),
+            "P_ACTION" => 1
+        ]);
+        return response()->json($id_cv, 200);
+    }
+
+    public function lstsubtask(Request $request, $ID_PARENT)
+    {
+        $cong_viec_model = new CongViecModel();
+        $lstsubtask = $cong_viec_model->SELECT_CONGVIEC_CON([
+            "P_PARENT" => $ID_PARENT,
+        ]);
+        return response()->json($lstsubtask, 200);
     }
 
     public function test()

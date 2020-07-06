@@ -1,0 +1,221 @@
+<?php
+use Model\Entity;
+$s = array(
+	'exportFileName'=>'Export_'.date('d_m_Y'),
+	'columnWriteStart'=>'B',
+	'rowWriteStart'=>2,
+	'rowWriteEnd'=>NULL,
+	'defaultStyle'=>array(
+		'font'=>array(
+			'size'=>13,
+			'name'=>'Times New Roman',
+		),
+	),
+	'fields'=>array(
+		array(
+			'label'=>'STT',
+			'columnWidth'=>6
+        ),
+        array(
+			'label'=>'TÊN CÁN BỘ',
+			'columnWidth'=>40,
+			'formatCode'=>'0'
+		),
+		array(
+			'label'=>'TÀI KHOẢN',
+			'columnWidth'=>20,
+			'formatCode'=>'0'
+		),
+		array(
+			'label'=>'HỒ SƠ TIẾP NHẬN',
+			'columnWidth'=>30
+		)
+	)
+);
+$objPHPExcel = new PHPExcel();
+$MC_TKPackage = ora::callPackage('MC_TK');
+if(!empty($arr_tkhs)){
+	$objPHPExcel->getDefaultStyle()->applyFromArray($s['defaultStyle']);
+	$objWorkSheet = $objPHPExcel->getSheet(0);
+	$objWorkSheet->mergeCells('B2:C2');
+	//$objWorkSheet->setCellValue('B2', nth::upper(Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN')));
+    $TEN_CQ =  Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN');
+    $objWorkSheet->setCellValue('B2', nth::upper(Session::get(TIEP_DAU_NGU_SESSION.'TEN_CO_QUAN')));
+
+	$objWorkSheet->getStyle('B2:C2')->applyFromArray(array(
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	// $objWorkSheet->setCellValue('D5', $thoigian);
+	// $objWorkSheet->mergeCells('B9:B10');
+	// $objWorkSheet->mergeCells('C9:C10');
+	// $objWorkSheet->mergeCells('D9:D10');
+	// $objWorkSheet->mergeCells('E9:E10');
+	$objWorkSheet->mergeCells('B3:C3');
+	$objWorkSheet->setCellValue('B3', 'VĂN PHÒNG ĐĂNG KÝ ĐẤT ĐAI');
+	$objWorkSheet->getStyle('B3:C4')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+	
+	$objWorkSheet->mergeCells('D2:E2');
+	$objWorkSheet->setCellValue('D2', 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM');
+	$objWorkSheet->mergeCells('D3:E3');
+	$objWorkSheet->setCellValue('D3', 'Độc lập - Tự do - Hạnh phúc');
+
+	$objWorkSheet->getStyle('D2:E3')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	$objWorkSheet->mergeCells('B7:E7');
+	$objWorkSheet->setCellValue('B7', 'THỐNG KÊ HỒ SƠ TIẾP NHẬN THEO CÁN BỘ');
+	$objWorkSheet->getStyle('B7:E7')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+			'size'=>16,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+
+	$objWorkSheet->getStyle('B9:E9')->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+			'size'=>13,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		)
+	));
+	
+	$row = $s['rowWriteStart'] + 7;
+	$column = $s['columnWriteStart'];
+	$cntField = count($s['fields']);
+	for($j=0; $j<$cntField; $j++){
+		$field = $s['fields'][$j];
+		if(empty($field['group'])){
+			// $objWorkSheet->mergeCells($column.$row.':'.$column.($row+1));
+			$objWorkSheet->setCellValue($column.$row, $field['label']);
+			$objWorkSheet->getColumnDimension($column)->setWidth($field['columnWidth']);	
+		} else {
+			$subColumm = $column;
+			$cntSubField = count($field['group']);
+			for($i=0; $i<$cntSubField; $i++){
+				$subField = $field['group'][$i];
+				$objWorkSheet->setCellValue($subColumm.($row+1), $subField['label']);
+				$objWorkSheet->getColumnDimension($subColumm)->setWidth($subField['columnWidth']);
+				if($i<$cntSubField-1){
+					$subColumm++;	
+				}
+			}	
+			// $objWorkSheet->mergeCells($column.$row.':'.$subColumm.$row);
+			// $objWorkSheet->setCellValue($column.$row, $field['label']);
+			// $objWorkSheet->getStyle($column.$row.':'.$subColumm.$row)->applyFromArray(array(
+			// 	'alignment'=>array(
+			// 		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			// 	)
+			// ));
+			$column = $subColumm;
+		}
+		if($j<$cntField-1){
+			$column++;
+		}
+	}
+	
+	$row = $s['rowWriteStart'] + 9;
+	$cntSTD = count($arr_tkhs);
+	$cntField = count($s['fields']);
+	$sl_hs_total = 0;
+
+	for($i=0; $i<$cntSTD; $i++){
+		$arr = $arr_tkhs[$i];
+		$TEN_CAN_BO = $arr['TEN_CAN_BO'];
+		$TAI_KHOAN = $arr["TAI_KHOAN"];
+		$TONG_SO = $arr["TONG_SO"];
+        $sl_hs_total += $TONG_SO;
+
+
+		$rowData = array(
+			$i+1,
+			$TEN_CAN_BO,
+			$TAI_KHOAN,
+			$TONG_SO
+		);
+		$column = $s['columnWriteStart'];
+        $k=0;
+        
+		for($j=0; $j<$cntField; $j++){
+			$field = $s['fields'][$j];
+			if(isset($field['formatCode'])){
+				$objWorkSheet->getStyle($column.$row)->getNumberFormat()->setFormatCode($field['formatCode']);
+			}
+			if(empty($field['group'])){
+				$objWorkSheet->setCellValue($column.$row, $rowData[$k]);
+			} else {
+				$cntSubField = count($field['group']);
+				for($l=0; $l<$cntSubField; $l++){
+					$objWorkSheet->setCellValue($column.$row, $rowData[$k]);
+					if($l<$cntSubField-1){
+						$k++;
+						$column++;	
+					}
+				}
+			}
+			if($j<$cntField-1){
+				$k++;
+				$column++;
+			}
+		}
+		$row++;
+	}
+
+	// $total_tl_hs_th = round(($sl_hs_th_total/$sl_hs_total)*100,2);
+	// $total_tl_hs_dh = round(($sl_hs_dh_total/$sl_hs_total)*100,2);
+	
+	// $objWorkSheet->setCellValue("C$row", 'TỔNG CỘNG');
+	// $objWorkSheet->setCellValue("D$row", $sl_hs_total);
+	// $objWorkSheet->setCellValue("E$row", $sl_hs_chua_xl_total);
+	// $objWorkSheet->setCellValue("F$row", $sl_hs_dh_total);
+	// $objWorkSheet->setCellValue("G$row", $total_tl_hs_dh);
+	// $objWorkSheet->setCellValue("H$row", $sl_hs_th_total);
+	// $objWorkSheet->setCellValue("I$row", $total_tl_hs_th);
+
+	$objWorkSheet->getStyle("C$row:E$row")->applyFromArray(array(
+		'font'=>array(
+			'bold'=>true,
+		),
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+	$objWorkSheet->getStyle("D11:E$row")->applyFromArray(array(
+		'alignment'=>array(
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		)
+	));
+  
+        $objWorkSheet->getStyle("B9:E$row")->getAlignment()->setWrapText(true); 
+        $objWorkSheet->getStyle("B9:E$row")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+    
+        $objWorkSheet->setCellValue("E$row", $sl_hs_total);
+}
+// Redirect output to a client’s web browser (Excel5)
+ob_clean();
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="'.$s['exportFileName'].'.xls"');
+header('Cache-Control: max-age=0');
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+$objWriter->save('php://output');
